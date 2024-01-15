@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.CommandFramework;
 
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.Delay;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.DelayedCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.RaceAction;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Dashboard;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
+import org.firstinspires.ftc.teamcode.Utils.RandomizationSide;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
@@ -15,14 +19,22 @@ public abstract class BaseAuto extends LinearOpMode {
 
     protected Robot robot;
 
-        protected String randomization = "LEFT"; // CALL
+    protected RandomizationSide randomizationSide = RandomizationSide.LEFT;
 
     @Override
     public void runOpMode() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide());
         setRobotPosition();
 
-        waitForStart();
+        System.out.println("randomization side");
+        while (!isStarted()) {
+            randomizationSide = robot.randomization.getRandomizationSide();
+            telemetry.addData("randomization", randomizationSide.name());
+            telemetry.update();
+        }
+        robot.randomization.closePortal();
+
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
         while (opModeIsActive() && !isStopRequested()) {
