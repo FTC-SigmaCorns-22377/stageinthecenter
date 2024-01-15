@@ -18,14 +18,14 @@ public class MultipleCommand extends Command {
 	}
 
 	@Override
-	public void init() {
+	public void init() throws InterruptedException {
 		for (Command command : commands) {
 			command.init();
 		}
 	}
 
 	@Override
-	public void periodic() {
+	public void periodic() throws InterruptedException {
 		for (Command command : commands) {
 			command.periodic();
 		}

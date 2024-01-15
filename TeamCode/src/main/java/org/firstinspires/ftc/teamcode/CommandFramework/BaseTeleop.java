@@ -11,18 +11,17 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
-public abstract class BaseAuto extends LinearOpMode {
+public abstract class BaseTeleop extends LinearOpMode {
 
     protected Robot robot;
-    protected String randomization = "LEFT"; // CALL
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide());
+        robot = new Robot(hardwareMap, Robot.OpMode.Teleop, gamepad1, gamepad2, getTeam(), getSide());
         setRobotPosition();
 
         waitForStart();
-        robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
+        robot.getScheduler().forceCommand(setupTeleop(robot.getScheduler()));
 
         while (opModeIsActive() && !isStopRequested()) {
             robot.update();
@@ -30,7 +29,7 @@ public abstract class BaseAuto extends LinearOpMode {
         robot.shutdown();
     }
 
-    public abstract Command setupAuto(CommandScheduler scheduler);
+    public abstract Command setupTeleop(CommandScheduler scheduler) throws InterruptedException;
 
     public DelayedCommand delayCommand(double time, Command command) {
         return new DelayedCommand(time, command);

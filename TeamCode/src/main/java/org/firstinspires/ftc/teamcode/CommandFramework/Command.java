@@ -36,9 +36,9 @@ public abstract class Command {
 		return dependencies;
 	}
 
-	public abstract void init();
+	public abstract void init() throws InterruptedException;
 
-	public abstract void periodic();
+	public abstract void periodic() throws InterruptedException;
 
 	public abstract boolean completed();
 

@@ -37,7 +37,7 @@ public class CommandScheduler {
 	    intents.add(intent);
 	}
 
-	public void run() {
+	public void run() throws InterruptedException {
 		for (Subsystem subsystem : subsystems) {
 			subsystem.startTimer();
 			subsystem.periodic();
@@ -93,7 +93,7 @@ public class CommandScheduler {
 			forceCommand(nextCommand);
 	}
 
-	public void forceCommand(Command command) {
+	public void forceCommand(Command command) throws InterruptedException {
 		ArrayList<Subsystem> nextCommandDependencies = command.getDependencies();
 
 		Iterator<Command> currentCommands = activeCommands.iterator();

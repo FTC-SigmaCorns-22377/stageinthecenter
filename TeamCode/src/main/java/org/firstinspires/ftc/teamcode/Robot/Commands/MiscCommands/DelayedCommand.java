@@ -22,7 +22,7 @@ public class DelayedCommand extends Command {
 	}
 
 	@Override
-	public void periodic() {
+	public void periodic() throws InterruptedException {
 		if (timer.seconds() > timeUntilStartS) {
 			if (!hasRunInit) {
 				targetCommand.init();
