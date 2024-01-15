@@ -17,11 +17,13 @@ public class Robot {
     public Input gamepad1;
     public Input gamepad2;
     public Drivetrain drivetrain = new Drivetrain();
+    public Randomization randomization;
     protected CommandScheduler scheduler;
     ArrayList<LynxModule> modules = new ArrayList<>();
 
     public Robot(HardwareMap hwMap, OpMode opMode, Gamepad gamepad1, Gamepad gamepad2, Team team, Side side) {
-        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard);
+        randomization = new Randomization(team);
+        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, randomization);
         this.gamepad1 = new Input(gamepad1, scheduler);
         this.gamepad2 = new Input(gamepad2, scheduler);
 
