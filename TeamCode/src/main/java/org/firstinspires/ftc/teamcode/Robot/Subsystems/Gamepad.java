@@ -89,6 +89,7 @@ public class Gamepad extends Subsystem {
 	protected Command ps_button_handler = null;
 	protected Command left_bumper_handler = null;
 	protected Command right_bumper_handler = null;
+	protected Command right_bumper_release_handler = null;
 	protected Command left_trigger_press_handler = null;
 	protected Command right_trigger_press_handler = null;
 	com.qualcomm.robotcore.hardware.Gamepad gamepad;
@@ -159,7 +160,7 @@ public class Gamepad extends Subsystem {
 		right_bumper_handler = handler;
 	}
 	public void whenRightBumperLifted(Command handler) {
-		right_bumper_handler = handler;
+		right_bumper_release_handler = handler;
 	}
 
 
@@ -176,7 +177,7 @@ public class Gamepad extends Subsystem {
 	}
 
 	@Override
-	public void periodic() throws InterruptedException {
+	public void periodic() {
 		updatePrevious();
 		readGamepad();
 		callHandlers();
@@ -256,7 +257,7 @@ public class Gamepad extends Subsystem {
 		touchpad_finger_2_y_prev = touchpad_finger_2_y;
 	}
 
-	protected void callHandlers() throws InterruptedException {
+	protected void callHandlers() {
 		if (isCrossPressed() && cross_handler != null)
 			scheduler.forceCommand(cross_handler);
 		if (isSquarePressed() && square_handler != null)
@@ -291,6 +292,8 @@ public class Gamepad extends Subsystem {
 			scheduler.forceCommand(left_trigger_press_handler);
 		if (isRightTriggerPressed() && right_trigger_press_handler != null)
 			scheduler.forceCommand(right_trigger_press_handler);
+		if (isRightBumperReleased() && right_bumper_release_handler != null)
+			scheduler.forceCommand(right_bumper_release_handler);
 	}
 
 	public double getTRIGGER_DETECTION_THRESHOLD() {

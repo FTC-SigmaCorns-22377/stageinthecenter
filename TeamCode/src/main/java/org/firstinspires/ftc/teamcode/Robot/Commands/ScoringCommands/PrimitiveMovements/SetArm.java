@@ -5,28 +5,24 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 
 public class SetArm extends Command {
     Output output;
-    Output.ArmStates armStates;
-    boolean hasFinished = false;
+    Output.ArmState armState;
 
-    public SetArm(Output output, Output.ArmStates armStates) {
+    public SetArm(Output output, Output.ArmState armState) {
         this.output = output;
-        this.armStates = armStates;
+        this.armState = armState;
     }
 
     @Override
     public void init() {
-        output.setArm(armStates);
+        output.setArmState(armState);
     }
 
     @Override
-    public void periodic() {
-        output.setArm(armStates);
-        hasFinished = true;
-    }
+    public void periodic() {}
 
     @Override
     public boolean completed() {
-        return hasFinished;
+        return true;
     }
 
     @Override

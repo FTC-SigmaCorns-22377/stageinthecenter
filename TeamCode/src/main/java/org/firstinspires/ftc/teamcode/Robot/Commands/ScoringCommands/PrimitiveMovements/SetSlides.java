@@ -6,28 +6,26 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
 public class SetSlides extends Command {
     Slides slides;
-    int time;
-    boolean hasFinished = false;
 
-    public SetSlides(Slides slides, int time) {
+    Slides.SlideHeight slideHeight;
+
+    public SetSlides(Slides slides, Slides.SlideHeight slideHeight) {
         this.slides = slides;
-        this.time = time;
+        this.slideHeight = slideHeight;
     }
 
     @Override
-    public void init() throws InterruptedException {
-        slides.setSlides(time);
+    public void init() {
+        slides.setSlideHeight(slideHeight);
     }
 
     @Override
     public void periodic() {
-//      slides.setSlides(time);
-        hasFinished = true;
     }
 
     @Override
     public boolean completed() {
-        return hasFinished;
+        return true;
     }
 
     @Override

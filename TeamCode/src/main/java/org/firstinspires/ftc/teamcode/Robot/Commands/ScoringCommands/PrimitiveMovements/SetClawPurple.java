@@ -5,22 +5,22 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 
 public class SetClawPurple extends Command {
     Output output;
-    Output.ClawPurpleStates clawPurpleStates;
+    Output.ClawState clawState;
     boolean hasFinished = false;
 
-    public SetClawPurple(Output claw, Output.ClawPurpleStates clawPurpleStates) {
+    public SetClawPurple(Output claw, Output.ClawState clawState) {
         this.output = output;
-        this.clawPurpleStates = clawPurpleStates;
+        this.clawState = clawState;
     }
 
     @Override
     public void init() {
-        output.setClawPurple(clawPurpleStates);
+        output.setClawPurple(clawState);
     }
 
     @Override
     public void periodic() {
-        output.setClawPurple(clawPurpleStates);
+        output.setClawPurple(clawState);
         hasFinished = true;
     }
 

@@ -1,48 +1,60 @@
 package org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism;
 
-import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.ArmStates.TRANSFER;
-import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.WristStates.DEG0;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.ArmState.TRANSFER;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.WristState.DEG0;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.WristState.DEG180;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.WristState.DEG240;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output.WristState.DEG60;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
+@Config
 public class Output extends Subsystem {
+
+    ArmState armState = TRANSFER;
+    WristState wristState = DEG0;
+    ClawState clawPurpleState = ClawState.OPEN;
+    ClawState clawBlackState = ClawState.OPEN;
     Servo armLeft;
     Servo armRight;
     Servo wrist;
     Servo clawPurple;
     Servo clawBlack;
 
+    public static double WRIST_ZERO = 0.95;
+    public static double ARM_TRANSFER_VALUE = 0.5;
+
     public void initCommon(HardwareMap hwMap) {
         armLeft = hwMap.get(Servo.class, "armLeft");
-        armRight = hwMap.get(Servo.class, "armRight");
+//        armRight = hwMap.get(Servo.class, "armRight");
         wrist = hwMap.get(Servo.class, "wrist");
         clawPurple = hwMap.get(Servo.class, "clawPurple");
         clawBlack = hwMap.get(Servo.class, "clawBlack");
-        setArm(TRANSFER);
         setWrist(DEG0);
+        setArmState(TRANSFER);
     }
 
     @Override
     public void initAuto(HardwareMap hwMap) {
         initCommon(hwMap);
-        setClawPurple(ClawPurpleStates.CLOSED);
-        setClawBlack(ClawBlackStates.CLOSED);
+        setClawPurple(ClawState.CLOSED);
+        setClawBlack(ClawState.CLOSED);
     }
 
     @Override
     public void initTeleop(HardwareMap hwMap) {
         initCommon(hwMap);
-        setClawPurple(ClawPurpleStates.OPEN);
-        setClawBlack(ClawBlackStates.OPEN);
+        setClawPurple(ClawState.OPEN);
+        setClawBlack(ClawState.OPEN);
     }
 
     @Override
-    public void periodic() {
+    public void periodic() {}
 
-    }
 
     @Override
     public void shutdown() {
@@ -50,57 +62,63 @@ public class Output extends Subsystem {
     }
 
     // TUNE
-    public void setArm(ArmStates armStates) {
-        switch (armStates) {
+    public void setArmState(ArmState armState) {
+        this.armState = armState;
+        switch (armState) {
             case TRANSFER:
-                armLeft.setPosition(0);
-                armRight.setPosition(1);
+                armLeft.setPosition(ARM_TRANSFER_VALUE);
+//                armRight.setPosition(ARM_TRANSFER_VALUE);
                 break;
             case SCORE:
-                armLeft.setPosition(0.5);
-                armRight.setPosition(0.5);
+                armLeft.setPosition(ARM_TRANSFER_VALUE);
+//                armRight.setPosition(ARM_TRANSFER_VALUE);
                 break;
         }
+
+
     }
 
     // TUNE
-    public void setWrist(WristStates wristStates) {
-        switch (wristStates) {
+    public void setWrist(WristState wristState) {
+        this.wristState = wristState;
+        switch (wristState) {
             case DEG0:
-                wrist.setPosition(0);
+                wrist.setPosition(WRIST_ZERO);
                 break;
             case DEG60:
-                wrist.setPosition(0.167);
+                wrist.setPosition(WRIST_ZERO - 1./6);
                 break;
             case DEG120:
-                wrist.setPosition(0.333);
+                wrist.setPosition(WRIST_ZERO - 2./6);
                 break;
             case DEG180:
-                wrist.setPosition(0.5);
+                wrist.setPosition(WRIST_ZERO - 3./6);
                 break;
             case DEG240:
-                wrist.setPosition(0.666);
+                wrist.setPosition(WRIST_ZERO - 4./6);
                 break;
             case DEG300:
-                wrist.setPosition(0.833);
+                wrist.setPosition(WRIST_ZERO - 5./6);
                 break;
         }
     }
 
     // TUNE
-    public void setClawPurple(ClawPurpleStates clawPurpleState) {
+    public void setClawPurple(ClawState clawPurpleState) {
+        this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
                 clawPurple.setPosition(0.5);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0);
+                clawPurple.setPosition(0.7);
                 break;
         }
     }
 
     // TUNE
-    public void setClawBlack(ClawBlackStates clawBlackState) {
+    public void setClawBlack(ClawState clawBlackState) {
+        this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
                 clawBlack.setPosition(0.5);
@@ -111,12 +129,12 @@ public class Output extends Subsystem {
         }
     }
 
-    public enum ArmStates {
+    public enum ArmState {
         TRANSFER,
         SCORE
     }
 
-    public enum WristStates {
+    public enum WristState {
         DEG0,
         DEG60,
         DEG120,
@@ -125,13 +143,9 @@ public class Output extends Subsystem {
         DEG300
     }
 
-    public enum ClawPurpleStates {
+    public enum ClawState {
         OPEN,
         CLOSED
     }
 
-    public enum ClawBlackStates {
-        OPEN,
-        CLOSED
-    }
 }

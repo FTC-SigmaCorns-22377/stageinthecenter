@@ -1,22 +1,19 @@
 package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
-import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
+import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.RunCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetArm;
-import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawBlack;
-import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawPurple;
-import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetDrone;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetHang;
-import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetHolder;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetTransfer;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetRoller;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetSlides;
-import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetWrist;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.ToggleTransfer;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Drone;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Hang;
-import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.MainScoringMechanism;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
 
@@ -34,49 +31,62 @@ public class ScoringCommandGroups {
         this.intake = mechanism.intake;
         this.output = mechanism.output;
         this.slides = mechanism.slides;
-        this.drone = mechanism.drone;
-        this.hang = mechanism.hang;
+//        this.drone = mechanism.drone;
+//        this.hang = mechanism.hang;
         this.drivetrain = drivetrain;
     }
 
     // Useful
-    public Command intakeDown() { return setHolder(Intake.HolderStates.INTAKE); }
-    public Command rollerOn() { return setRoller(Intake.RollerStates.ON); }
-    public Command rollerOff() { return setRoller(Intake.RollerStates.OFF); }
-    public Command transfer() {
-        return setHolder(Intake.HolderStates.TRANSFER)
-                .addNext(new MultipleCommand(setClawBlack(Output.ClawBlackStates.CLOSED), setClawPurple(Output.ClawPurpleStates.CLOSED)))
-                .addNext(setArm(Output.ArmStates.SCORE));
+    public Command intakeDown() { return setTransfer(Intake.TransferState.INTAKE); }
+
+    public Command intakeUp() { return setTransfer(Intake.TransferState.TRANSFER); }
+
+    public Command intakeToggle() { return new ToggleTransfer(intake); }
+
+    public Command rollerOn() { return setRoller(Intake.RollerState.INTAKE); }
+    public Command rollerOff() { return setRoller(Intake.RollerState.OFF); }
+//    public Command transfer() {
+//        return setHolder(Intake.HolderStates.TRANSFER)
+//                .addNext(new MultipleCommand(setClawBlack(Output.ClawBlackStates.CLOSED), setClawPurple(Output.ClawPurpleStates.CLOSED)))
+//                .addNext(setArm(Output.ArmStates.SCORE));
+//    }
+//    public Command scoringPosition() {
+//        return setSlides(savedHeight*stepTime);
+//    }
+//    public Command clawBlackOpen() { return setClawBlack(Output.ClawBlackStates.OPEN); }
+//    public Command clawPurpleOpen() { return setClawPurple(Output.ClawPurpleStates.OPEN); }
+//    public Command clawsBothOpen() throws InterruptedException {
+//        return new MultipleCommand(setClawBlack(Output.ClawBlackStates.OPEN), setClawPurple(Output.ClawPurpleStates.OPEN))
+//                .addNext(setSlides(-savedHeight*stepTime))
+//                .addNext(setArm(Output.ArmStates.TRANSFER));
+//    }
+//    public Command slidesDown() throws InterruptedException {
+//        return setSlides(-savedHeight*stepTime)
+//                .addNext(setArm(Output.ArmStates.TRANSFER));
+//    }
+
+    public Command slidesDown() {
+        return setSlides(Slides.SlideHeight.LOW);
     }
-    public Command scoringPosition() throws InterruptedException {
-        return setSlides(savedHeight*stepTime);
-    }
-    public Command clawBlackOpen() { return setClawBlack(Output.ClawBlackStates.OPEN); }
-    public Command clawPurpleOpen() { return setClawPurple(Output.ClawPurpleStates.OPEN); }
-    public Command clawsBothOpen() throws InterruptedException {
-        return new MultipleCommand(setClawBlack(Output.ClawBlackStates.OPEN), setClawPurple(Output.ClawPurpleStates.OPEN))
-                .addNext(setSlides(-savedHeight*stepTime))
-                .addNext(setArm(Output.ArmStates.TRANSFER));
-    }
-    public Command slidesDown() throws InterruptedException {
-        return setSlides(-savedHeight*stepTime)
-                .addNext(setArm(Output.ArmStates.TRANSFER));
+
+    public Command slidesUp() {
+        return setSlides(Slides.SlideHeight.MID);
     }
 
     // Primitive
-    public SetArm setArm(Output.ArmStates armStates) {
-        return new SetArm(output, armStates);
+    public SetArm setArm(Output.ArmState armState) {
+        return new SetArm(output, armState);
     }
-    public SetClawPurple setClawPurple(Output.ClawPurpleStates clawPurpleStates) {
-        return new SetClawPurple(output, clawPurpleStates);
-    }
-    public SetClawBlack setClawBlack(Output.ClawBlackStates clawBlackStates) {
-        return new SetClawBlack(output, clawBlackStates);
-    }
-    public SetDrone setDrone(Drone.DroneStates droneStates) { return new SetDrone(drone, droneStates); }
+//    public SetClawPurple setClawPurple(Output.ClawPurpleStates clawPurpleStates) {
+//        return new SetClawPurple(output, clawPurpleStates);
+//    }
+//    public SetClawBlack setClawBlack(Output.ClawBlackStates clawBlackStates) {
+//        return new SetClawBlack(output, clawBlackStates);
+//    }
+//    public SetDrone setDrone(Drone.DroneStates droneStates) { return new SetDrone(drone, droneStates); }
     public SetHang setHang(Double power) { return new SetHang(hang, power); }
-    public SetSlides setSlides(int time) { return new SetSlides(slides, time); }
-    public SetHolder setHolder(Intake.HolderStates holderStates) { return new SetHolder(intake, holderStates); }
-    public SetRoller setRoller(Intake.RollerStates rollerStates) { return new SetRoller(intake, rollerStates); }
-    public SetWrist setWrist(Output.WristStates wristStates) { return new SetWrist(output, wristStates); }
+    public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
+    public SetTransfer setTransfer(Intake.TransferState transferState) { return new SetTransfer(intake, transferState); }
+    public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
+//    public SetWrist setWrist(Output.WristStates wristStates) { return new SetWrist(output, wristStates); }
 }

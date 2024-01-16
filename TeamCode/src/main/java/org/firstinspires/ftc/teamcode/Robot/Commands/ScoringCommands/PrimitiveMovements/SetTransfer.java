@@ -3,23 +3,23 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveM
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 
-public class SetHolder extends Command {
+public class SetTransfer extends Command {
     Intake intake;
-    Intake.HolderStates holderStates;
-    boolean hasFinished = false;
+    Intake.TransferState transferState;
 
-    public SetHolder(Intake intake, Intake.HolderStates holderStates) {
+    public SetTransfer(Intake intake, Intake.TransferState transferState) {
         this.intake = intake;
-        this.holderStates = holderStates;
+        this.transferState = transferState;
     }
 
     @Override
     public void init() {
-        intake.setHolder(holderStates);
+        intake.setTransferState(transferState);
     }
 
     @Override
     public void periodic() {
+        intake.setTransferState(transferState);
     }
 
     @Override

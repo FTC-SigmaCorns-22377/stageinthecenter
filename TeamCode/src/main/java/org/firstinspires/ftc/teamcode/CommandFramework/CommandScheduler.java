@@ -93,7 +93,7 @@ public class CommandScheduler {
 			forceCommand(nextCommand);
 	}
 
-	public void forceCommand(Command command) throws InterruptedException {
+	public void forceCommand(Command command) {
 		ArrayList<Subsystem> nextCommandDependencies = command.getDependencies();
 
 		Iterator<Command> currentCommands = activeCommands.iterator();

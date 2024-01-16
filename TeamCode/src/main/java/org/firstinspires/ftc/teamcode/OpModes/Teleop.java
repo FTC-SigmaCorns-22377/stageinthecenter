@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.RobotRel
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.RunCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 
 @TeleOp
 public class Teleop extends BaseTeleop {
@@ -17,15 +18,18 @@ public class Teleop extends BaseTeleop {
 
         ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
-        robot.gamepad1.whenDPadDownPressed(commandGroups.slidesDown());
-        robot.gamepad1.whenDPadUpPressed(commandGroups.intakeDown());
+//        robot.gamepad1.whenDPadDownPressed(commandGroups.slidesDown());
+        robot.gamepad1.whenDPadUpPressed(commandGroups.intakeToggle());
+        robot.gamepad1.whenDPadLeftPressed(commandGroups.slidesDown());
+        robot.gamepad1.whenDPadRightPressed(commandGroups.slidesUp());
         robot.gamepad1.whenRightBumperPressed(commandGroups.rollerOn());
         robot.gamepad1.whenRightBumperLifted(commandGroups.rollerOff());
-        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
-        robot.gamepad1.whenLeftTriggerPressed(commandGroups.clawPurpleOpen());
-        robot.gamepad1.whenCrossPressed(commandGroups.transfer());
-        robot.gamepad1.whenTrianglePressed(commandGroups.scoringPosition());
-        robot.gamepad1.whenCirclePressed(commandGroups.clawsBothOpen());
+        robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
+//        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
+//        robot.gamepad1.whenLeftTriggerPressed(commandGroups.clawPurpleOpen());
+//        robot.gamepad1.whenCrossPressed(commandGroups.transfer());
+//        robot.gamepad1.whenTrianglePressed(commandGroups.scoringPosition());
+//        robot.gamepad1.whenCirclePressed(commandGroups.clawsBothOpen());
         return new MultipleCommand(new RobotRelative(robot, robot.gamepad1));
     }
 }

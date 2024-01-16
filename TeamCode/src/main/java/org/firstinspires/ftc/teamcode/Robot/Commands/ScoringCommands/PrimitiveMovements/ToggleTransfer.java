@@ -3,22 +3,21 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveM
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 
-public class SetRoller extends Command {
+public class ToggleTransfer extends Command {
     Intake intake;
-    Intake.RollerState rollerState;
 
-    public SetRoller(Intake intake, Intake.RollerState rollerState) {
+    public ToggleTransfer(Intake intake) {
         this.intake = intake;
-        this.rollerState = rollerState;
     }
 
     @Override
     public void init() {
-        intake.setRoller(rollerState);
+        intake.toggleTransferState();
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 
     @Override
     public boolean completed() {

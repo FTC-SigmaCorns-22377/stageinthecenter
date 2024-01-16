@@ -14,7 +14,7 @@ public abstract class Subsystem {
         initAuto(hwMap);
     }
 
-    public abstract void periodic() throws InterruptedException;
+    public abstract void periodic();
 
     public abstract void shutdown();
 

@@ -5,10 +5,10 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 
 public class SetClawBlack extends Command {
     Output output;
-    Output.ClawBlackStates clawBlackStates;
+    Output.ClawState clawBlackStates;
     boolean hasFinished = false;
 
-    public SetClawBlack(Output claw, Output.ClawBlackStates clawBlackStates) {
+    public SetClawBlack(Output output, Output.ClawState clawBlackStates) {
         this.output = output;
         this.clawBlackStates = clawBlackStates;
     }

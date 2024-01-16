@@ -5,22 +5,22 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 
 public class SetWrist extends Command {
     Output output;
-    Output.WristStates wristStates;
+    Output.WristState wristState;
     boolean hasFinished = false;
 
-    public SetWrist(Output output, Output.WristStates wristStates) {
+    public SetWrist(Output output, Output.WristState wristState) {
         this.output = output;
-        this.wristStates = wristStates;
+        this.wristState = wristState;
     }
 
     @Override
     public void init() {
-        output.setWrist(wristStates);
+        output.setWrist(wristState);
     }
 
     @Override
     public void periodic() {
-        output.setWrist(wristStates);
+        output.setWrist(wristState);
         hasFinished = true;
     }
 
