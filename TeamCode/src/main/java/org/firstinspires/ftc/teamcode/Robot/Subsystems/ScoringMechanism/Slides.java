@@ -23,18 +23,20 @@ public class Slides extends Subsystem {
     public static final double IN_POSITION = 0;
     static final double PULLEY_CIRCUMFERENCE = 4.409;
     static final double counts_per_revolution = 145.090909;
-    public static double Kp = 0.4;
+    public static double Kp = 0.6;
     public static double Kd = 1.8 * Math.sqrt(Kp * 0.0015);
+    public static double Ki = 0;
+//    public static double Kd = 0.01;
     public static double max_accel = 250;
     public static double max_velocity = 250;
 
     public static double DISTANCE_FOR_CONE = 8; // 9 inches or less means we still have the cone
 
     protected double slideTargetPosition = 0;
-    protected double Kg = 0.09499;
+    protected double Kg = 0; // 0.09499 TODO: TUNE
     DcMotorEx vertical1;
     DcMotorEx vertical2;
-    PIDCoefficients coefficients = new PIDCoefficients(Kp, 0, Kd);
+    PIDCoefficients coefficients = new PIDCoefficients(Kp, Ki, Kd);
     MotionConstraint upConstraint = new MotionConstraint(max_accel, max_accel, max_velocity);
     MotionConstraint downConstraint = new MotionConstraint(max_accel, max_accel, max_velocity);
     ProfiledPID controller = new ProfiledPID(upConstraint, downConstraint, coefficients);
@@ -116,7 +118,7 @@ public class Slides extends Subsystem {
                 slideTargetPosition = IN_POSITION;
                 break;
             case MID:
-                slideTargetPosition = 5;
+                slideTargetPosition = 8;
                 break;
         }
 
