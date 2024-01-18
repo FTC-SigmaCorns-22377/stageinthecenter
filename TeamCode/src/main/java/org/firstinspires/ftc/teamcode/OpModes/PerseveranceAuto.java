@@ -37,10 +37,14 @@ public class PerseveranceAuto extends BaseAuto {
     Pose2d startPose = new Pose2d(0, 0, 0);
     Pose2d spikeMark = new Pose2d(0, 0, 0);
     Vector2d junction = new Vector2d(0, 0);
-    Trajectory randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-            .build();
+    int randomizationSlot = 0;
     int outputSlot1 = 0;
     int outputSlot2 = 0;
+
+    @Override
+    public void setRobotPosition() {
+        robot.drivetrain.setPose(startPose);
+    }
 
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
@@ -57,35 +61,34 @@ public class PerseveranceAuto extends BaseAuto {
                                 stack = new Vector2d(intakeX, 11.875);
                                 spikeMark = new Pose2d(22.75 + distToPixelSlot, 29.75, Math.PI);
                                 junction = new Vector2d(23.75, 11.875);
-                                randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineToLinearHeading(spikeMark)
-                                        .back(5)
-                                        .splineToConstantHeading(backdropSlots.get(4), 0)
-                                        .build();
+                                randomizationSlot = 4;
                                 outputSlot1 = 3;
                                 outputSlot2 = 1;
+                                break;
                             case CENTER:
                                 stack = new Vector2d(intakeX, 35.625);
                                 spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot, -0.5 * Math.PI);
                                 junction = new Vector2d(31.25, 35.625);
-                                randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineTo(spikeMark.vec())
-                                        .back(5)
-                                        .splineToLinearHeading(new Pose2d(backdropSlots.get(3), Math.PI), 0)
-                                        .build();
+                                randomizationSlot = 3;
                                 outputSlot1 = 4;
                                 outputSlot2 = 0;
+                                break;
                             case RIGHT:
                                 stack = new Vector2d(intakeX, 11.875);
                                 spikeMark = new Pose2d(1 + distToPixelSlot, 30.25, Math.PI);
                                 junction = new Vector2d(23.75, 11.875);
-                                randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineToLinearHeading(spikeMark)
-                                        .back(5)
-                                        .lineTo(backdropSlots.get(0))
-                                        .build();
+                                randomizationSlot = 0;
                                 outputSlot1 = 1;
                                 outputSlot2 = 3;
+                                break;
+                            default:
+                                stack = new Vector2d(intakeX, 35.625);
+                                spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot, -0.5 * Math.PI);
+                                junction = new Vector2d(31.25, 35.625);
+                                randomizationSlot = 3;
+                                outputSlot1 = 4;
+                                outputSlot2 = 0;
+                                break;
                         }
                     case BACK:
                         startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
@@ -97,6 +100,12 @@ public class PerseveranceAuto extends BaseAuto {
                 }
             case RED:
         }
+
+        Trajectory randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                .lineToLinearHeading(spikeMark)
+                .back(5)
+                .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
+                .build();
 
         Trajectory intake = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .forward(5)
