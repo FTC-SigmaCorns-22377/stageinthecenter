@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.RunCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetArm;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawBlack;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawPurple;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetHang;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetTransfer;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetRoller;
@@ -77,14 +79,19 @@ public class ScoringCommandGroups {
     public SetArm setArm(Output.ArmState armState) {
         return new SetArm(output, armState);
     }
-//    public SetClawPurple setClawPurple(Output.ClawPurpleStates clawPurpleStates) {
-//        return new SetClawPurple(output, clawPurpleStates);
-//    }
-//    public SetClawBlack setClawBlack(Output.ClawBlackStates clawBlackStates) {
-//        return new SetClawBlack(output, clawBlackStates);
-//    }
+
+    /*public SetHang setHang(){
+        return new SetHang()
+    }*/
+
+    public SetClawPurple setClawPurple(Output.ClawState clawPurpleStates) {
+        return new SetClawPurple(output, clawPurpleStates);
+    }
+    public SetClawBlack setClawBlack(Output.ClawState clawBlackStates) {
+        return new SetClawBlack(output, clawBlackStates);
+    }
 //    public SetDrone setDrone(Drone.DroneStates droneStates) { return new SetDrone(drone, droneStates); }
-    public SetHang setHang(Double power) { return new SetHang(hang, power); }
+    //public SetHang setHang(Double power) { return new SetHang(hang, power); }
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
     public SetTransfer setTransfer(Intake.TransferState transferState) { return new SetTransfer(intake, transferState); }
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }

@@ -84,7 +84,7 @@ public class Intake extends Subsystem {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
                     rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.7);
+                    linkage.setPosition(0.63);
 
                 } else {
                     linkage.setPosition(0.85);
