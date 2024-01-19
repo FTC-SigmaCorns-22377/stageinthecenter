@@ -26,12 +26,12 @@ public class Output extends Subsystem {
     Servo clawBlack;
 
     public static double WRIST_ZERO = 0.95;
-    public static double ARM_TRANSFER_VALUE = 0.75;
-    public static double ARM_SCORE_VALUE = 0.2;
+    public static double ARM_SCORE_VALUE = 0.75;
+    public static double ARM_TRANSFER_VALUE = 0.18;
 
     public void initCommon(HardwareMap hwMap) {
         armLeft = hwMap.get(Servo.class, "armLeft");
-//        armRight = hwMap.get(Servo.class, "armRight");
+        armRight = hwMap.get(Servo.class, "armRight");
         wrist = hwMap.get(Servo.class, "wrist");
         clawPurple = hwMap.get(Servo.class, "clawPurple");
         clawBlack = hwMap.get(Servo.class, "clawBlack");
@@ -67,18 +67,21 @@ public class Output extends Subsystem {
         this.armState = armState;
         switch (armState) {
             case TRANSFER:
-                armLeft.setPosition(ARM_TRANSFER_VALUE);
-//                armRight.setPosition(ARM_TRANSFER_VALUE);
+                armLeft.setPosition(ARM_TRANSFER_VALUE+0.01);
+                armRight.setPosition(ARM_SCORE_VALUE);
                 break;
             case SCORE:
-                armLeft.setPosition(ARM_SCORE_VALUE);
-//                armRight.setPosition(ARM_TRANSFER_VALUE);
+                armLeft.setPosition(ARM_SCORE_VALUE+0.01);
+                armRight.setPosition(ARM_TRANSFER_VALUE);
                 break;
         }
 
 
     }
 
+    public ArmState getArmState(){
+        return this.armState;
+    }
     // TUNE
     public void setWrist(WristState wristState) {
         this.wristState = wristState;
@@ -109,10 +112,10 @@ public class Output extends Subsystem {
         this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
-                clawPurple.setPosition(0.5);
+                clawPurple.setPosition(0.6);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.7);
+                clawPurple.setPosition(0.78);
                 break;
         }
     }
@@ -122,10 +125,10 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.5);
+                clawBlack.setPosition(0.3);
                 break;
             case CLOSED:
-                clawBlack.setPosition(0);
+                clawBlack.setPosition(0.20);
                 break;
         }
     }

@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Intake extends Subsystem {
-    public static double INTAKE_POWER = 0.5;
+    public static double INTAKE_POWER = 0.7;
     public static double TRANSFER_DROP_INTAKE_VALUE = 0.22;
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
@@ -64,13 +64,13 @@ public class Intake extends Subsystem {
                 roller.setPower(INTAKE_POWER);
                 break;
             case OUTTAKE:
-                roller.setPower(-INTAKE_POWER);
+                roller.setPower(-INTAKE_POWER*0.7);
                 break;
         }
         switch (transferState) {
             case INTAKE:
                 if (transferTimer.seconds() > 0.2) {
-                    linkage.setPosition(0.93);
+                    linkage.setPosition(0.95);
                     transferAngle.setPosition(TRANSFER_ANGLE_INTAKE_VALUE);
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(0.85);

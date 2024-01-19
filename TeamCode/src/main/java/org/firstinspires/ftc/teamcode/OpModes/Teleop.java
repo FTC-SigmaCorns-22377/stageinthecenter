@@ -25,12 +25,14 @@ public class Teleop extends BaseTeleop {
         robot.gamepad1.whenDPadRightPressed(commandGroups.slidesUp());
         robot.gamepad1.whenRightBumperPressed(commandGroups.rollerOn());
         robot.gamepad1.whenRightBumperLifted(commandGroups.rollerOff());
+        robot.gamepad1.whenLeftBumperPressed(commandGroups.rollerReverse());
+        robot.gamepad1.whenLeftBumperLifted(commandGroups.rollerOff());
         robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
         robot.gamepad1.whenSquarePressed(commandGroups.setArm(Output.ArmState.SCORE));
         robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
-        robot.gamepad1.whenCrossPressed(commandGroups.setTransfer(Intake.TransferState.TRANSFER));
-        robot.gamepad1.whenDPadUpPressed(commandGroups.setClawBlack(Output.ClawState.CLOSED));
-        robot.gamepad1.whenDPadDownPressed(commandGroups.setClawBlack(Output.ClawState.OPEN));
+        robot.gamepad1.whenCrossPressed(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
+        robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
+        robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
 //        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
 //        robot.gamepad1.whenLeftTriggerPressed(commandGroups.clawPurpleOpen());
 //        robot.gamepad1.whenCrossPressed(commandGroups.transfer());

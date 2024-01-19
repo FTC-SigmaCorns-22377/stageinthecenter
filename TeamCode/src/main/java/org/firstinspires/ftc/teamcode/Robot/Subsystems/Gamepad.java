@@ -88,6 +88,7 @@ public class Gamepad extends Subsystem {
 	protected Command options_handler = null;
 	protected Command ps_button_handler = null;
 	protected Command left_bumper_handler = null;
+	protected Command left_bumper_release_handler = null;
 	protected Command right_bumper_handler = null;
 	protected Command right_bumper_release_handler = null;
 	protected Command left_trigger_press_handler = null;
@@ -154,6 +155,10 @@ public class Gamepad extends Subsystem {
 
 	public void whenLeftBumperPressed(Command handler) {
 		left_bumper_handler = handler;
+	}
+
+	public void whenLeftBumperLifted(Command handler) {
+		left_bumper_release_handler = handler;
 	}
 
 	public void whenRightBumperPressed(Command handler) {
@@ -294,6 +299,8 @@ public class Gamepad extends Subsystem {
 			scheduler.forceCommand(right_trigger_press_handler);
 		if (isRightBumperReleased() && right_bumper_release_handler != null)
 			scheduler.forceCommand(right_bumper_release_handler);
+		if (isLeftBumperReleased() && left_bumper_release_handler != null)
+			scheduler.forceCommand(left_bumper_release_handler);
 	}
 
 	public double getTRIGGER_DETECTION_THRESHOLD() {
