@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
-import static org.firstinspires.ftc.teamcode.Utils.Side.FRONT;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -32,7 +30,7 @@ public class PerseveranceAuto extends BaseAuto {
     final Double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
 
     // Dynamic Points
-    List<Vector2d> backdropSlots = new ArrayList<Vector2d>();
+    List<Vector2d> backdropSlots = new ArrayList<>();
     Vector2d stack = new Vector2d(0, 0);
     Pose2d startPose = new Pose2d(0, 0, 0);
     Pose2d spikeMark = new Pose2d(0, 0, 0);
@@ -50,7 +48,7 @@ public class PerseveranceAuto extends BaseAuto {
     public Command setupAuto(CommandScheduler scheduler) {
         switch (getTeam()) {
             case BLUE:
-                for (int i = -2; i < +2; --i) {
+                for (int i = -2; i <= 2; i++) {
                     backdropSlots.add(new Vector2d(outputX, 35.625 + 3 * i));
                 }
                 switch (getSide()) {
@@ -101,39 +99,22 @@ public class PerseveranceAuto extends BaseAuto {
             case RED:
         }
 
-        Trajectory randomizationBonus = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+        Trajectory trajectory = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .lineToLinearHeading(spikeMark)
                 .back(5)
                 .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
-                .build();
-
-        Trajectory intake = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .forward(5)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
-                .build();
-
-        Trajectory output1 = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .lineTo(junction)
                 .splineToConstantHeading(backdropSlots.get(outputSlot1), 0)
-                .build();
-
-        Trajectory output2 = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                .forward(5)
+                .splineToConstantHeading(junction, Math.PI)
+                .lineTo(stack)
                 .lineTo(junction)
                 .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
                 .build();
 
-        Command auto = followRR(randomizationBonus);
-        // auto.addNext(new MultipleCommand(commandGroups.ARM, commandGroups.CLAW));
-        if (getSide() == FRONT)
-            auto.addNext(followRR(intake));
-//          auto.addNext(intake);
-            auto.addNext(followRR(output1));
-//          auto.addNext(new MultipleCommand(commandGroups.ARM, commandGroups.CLAW));
-            auto.addNext(followRR(intake));
-            // auto.addNext(intake);
-            auto.addNext(followRR(output2));
-            // auto.addNext(new MultipleCommand(commandGroups.ARM, commandGroups.CLAW));
-        return auto;
+        return followRR(trajectory);
     }
 }
