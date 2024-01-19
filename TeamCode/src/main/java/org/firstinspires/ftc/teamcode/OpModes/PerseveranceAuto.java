@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.CommandFramework.BaseAuto;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 // import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
-
 // import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 @Autonomous
 public class PerseveranceAuto extends BaseAuto {
 
-    // Robot Parameters -- TUNE
+    // Robot Parameters
     final Double robotLength = 17.008;
     final Double distToPixelSlot = (8.5 + 10 + 9.75) / 3;
     final Double distToRollerTip = 18.5;
@@ -63,7 +62,7 @@ public class PerseveranceAuto extends BaseAuto {
                                 outputSlot1 = 3;
                                 outputSlot2 = 1;
                                 break;
-                            case CENTER:
+                            default:
                                 stack = new Vector2d(intakeX, 35.625);
                                 spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot, -0.5 * Math.PI);
                                 junction = new Vector2d(31.25, 35.625);
@@ -79,14 +78,6 @@ public class PerseveranceAuto extends BaseAuto {
                                 outputSlot1 = 1;
                                 outputSlot2 = 3;
                                 break;
-                            default:
-                                stack = new Vector2d(intakeX, 35.625);
-                                spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot, -0.5 * Math.PI);
-                                junction = new Vector2d(31.25, 35.625);
-                                randomizationSlot = 3;
-                                outputSlot1 = 4;
-                                outputSlot2 = 0;
-                                break;
                         }
                     case BACK:
                         startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
@@ -99,22 +90,60 @@ public class PerseveranceAuto extends BaseAuto {
             case RED:
         }
 
-        Trajectory trajectory = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+//        ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
+
+        Trajectory randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .lineToLinearHeading(spikeMark)
                 .back(5)
                 .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
+                .build();
+
+        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
                 .forward(5)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
+                .build();
+
+        Trajectory output1 = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
                 .lineTo(junction)
                 .splineToConstantHeading(backdropSlots.get(outputSlot1), 0)
+                .build();
+
+        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
                 .forward(5)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
+                .build();
+
+        Trajectory output2 = robot.drivetrain.getBuilder().trajectoryBuilder(intake2.end())
                 .lineTo(junction)
                 .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
                 .build();
 
-        return followRR(trajectory);
+        Command auto = followRR(randomization);
+//        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
+//        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
+//        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
+        auto.addNext(followRR(intake1));
+//        auto.addNext(commandGroups.setTransfer(Intake.TransferState.INTAKE));
+//        auto.addNext(commandGroups.rollerOn());
+//        WAIT
+//        auto.addNext(commandGroups.rollerOff());
+//        auto.addNext(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
+//        auto.addNext(commandGroups.setClaw(Output.ClawState.CLOSED));
+        auto.addNext(followRR(output1));
+        //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
+//        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
+//        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
+        auto.addNext(followRR(intake2));
+//        auto.addNext(commandGroups.setTransfer(Intake.TransferState.INTAKE));
+//        auto.addNext(commandGroups.rollerOn());
+//        WAIT
+//        auto.addNext(commandGroups.rollerOff());
+//        auto.addNext(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
+//        auto.addNext(commandGroups.setClaw(Output.ClawState.CLOSED));
+        auto.addNext(followRR(output2));
+
+        return auto;
     }
 }
