@@ -80,9 +80,17 @@ public class ScoringCommandGroups {
         return new SetArm(output, armState);
     }
 
-    /*public SetHang setHang(){
-        return new SetHang()
-    }*/
+    public SetHang setHang(Hang.Hanging hanging){
+        return new SetHang(hang, hanging);
+    }
+
+    public Command hangUp(){
+        return setHang(Hang.Hanging.UP);
+    }
+
+    public Command hangDown(){
+        return setHang(Hang.Hanging.DOWN);
+    }
 
     public SetClawPurple setClawPurple(Output.ClawState clawPurpleStates) {
         return new SetClawPurple(output, clawPurpleStates);

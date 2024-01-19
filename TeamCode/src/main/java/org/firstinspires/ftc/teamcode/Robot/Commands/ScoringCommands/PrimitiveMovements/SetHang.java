@@ -5,28 +5,31 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Hang;
 
 public class SetHang extends Command {
     Hang hang;
-    Double power;
-    boolean hasFinished = false;
+    Hang.Hanging hanging;
+    //Double power;
+    //boolean hasFinished = false;
 
-    public SetHang(Hang hang, Double power) {
+    public SetHang(Hang hang, Hang.Hanging hanging) {
         this.hang = hang;
-        this.power = power;
+        this.hanging = hanging;
     }
 
     @Override
     public void init() {
-        hang.setHang(power);
+        //hang.setHang(hanging);
+        hang.setHanging(hanging);
     }
+
 
     @Override
     public void periodic() {
-        hang.setHang(power);
-        hasFinished = true;
+//        hang.setHang(hanging);
+//        hasFinished = true;
     }
 
     @Override
     public boolean completed() {
-        return hasFinished;
+        return true;
     }
 
     @Override
