@@ -44,7 +44,6 @@ public abstract class BaseAuto extends LinearOpMode {
             robot.update();
         }
         robot.shutdown();
-
     }
 
     public abstract Command setupAuto(CommandScheduler scheduler);

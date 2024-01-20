@@ -4,7 +4,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.Roadrunner.Drive.SampleMecanumDrive;
 
 public class Drivetrain extends Subsystem {
 	protected HardwareMap hwMap;
@@ -21,7 +21,9 @@ public class Drivetrain extends Subsystem {
 		drive.update();
 	}
 
-
+	public void  robotRelative(Pose2d powers) {
+		drive.setWeightedDrivePower(powers);
+	}
 
 	@Override
 	public void shutdown() {
