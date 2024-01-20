@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.RunCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
 @TeleOp
 public class Teleop extends BaseTeleop {
@@ -27,17 +28,28 @@ public class Teleop extends BaseTeleop {
         robot.gamepad1.whenRightBumperLifted(commandGroups.rollerOff());
         robot.gamepad1.whenLeftBumperPressed(commandGroups.rollerReverse());
         robot.gamepad1.whenLeftBumperLifted(commandGroups.rollerOff());
-        robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
+        //robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
+        robot.gamepad1.whenCirclePressed(commandGroups.transferPos());
         robot.gamepad1.whenSquarePressed(commandGroups.setArm(Output.ArmState.SCORE));
-        robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
+        //robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
+        robot.gamepad1.whenTrianglePressed(commandGroups.intakePos());
         robot.gamepad1.whenCrossPressed(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
         robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
         robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
+        robot.gamepad1.whenRightTriggerPressed(commandGroups.score());
+        robot.gamepad1.whenDPadDownPressed(commandGroups.postScore());
 //        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
 //        robot.gamepad1.whenLeftTriggerPressed(commandGroups.clawPurpleOpen());
 //        robot.gamepad1.whenCrossPressed(commandGroups.transfer());
 //        robot.gamepad1.whenTrianglePressed(commandGroups.scoringPosition());
 //        robot.gamepad1.whenCirclePressed(commandGroups.clawsBothOpen());
+        robot.gamepad2.whenLeftTriggerPressed(commandGroups.hangUp());
+        robot.gamepad2.whenRightTriggerPressed(commandGroups.hangDown());
+        robot.gamepad2.whenDPadUpPressed(commandGroups.setSlides(Slides.SlideHeight.MID));
+        robot.gamepad2.whenDPadDownPressed(commandGroups.setSlides(Slides.SlideHeight.LOW));
+        robot.gamepad2.whenCirclePressed(commandGroups.inTransUp());
+        robot.gamepad2.whenCrossPressed(commandGroups.scorePos());
+
         return new MultipleCommand(new RobotRelative(robot, robot.gamepad1));
     }
 }

@@ -21,6 +21,8 @@ import org.firstinspires.ftc.teamcode.Utils.ProfiledPID;
 public class Slides extends Subsystem {
 
     public static final double IN_POSITION = 0;
+
+
     static final double PULLEY_CIRCUMFERENCE = 4.409;
     static final double counts_per_revolution = 145.090909;
     public static double Kp = 0.6;
@@ -181,6 +183,11 @@ public class Slides extends Subsystem {
         return slideTargetPosition;
     }
     public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
+
+    public void setSlideTargetPosition(Double increment){
+        this.slideTargetPosition = slideTargetPosition + increment;
+    }
+
     public double getPIDTargetInches() {
         return controller.getTargetPosition();
     }

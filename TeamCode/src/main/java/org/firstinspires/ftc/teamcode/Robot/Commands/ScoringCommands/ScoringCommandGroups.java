@@ -114,5 +114,51 @@ public class ScoringCommandGroups {
         return new RaceAction(setClaw(Output.ClawState.CLOSED),setClaw(Output.ClawState.OPEN),setArm(Output.ArmState.TRANSFER),setTransfer(Intake.TransferState.TRANSFER));
     }
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
+
+    public SetHang setHang(Hang.Hanging hanging){
+        return new SetHang(hang, hanging);
+    }
+
+    public Command hangUp(){
+        return setHang(Hang.Hanging.UP);
+    }
+
+    public Command hangDown(){
+        return setHang(Hang.Hanging.DOWN);
+    }
+    public Command intakePos(){
+        return intakeDown()
+                //.addNext(setTransfer(Intake.TransferState.INTAKE))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.OPEN));
+    }
+
+    public Command transferPos(){
+        return intakeUp()
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+    }
+
+    public Command score(){
+        return setClaw(Output.ClawState.OPEN);
+    }
+
+    public Command postScore(){
+        return setTransfer(Intake.TransferState.INTAKE)
+                .addNext(setSlides(Slides.SlideHeight.LOW))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+    }
+
+    public Command inTransUp(){
+        return setTransfer(Intake.TransferState.TRANSFER);
+    }
+
+    public Command scorePos(){
+        return setSlides(Slides.SlideHeight.MID)
+                .addNext(setArm(Output.ArmState.SCORE))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+
+    }
 //    public SetWrist setWrist(Output.WristStates wristStates) { return new SetWrist(output, wristStates); }
 }
