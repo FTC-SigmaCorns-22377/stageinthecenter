@@ -56,7 +56,7 @@ public class PerseveranceAuto extends BaseAuto {
                         switch (randomizationSide) {
                             case LEFT:
                                 stack = new Vector2d(intakeX, 11.875);
-                                spikeMark = new Pose2d(22.75 + distToPixelSlot, 29.75, Math.PI);
+                                spikeMark = new Pose2d(23.75 + 14.5, 29 + 0.5 * robotLength, -0.5 * Math.PI);
                                 junction = new Vector2d(23.75, 11.875);
                                 randomizationSlot = 4;
                                 outputSlot1 = 3;
@@ -64,7 +64,7 @@ public class PerseveranceAuto extends BaseAuto {
                                 break;
                             default:
                                 stack = new Vector2d(intakeX, 35.625);
-                                spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot, -0.5 * Math.PI);
+                                spikeMark = new Pose2d(11.875, 24.75 + distToPixelSlot + 3.0, -0.5 * Math.PI);
                                 junction = new Vector2d(31.25, 35.625);
                                 randomizationSlot = 3;
                                 outputSlot1 = 4;
@@ -84,8 +84,11 @@ public class PerseveranceAuto extends BaseAuto {
                         startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
                         switch (randomizationSide) {
                             case LEFT:
+                                break;
                             case CENTER:
+                                break;
                             case RIGHT:
+                                break;
                         }
                         break;
                 }
@@ -100,11 +103,11 @@ public class PerseveranceAuto extends BaseAuto {
                 .lineToLinearHeading(spikeMark)
                 .build();
 
-        Trajectory randomization_pt1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
-                .back(5)
-                .build();
+//        Trajectory randomization_pt1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
+//                .back(5)
+//                .build();
 
-        Trajectory randomization_pt2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization_pt1.end())
+        Trajectory randomization_pt2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end(),true)
                 .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
                 .build();
 
@@ -132,30 +135,30 @@ public class PerseveranceAuto extends BaseAuto {
                 .build();
 
         Command auto = followRR(randomization);
-        auto.addNext(followRR(randomization_pt1));
-        auto.addNext(followRR(randomization_pt2));
+//        auto.addNext(followRR(randomization_pt1));
+//        auto.addNext(followRR(randomization_pt2));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
-        auto.addNext(followRR(intake1));
+//        auto.addNext(followRR(intake1));
 //        auto.addNext(commandGroups.setTransfer(Intake.TransferState.INTAKE));
 //        auto.addNext(commandGroups.rollerOn());
 //        WAIT
 //        auto.addNext(commandGroups.rollerOff());
 //        auto.addNext(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.CLOSED));
-        auto.addNext(followRR(output1));
+//        auto.addNext(followRR(output1));
         //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
-        auto.addNext(followRR(intake2));
+//        auto.addNext(followRR(intake2));
 //        auto.addNext(commandGroups.setTransfer(Intake.TransferState.INTAKE));
 //        auto.addNext(commandGroups.rollerOn());
 //        WAIT
 //        auto.addNext(commandGroups.rollerOff());
 //        auto.addNext(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.CLOSED));
-        auto.addNext(followRR(output2));
+//        auto.addNext(followRR(output2));
 
         return auto;
     }

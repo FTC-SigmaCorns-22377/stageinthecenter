@@ -138,8 +138,8 @@ class PropDetector implements VisionProcessor {
         Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_BGR2HSV);
 
         // Define the red color range in HSV
-        Scalar lowerRed = new Scalar(0, 120, 70);
-        Scalar upperRed = new Scalar(180, 255, 255);
+        Scalar lowerRed = new Scalar(0, 63, 70);
+        Scalar upperRed = new Scalar(179, 255, 210);
         Mat redMask = new Mat();
 
         // Create a mask for red color
