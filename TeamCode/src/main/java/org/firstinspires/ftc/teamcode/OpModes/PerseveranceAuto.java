@@ -72,7 +72,7 @@ public class PerseveranceAuto extends BaseAuto {
                                 break;
                             case RIGHT:
                                 stack = new Vector2d(intakeX, 11.875);
-                                spikeMark = new Pose2d(1 + distToPixelSlot, 30.25, Math.PI);
+                                spikeMark = new Pose2d(1 + distToPixelSlot, 30.25, 5/6 * Math.PI);
                                 junction = new Vector2d(23.75, 11.875);
                                 randomizationSlot = 0;
                                 outputSlot1 = 1;
@@ -99,21 +99,19 @@ public class PerseveranceAuto extends BaseAuto {
 
 //        ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
-        Trajectory randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+        Trajectory purple = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .lineToLinearHeading(spikeMark)
                 .build();
 
-//        Trajectory randomization_pt1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
-//                .back(5)
-//                .build();
-
-        Trajectory randomization_pt2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end(),true)
+        Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end(),true)
                 .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
                 .build();
 
+        Trajectory park = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
+                .lineTo(new Vector2d(47.5, 11.875))
+                .build();
 
-        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization_pt2.end())
-                .forward(5)
+        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end(), true)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
                 .build();
@@ -123,8 +121,7 @@ public class PerseveranceAuto extends BaseAuto {
                 .splineToConstantHeading(backdropSlots.get(outputSlot1), 0)
                 .build();
 
-        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
-                .forward(5)
+        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end(), true)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
                 .build();
@@ -134,9 +131,9 @@ public class PerseveranceAuto extends BaseAuto {
                 .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
                 .build();
 
-        Command auto = followRR(randomization);
-//        auto.addNext(followRR(randomization_pt1));
-//        auto.addNext(followRR(randomization_pt2));
+        Command auto = followRR(purple);
+        auto.addNext(followRR(yellow));
+        auto.addNext(followRR(park));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
@@ -148,7 +145,7 @@ public class PerseveranceAuto extends BaseAuto {
 //        auto.addNext(commandGroups.setTransferTrans(Intake.TransferState.TRANSFER));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.CLOSED));
 //        auto.addNext(followRR(output1));
-        //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
+//        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
 //        auto.addNext(followRR(intake2));

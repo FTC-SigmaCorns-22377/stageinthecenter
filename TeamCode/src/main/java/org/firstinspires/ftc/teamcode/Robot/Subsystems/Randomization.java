@@ -94,23 +94,18 @@ class PropDetector implements VisionProcessor {
         Mat hsvImage = new Mat();
         Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_BGR2HSV);
 
-        if (team == Team.RED) {
-            // Define the red color range in HSV
-
-        }
-
         Scalar lower = null;
         Scalar upper = null;
         switch (team) {
-            case RED:
             case BLUE:
-            case NOT_ASSIGNED:
-                lower = new Scalar(0, 120, 70);
-                upper = new Scalar(180, 255, 255);
-//          TODO: implement blue
-//          TODO: implement not assigned
+                lower = new Scalar(93, 144, 0);
+                upper = new Scalar(139, 255, 255);
+                break;
+            default:
+                lower = new Scalar(0, 63, 70);
+                upper = new Scalar(179, 255, 210);
+                break;
         }
-
 
         Mat mask = new Mat();
 
