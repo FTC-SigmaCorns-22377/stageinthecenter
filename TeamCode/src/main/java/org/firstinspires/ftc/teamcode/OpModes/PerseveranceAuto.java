@@ -79,6 +79,7 @@ public class PerseveranceAuto extends BaseAuto {
                                 outputSlot2 = 3;
                                 break;
                         }
+                        break;
                     case BACK:
                         startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
                         switch (randomizationSide) {
@@ -86,19 +87,29 @@ public class PerseveranceAuto extends BaseAuto {
                             case CENTER:
                             case RIGHT:
                         }
+                        break;
                 }
+                break;
             case RED:
+                break;
         }
 
 //        ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
         Trajectory randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                 .lineToLinearHeading(spikeMark)
+                .build();
+
+        Trajectory randomization_pt1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
                 .back(5)
+                .build();
+
+        Trajectory randomization_pt2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization_pt1.end())
                 .splineToLinearHeading(new Pose2d(backdropSlots.get(randomizationSlot), Math.PI), 0)
                 .build();
 
-        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
+
+        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization_pt2.end())
                 .forward(5)
                 .splineToConstantHeading(junction, Math.PI)
                 .lineTo(stack)
@@ -121,6 +132,8 @@ public class PerseveranceAuto extends BaseAuto {
                 .build();
 
         Command auto = followRR(randomization);
+        auto.addNext(followRR(randomization_pt1));
+        auto.addNext(followRR(randomization_pt2));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
 //        auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
 //        auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
