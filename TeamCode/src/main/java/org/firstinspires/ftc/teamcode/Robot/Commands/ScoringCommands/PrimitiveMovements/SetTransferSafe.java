@@ -31,7 +31,6 @@ public class SetTransferSafe extends RaceAction {
         if(transferState == Intake.TransferState.TRANSFER){
             output.setArmState(Output.ArmState.TRANSFER);
         }
-
         intake.setTransferState(transferState);
     }
 

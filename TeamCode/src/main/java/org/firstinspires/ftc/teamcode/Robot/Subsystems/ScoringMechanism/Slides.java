@@ -122,6 +122,12 @@ public class Slides extends Subsystem {
             case MID:
                 slideTargetPosition = 8;
                 break;
+            case HIGH:
+                slideTargetPosition = 12;
+                break;
+            case HIGHER:
+                slideTargetPosition = 16;
+                break;
         }
 
     }
@@ -159,8 +165,8 @@ public class Slides extends Subsystem {
             power /= 4;
         }
 
-        vertical1.setPower(power);
-        vertical2.setPower(power);
+        vertical1.setPower(-power);
+        vertical2.setPower(-power);
         this.power = power;
         Dashboard.packet.put("measured slide position", measuredPosition);
         Dashboard.packet.put("target slide position", controller.getTargetPosition());
@@ -227,7 +233,10 @@ public class Slides extends Subsystem {
 
     public enum SlideHeight {
         LOW,
-        MID
+        MID,
+
+        HIGH,
+        HIGHER
     }
 
 }

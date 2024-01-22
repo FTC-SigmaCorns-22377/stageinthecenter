@@ -14,8 +14,8 @@ public class MainScoringMechanism extends Subsystem {
     public Intake intake = new Intake();
     public Slides slides = new Slides();
     public Output output = new Output();
-
-    public ArrayList<Subsystem> subsystems = new ArrayList<>(List.of(intake, slides, output));
+    public Hang hang = new Hang();
+    public ArrayList<Subsystem> subsystems = new ArrayList<>(List.of(intake, slides, output, hang));
 
     public void commonInit(HardwareMap hwMap) {
 //        drone.initAuto(hwMap);

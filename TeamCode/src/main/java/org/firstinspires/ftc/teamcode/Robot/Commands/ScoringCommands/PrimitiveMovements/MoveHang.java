@@ -2,30 +2,24 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveM
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Hang;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 
-public class SetHang extends Command {
+public class MoveHang extends Command {
     Hang hang;
-    Hang.Hanging hanging;
-    //Double power;
-    //boolean hasFinished = false;
+    Hang.HangState hangState;
 
-    public SetHang(Hang hang, Hang.Hanging hanging) {
+    public MoveHang(Hang hang, Hang.HangState hangState) {
         this.hang = hang;
-        this.hanging = hanging;
+        this.hangState = hangState;
     }
 
     @Override
     public void init() {
-        //hang.setHang(hanging);
-        hang.setHanging(hanging);
+        hang.setHang(hangState);
     }
-
 
     @Override
-    public void periodic() {
-//        hang.setHang(hanging);
-//        hasFinished = true;
-    }
+    public void periodic() {}
 
     @Override
     public boolean completed() {

@@ -1,65 +1,74 @@
 package org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.TransferState.INTAKE;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.TransferState.TRANSFER;
+import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.RollerState.OFF;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Hang extends Subsystem {
-    DcMotorEx hangMotor;
+    public static double HANG_POWER = 0.9;
+    DcMotorEx hang;
 
-    private Hang.Hanging hanging = Hang.Hanging.DOWN;
+    HangState hangState;
 
-    public void commonInit(HardwareMap hwMap) {
-        hangMotor = hwMap.get(DcMotorEx.class, "hang");
-        hangMotor.setPower(0);
-        hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    public void initCommon(HardwareMap hwMap) {
+        hang = hwMap.get(DcMotorEx.class, "hang");
+
+        hang.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        setHang(HangState.OFF);
+
     }
 
     @Override
     public void initAuto(HardwareMap hwMap) {
-        commonInit(hwMap);
+        initCommon(hwMap);
     }
 
     @Override
     public void initTeleop(HardwareMap hwMap) {
-        commonInit(hwMap);
+        initCommon(hwMap);
     }
-
-//    public void setHang(Hanging hanging) {
-//        this.hanging = hanging;
-//        //hangMotor.setPower(power);
-//    }
 
     @Override
     public void periodic() {
-        updateTarget();
+        switch (hangState) {
+            case OFF:
+                hang.setPower(0);
+                break;
+            case INTAKE:
+                hang.setPower(HANG_POWER);
+                break;
+            case OUTTAKE:
+                hang.setPower(-HANG_POWER*0.8);
+                break;
+        }
+
     }
 
     @Override
     public void shutdown() {
-        hangMotor.setPower(0);
+
     }
 
-    private void updateTarget(){
-        switch (hanging) {
-            case UP:
-                //TODO: Check if this is the right direction
-                hangMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-                hangMotor.setPower(0.5);
-                break;
-            case DOWN:
-                hangMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-                hangMotor.setPower(0.5);
-                break;
-        }
+    // TUNE
+    public void setHang(HangState hangState) {
+        this.hangState = hangState;
     }
-    public void setHanging(Hang.Hanging hanging) { this.hanging = hanging; }
 
-    public enum Hanging {
-        UP,
-        DOWN
+
+    public enum HangState {
+        OFF,
+        INTAKE,
+        OUTTAKE,
     }
+
+
 }
