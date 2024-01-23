@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robot.Subsystems;
 
+import static org.opencv.core.Core.mean;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -90,10 +92,12 @@ class PropDetector implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
+
         System.out.println("processed frame");
         Mat hsvImage = new Mat();
         Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_BGR2HSV);
 
+        /*
         Scalar lower = null;
         Scalar upper = null;
         switch (team) {
@@ -105,13 +109,33 @@ class PropDetector implements VisionProcessor {
                 lower = new Scalar(0, 63, 70);
                 upper = new Scalar(179, 255, 210);
                 break;
-        }
+        }*/
 
-        Mat mask = new Mat();
+
+        //Mat mask = new Mat();
 
         // Create a mask for red color
-        Core.inRange(hsvImage, lower, upper, mask);
+        //Core.inRange(hsvImage, lower, upper, mask);
 
+        Rect leftrect = new Rect(40, 100, 100, 120);
+        Rect centerrect = new Rect(40, 100, 100, 120);
+        Rect rightrect = new Rect(40, 100, 100, 120);
+
+        Double leftvalue = mean(new Mat(hsvImage, leftrect)).val[1];
+        Double centervalue = mean(new Mat(hsvImage, centerrect)).val[1];
+        Double rightvalue = mean(new Mat(hsvImage, rightrect)).val[1];
+
+        if (leftvalue > rightvalue && leftvalue > centervalue){
+            randomization = RandomizationSide.LEFT;
+        }
+        else if (rightvalue > centervalue){
+            randomization = RandomizationSide.RIGHT;
+        }
+        else{
+            randomization = RandomizationSide.CENTER;
+        }
+
+        /*
         // Find contours
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
@@ -140,8 +164,8 @@ class PropDetector implements VisionProcessor {
                 randomization = RandomizationSide.CENTER;
             }
         }
-
-        return largestRect;
+        */
+        return leftrect;
     }
 
     @Override
