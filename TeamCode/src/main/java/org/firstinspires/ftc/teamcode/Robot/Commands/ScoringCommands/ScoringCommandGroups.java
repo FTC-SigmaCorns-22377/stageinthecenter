@@ -38,7 +38,16 @@ public class ScoringCommandGroups {
         this.drivetrain = drivetrain;
     }
 
-    // public Command transfer() { return setTransfer() }
+    public Command transfer() { return setArm(Output.ArmState.TRANSFER)
+            .addNext(setClaw(Output.ClawState.OPEN))
+            .addNext(setTransfer(Intake.TransferState.TRANSFER))
+            .addNext(setClaw(Output.ClawState.CLOSED)); }
+    public Command scorePos() { return setArm(Output.ArmState.SCORE); }
+    public Command scoreBoth(){
+        return setClaw(Output.ClawState.OPEN)
+                .addNext(setSlides(Slides.SlideHeight.LOW))
+                .addNext(setArm(Output.ArmState.TRANSFER));
+    }
 
 
 
@@ -146,10 +155,6 @@ public class ScoringCommandGroups {
                 //.addNext(setClaw(Output.ClawState.CLOSED));
     }
 
-    public Command score(){
-        return setClaw(Output.ClawState.OPEN);
-    }
-
     public Command postScore(){
         return setTransfer(Intake.TransferState.INTAKE)
                 .addNext(setSlides(Slides.SlideHeight.LOW))
@@ -161,12 +166,5 @@ public class ScoringCommandGroups {
         return setTransfer(Intake.TransferState.TRANSFER);
     }
 
-    public Command scorePos(){
-        return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.MID))
-                .addNext(setArm(Output.ArmState.SCORE))
-                .addNext(setClaw(Output.ClawState.CLOSED));
-
-    }
 //    public SetWrist setWrist(Output.WristStates wristStates) { return new SetWrist(output, wristStates); }
 }
