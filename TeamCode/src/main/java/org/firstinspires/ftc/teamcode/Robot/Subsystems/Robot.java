@@ -14,8 +14,8 @@ public class Robot {
 
 
     public Dashboard dashboard = new Dashboard();
-    public Gamepad1 gamepad1;
-    public Gamepad1 gamepad2;
+    public Gamepad gamepad1;
+    public Gamepad gamepad2;
     public Drivetrain drivetrain = new Drivetrain();
 
     //public Randomization randomization;
@@ -26,8 +26,8 @@ public class Robot {
     public Robot(HardwareMap hwMap, OpMode opMode, com.qualcomm.robotcore.hardware.Gamepad gamepad1, com.qualcomm.robotcore.hardware.Gamepad gamepad2, Team team, Side side) {
         //randomization = new Randomization(team);
         scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism);
-        this.gamepad1 = new Gamepad1(gamepad1, scheduler);
-        this.gamepad2 = new Gamepad1(gamepad2, scheduler);
+        this.gamepad1 = new Gamepad(gamepad1, scheduler);
+        this.gamepad2 = new Gamepad(gamepad2, scheduler);
 
         if (opMode.equals(OpMode.Auto)) {
             scheduler.initAuto();

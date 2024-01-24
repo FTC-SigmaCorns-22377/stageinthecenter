@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.Robot.Subsystems.Gamepad1;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Gamepad;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 import org.firstinspires.ftc.teamcode.Utils.MathUtils;
 
@@ -14,10 +14,10 @@ public class RobotRelative extends Command {
 
     protected boolean isBoostAppropriate = false;
     Drivetrain drivetrain;
-    Gamepad1 game_pad1;
+    Gamepad game_pad1;
     double strafe_dead_band = 0.1;
 
-    public RobotRelative(Robot robot, Gamepad1 game_pad1) {
+    public RobotRelative(Robot robot, Gamepad game_pad1) {
         super(robot.drivetrain, game_pad1);
         this.drivetrain = robot.drivetrain;
         this.game_pad1 = game_pad1;
