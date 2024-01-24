@@ -55,8 +55,11 @@ import static org.firstinspires.ftc.teamcode.Roadrunner.Drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+
+    public static double Trans_Kp = 8;
+    public static double Rotation_Kp = 8;
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(Trans_Kp, 0, smartdamp(Trans_Kp, kV, kA));
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(Rotation_Kp, 0, smartdamp(Rotation_Kp, kV / TRACK_WIDTH, kA / TRACK_WIDTH));
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -84,7 +87,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+                new Pose2d(0.25, 0.25, Math.toRadians(1.0)), 0.25);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -310,5 +313,12 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+
+    public static double smartdamp(double kp, double kv, double ka) {
+        if (kp < (kv * kv)/(4 * ka)) {
+            return 0;
+        }
+        return 2 * Math.sqrt(ka * kp) - kv;
     }
 }
