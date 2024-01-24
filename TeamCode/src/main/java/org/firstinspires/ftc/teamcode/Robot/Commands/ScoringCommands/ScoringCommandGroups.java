@@ -22,25 +22,25 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
 
 public class ScoringCommandGroups {
+    Drivetrain drivetrain;
     Drone drone;
     Hang hang;
     Intake intake;
     Output output;
     Slides slides;
-    Drivetrain drivetrain;
-
-    int savedHeight = 0;
-    int stepTime = 100;
 
     public ScoringCommandGroups(MainScoringMechanism mechanism, Drivetrain drivetrain) {
+        this.drone = mechanism.drone;
         this.intake = mechanism.intake;
         this.output = mechanism.output;
         this.slides = mechanism.slides;
         this.hang = mechanism.hang;
-//        this.drone = mechanism.drone;
-//        this.hang = mechanism.hang;
         this.drivetrain = drivetrain;
     }
+
+    // public Command transfer() { return setTransfer() }
+
+
 
     // Useful
     public Command intakeDown() { return setTransfer(Intake.TransferState.INTAKE); }

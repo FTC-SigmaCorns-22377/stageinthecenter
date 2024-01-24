@@ -9,16 +9,14 @@ import java.util.ArrayList;
 
 public class MainScoringMechanism extends Subsystem {
 
-//    public Drone drone = new Drone();
-//    public Hang hang = new Hang();
-    public Intake intake = new Intake();
-    public Slides slides = new Slides();
-    public Output output = new Output();
+    public Drone drone = new Drone();
     public Hang hang = new Hang();
-    public ArrayList<Subsystem> subsystems = new ArrayList<>(List.of(intake, slides, output, hang));
+    public Intake intake = new Intake();
+    public Output output = new Output();
+    public Slides slides = new Slides();
+    public ArrayList<Subsystem> subsystems = new ArrayList<>(List.of(hang, intake, output, slides));
 
     public void commonInit(HardwareMap hwMap) {
-//        drone.initAuto(hwMap);
         for (Subsystem subsystem : subsystems)
             subsystem.initAuto(hwMap);
     }
