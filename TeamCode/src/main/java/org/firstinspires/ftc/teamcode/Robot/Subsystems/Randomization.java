@@ -117,13 +117,13 @@ class PropDetector implements VisionProcessor {
         // Create a mask for red color
         //Core.inRange(hsvImage, lower, upper, mask);
 
-        Rect leftrect = new Rect(40, 100, 100, 120);
-        Rect centerrect = new Rect(40, 100, 100, 120);
-        Rect rightrect = new Rect(40, 100, 100, 120);
+        Rect leftrect = new Rect(0, 85, 80, 30);
+        Rect centerrect = new Rect(120, 85, 80, 30);
+        Rect rightrect = new Rect(240, 85, 80, 30);
 
-        Double leftvalue = mean(new Mat(hsvImage, leftrect)).val[1];
-        Double centervalue = mean(new Mat(hsvImage, centerrect)).val[1];
-        Double rightvalue = mean(new Mat(hsvImage, rightrect)).val[1];
+        Double leftvalue = mean(new Mat(hsvImage, leftrect)).val[2];
+        Double centervalue = mean(new Mat(hsvImage, centerrect)).val[2];
+        Double rightvalue = mean(new Mat(hsvImage, rightrect)).val[2];
 
         if (leftvalue > rightvalue && leftvalue > centervalue){
             randomization = RandomizationSide.LEFT;
