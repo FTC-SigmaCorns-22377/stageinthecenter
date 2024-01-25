@@ -37,7 +37,7 @@ public class CommandScheduler {
 	    intents.add(intent);
 	}
 
-	public void run() {
+	public void run() throws InterruptedException {
 		for (Subsystem subsystem : subsystems) {
 			subsystem.startTimer();
 			subsystem.periodic();

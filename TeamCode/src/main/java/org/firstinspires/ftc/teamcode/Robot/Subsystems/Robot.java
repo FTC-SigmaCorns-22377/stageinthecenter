@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.Robot.Subsystems;
 
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.MainScoringMechanism;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
@@ -14,18 +14,20 @@ public class Robot {
 
 
     public Dashboard dashboard = new Dashboard();
-    public Input gamepad1;
-    public Input gamepad2;
+    public Gamepad gamepad1;
+    public Gamepad gamepad2;
     public Drivetrain drivetrain = new Drivetrain();
+
     public Randomization randomization;
     protected CommandScheduler scheduler;
+    public MainScoringMechanism scoringMechanism = new MainScoringMechanism();
     ArrayList<LynxModule> modules = new ArrayList<>();
 
-    public Robot(HardwareMap hwMap, OpMode opMode, Gamepad gamepad1, Gamepad gamepad2, Team team, Side side) {
+    public Robot(HardwareMap hwMap, OpMode opMode, com.qualcomm.robotcore.hardware.Gamepad gamepad1, com.qualcomm.robotcore.hardware.Gamepad gamepad2, Team team, Side side) {
         randomization = new Randomization(team);
-        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, randomization);
-        this.gamepad1 = new Input(gamepad1, scheduler);
-        this.gamepad2 = new Input(gamepad2, scheduler);
+        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism, randomization);
+        this.gamepad1 = new Gamepad(gamepad1, scheduler);
+        this.gamepad2 = new Gamepad(gamepad2, scheduler);
 
         if (opMode.equals(OpMode.Auto)) {
             scheduler.initAuto();
@@ -38,7 +40,7 @@ public class Robot {
         }
     }
 
-    public void update() {
+    public void update() throws InterruptedException {
         System.out.println("i have updated");
         for (LynxModule module : modules) {
             module.clearBulkCache();
@@ -55,7 +57,7 @@ public class Robot {
         scheduler.shutdown();
     }
 
-    public void updateInput() {
+    public void updateInput() throws InterruptedException {
         gamepad1.periodic();
         gamepad2.periodic();
     }
