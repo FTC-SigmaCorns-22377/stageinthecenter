@@ -30,15 +30,13 @@ public abstract class BaseAuto extends LinearOpMode {
         robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide());
         setRobotPosition();
 
-        waitForStart();
-
-//        System.out.println("randomization side");
-//        while (!isStarted()) {
-//            randomizationSide = robot.randomization.getRandomizationSide();
-//            telemetry.addData("randomization", randomizationSide.name());
-//            telemetry.update();
-//        }
-//        robot.randomization.closePortal();
+        System.out.println("randomization side");
+        while (!isStarted()) {
+            randomizationSide = robot.randomization.getRandomizationSide();
+            telemetry.addData("randomization", randomizationSide.name());
+            telemetry.update();
+        }
+        robot.randomization.closePortal();
 
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
