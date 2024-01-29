@@ -97,22 +97,9 @@ public class ScoringCommandGroups {
         return new SetArm(output, armState);
     }
 
-    /*public SetHang setHang(){
-        return new SetHang()
-    }*/
-    public SetClawPurple setClawPurple(Output.ClawState clawPurpleStates) {
-        return new SetClawPurple(output, clawPurpleStates);
-    }
-    public SetClawBlack setClawBlack(Output.ClawState clawBlackStates) {
-        return new SetClawBlack(output, clawBlackStates);
-    }
-
     public SetClaw setClaw(Output.ClawState clawStates) {
         return new SetClaw(output, clawStates);
     }
-
-//    public SetDrone setDrone(Drone.DroneStates droneStates) { return new SetDrone(drone, droneStates); }
-    //public SetHang setHang(Double power) { return new SetHang(hang, power); }
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
     public SetTransfer setTransfer(Intake.TransferState transferState) {
         return new SetTransfer(intake, transferState); }

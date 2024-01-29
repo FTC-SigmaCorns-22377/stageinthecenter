@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class MainScoringMechanism extends Subsystem {
 
 //    public Drone drone = new Drone();
-//    public Hang hang = new Hang();
     public Intake intake = new Intake();
     public Slides slides = new Slides();
     public Output output = new Output();

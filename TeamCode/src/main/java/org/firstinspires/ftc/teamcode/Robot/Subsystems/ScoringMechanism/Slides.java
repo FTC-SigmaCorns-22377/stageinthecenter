@@ -119,6 +119,9 @@ public class Slides extends Subsystem {
             case LOW:
                 slideTargetPosition = IN_POSITION;
                 break;
+            case LOWMID:
+                slideTargetPosition = 4;
+                break;
             case MID:
                 slideTargetPosition = 8;
                 break;
@@ -233,6 +236,7 @@ public class Slides extends Subsystem {
 
     public enum SlideHeight {
         LOW,
+        LOWMID,
         MID,
 
         HIGH,
