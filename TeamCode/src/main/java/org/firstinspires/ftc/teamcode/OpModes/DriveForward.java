@@ -21,7 +21,7 @@ public class DriveForward extends BaseAuto {
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
         return new RoadrunnerTrajectoryFollower(robot, robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-            .lineToLinearHeading(new Pose2d(0, 50, -0.5 * Math.PI))
+            .lineToLinearHeading(new Pose2d(50, 50, -0.5 * Math.PI))
             .build()
         );
     }

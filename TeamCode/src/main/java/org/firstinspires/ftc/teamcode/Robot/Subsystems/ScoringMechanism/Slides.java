@@ -120,7 +120,7 @@ public class Slides extends Subsystem {
                 slideTargetPosition = IN_POSITION;
                 break;
             case LOWMID:
-                slideTargetPosition = 4;
+                slideTargetPosition = 2;
                 break;
             case MID:
                 slideTargetPosition = 8;
