@@ -102,10 +102,19 @@ public class ScoringCommandGroups {
     }
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
     public SetTransfer setTransfer(Intake.TransferState transferState) {
-        return new SetTransfer(intake, transferState); }
+        return new SetTransfer(intake, transferState);
+    }
 
     public SetTransferSafe setTransferSafe(Intake.TransferState transferState){
         return new SetTransferSafe(intake, transferState, output, output.getArmState());
+    }
+
+    public Command newSetTransfer(Intake.TransferState transferState){
+        return new SetTransfer(intake, transferState)
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(slidesDown())
+                .addNext(setClaw(Output.ClawState.OPEN));
+
     }
 
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
