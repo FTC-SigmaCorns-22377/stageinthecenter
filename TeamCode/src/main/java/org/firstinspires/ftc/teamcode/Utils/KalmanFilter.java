@@ -5,8 +5,6 @@ public class KalmanFilter {
     private double R = 0;   //sensor covariance
     private double p = 0;   //initial covariance guess
     private double K = 0;   //initial Kalman gain guess
-    private double u = 0;   //encoder estimate
-    private double z = 0;   //aprilTag estimate
     private double x = 0;   //total estimate
     public KalmanFilter(double Q, double R, double K, double p, double x){
         this.Q = Q;

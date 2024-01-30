@@ -7,7 +7,6 @@ import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.CvType;
@@ -165,6 +164,8 @@ public class ConceptAprilTagSwitchableCamera extends LinearOpMode {
                 .setCameraResolution(new Size(1920,1080))
                 .build();
 
+        visionPortal = visionPortal1;
+
     }   // end method initAprilTag()
 
     /**
@@ -253,6 +254,7 @@ public class ConceptAprilTagSwitchableCamera extends LinearOpMode {
      * @param y
      */
     private Mat findGlobalPosition(Double range, Double bearing, Double yaw, Double x, Double y) {
+        yaw = Math.toRadians(yaw);
         //create 2x2 rotation matrix for camera's x and y to align with aprilTags x and y
         Mat rotationMatrix = new Mat(2, 2, CvType.CV_64F, new Scalar(0));
         rotationMatrix.put(0, 0, Math.cos(yaw));
