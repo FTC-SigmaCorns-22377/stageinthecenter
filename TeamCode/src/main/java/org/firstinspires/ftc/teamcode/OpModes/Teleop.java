@@ -55,6 +55,7 @@ public class Teleop extends BaseTeleop {
         robot.gamepad2.whenDPadRightPressed((commandGroups.setSlides(Slides.SlideHeight.HIGHER)));
         robot.gamepad2.whenCirclePressed(commandGroups.inTransUp());
         robot.gamepad2.whenCrossPressed(commandGroups.scorePos());
+        robot.gamepad2.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.THREE));
 
         return new MultipleCommand(new RobotRelative(robot, robot.gamepad1));
     }

@@ -14,7 +14,9 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 0.7;
-    public static double TRANSFER_DROP_INTAKE_VALUE = 0.22;
+    public static double TRANSFER_DROP_INTAKE_VALUE = 0.2;
+
+    public static double TRANSFER_THREE_VALUE = 0.15;
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.2;
@@ -91,6 +93,12 @@ public class Intake extends Subsystem {
                     transferAngle.setPosition(TRANSFER_ANGLE_TRANSFER_VALUE);
                 }
                 break;
+            case THREE:
+                rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_VALUE);
+                rollerDropRight.setPosition(0.5 - TRANSFER_THREE_VALUE);
+            case FIVE:
+                rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_VALUE);
+                rollerDropRight.setPosition(0.5 - TRANSFER_THREE_VALUE);
         }
     }
 
@@ -132,6 +140,9 @@ public class Intake extends Subsystem {
 
     public enum TransferState {
         INTAKE,
-        TRANSFER
+        TRANSFER,
+        THREE,
+        FIVE
+
     }
 }

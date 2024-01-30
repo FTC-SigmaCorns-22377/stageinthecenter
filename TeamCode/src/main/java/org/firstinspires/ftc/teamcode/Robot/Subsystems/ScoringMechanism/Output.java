@@ -125,7 +125,7 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.24);
+                clawBlack.setPosition(0.28);
                 break;
             case CLOSED:
                 clawBlack.setPosition(0.20);

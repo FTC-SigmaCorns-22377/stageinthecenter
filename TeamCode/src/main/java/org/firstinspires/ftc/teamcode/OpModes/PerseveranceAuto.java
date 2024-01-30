@@ -24,11 +24,11 @@ public class PerseveranceAuto extends BaseAuto {
     // Robot Parameters
     final Double robotLength = 17.008;
     final Double distToRollerTip = 17.0;
-    final Double distToBackdropBase = 3.0;
+    final Double distToBackdropBase = 1.75;
 
     // Calculated Field Parameters
     final Double startY = 71.25 - 0.5 * robotLength;
-    final Double intakeX = -71.25 + distToRollerTip;
+    final Double intakeX = -69.75 + distToRollerTip;
     final Double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
 
     // Dynamic Points
@@ -65,16 +65,16 @@ public class PerseveranceAuto extends BaseAuto {
         switch (getTeam()) {
             case BLUE:
                 for (int i = -5; i <= 5; i++) {
-                    backdropSlots.add(new Vector2d(outputX, 35.625 + 1.25 * 1.5 * i));
+                    backdropSlots.add(new Vector2d(outputX, 35.625 + 1.5 * i));
                 }
                 switch (getSide()) {
                     case FRONT:
                         switch (randomizationSide) {
                             case LEFT:
-                                spikeMark = new Pose2d(22.75, 35.75 + 0.5 * robotLength, -0.5 * Math.PI);
-                                intakeJunction = new Vector2d(-29.688, 11.875);
-                                stack1 = new Vector2d(intakeX, 11.875);
-                                outputJunction = new Vector2d(23.75, 11.875);
+                                spikeMark = new Pose2d(23.75, 35.75 + 0.5 * robotLength, -0.5 * Math.PI);
+                                intakeJunction = new Vector2d(-29.688, 5.3125);
+                                stack1 = new Vector2d(intakeX, 5.3125);
+                                outputJunction = new Vector2d(35.625, 5.3125);
                                 randomizationSlot = 8;
                                 outputSlot1 = 5;
                                 outputSlot2 = 1;
@@ -82,7 +82,7 @@ public class PerseveranceAuto extends BaseAuto {
                                 break;
                             default:
                                 spikeMark = new Pose2d(11.875, 24.75 + 0.5 * robotLength, -0.5 * Math.PI);
-                                intakeJunction = new Vector2d(-11.875, 35.625);
+                                intakeJunction = new Vector2d(-35.625, 35.625);
                                 stack1 = new Vector2d(intakeX, 35.625);
                                 stack2 = new Vector2d(intakeX, 15);
                                 outputJunction = new Vector2d(11.875, 35.625);
@@ -123,7 +123,7 @@ public class PerseveranceAuto extends BaseAuto {
         ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
         Trajectory purple = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                .lineToLinearHeading(spikeMark) // 33.254 -> 38.5
+                .lineToLinearHeading(spikeMark)
                 .build();
 
         Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end())
@@ -168,43 +168,50 @@ public class PerseveranceAuto extends BaseAuto {
                 .build();
 
         Command auto = followRR(purple);
-        auto.addNext(commandGroups.setArm(Output.ArmState.SCORE));
-        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.LOWMID));
-        auto.addNext(followRR(yellow));
+        auto.addNext(new MultipleCommand(followRR(yellow),
+                new DelayedCommand(0.5, new MultipleCommand(
+                        commandGroups.setArm(Output.ArmState.SCORE),
+                        commandGroups.setSlides(Slides.SlideHeight.LOWMID)
+                ))
+        ));
         auto.addNext(commandGroups.score());
-        auto.addNext(new MultipleCommand(followRR(intake1),
-                new DelayedCommand(0.5, commandGroups.postScore()),
-                new DelayedCommand(2, commandGroups.rollerOn())));
-        auto.addNext(wait(1.5));
+        auto.addNext(commandGroups.postScore());
+        auto.addNext(followRR(intake1));
+        auto.addNext(commandGroups.postScore());
+        auto.addNext(commandGroups.rollerOn());
+        auto.addNext(wait(3.0));
+        auto.addNext(commandGroups.rollerOff());
+        auto.addNext(commandGroups.transferPos());
         auto.addNext(new MultipleCommand(followRR(output1),
-                new DelayedCommand(0.1, commandGroups.rollerOff()),
-                new DelayedCommand(0.5, commandGroups.transferPos()),
                 new DelayedCommand(1.0, commandGroups.setClaw(Output.ClawState.CLOSED)),
                 new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
                 new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
         auto.addNext(commandGroups.score());
-        auto.addNext(new MultipleCommand(followRR(intake2),
-                new DelayedCommand(0.5, commandGroups.postScore()),
-                new DelayedCommand(2, commandGroups.rollerOn())));
-        auto.addNext(wait(1.5));
-        auto.addNext(new MultipleCommand(followRR(output2),
-                new DelayedCommand(0.1, commandGroups.rollerOff()),
-                new DelayedCommand(0.5, commandGroups.transferPos()),
-                new DelayedCommand(1.0, commandGroups.setClaw(Output.ClawState.CLOSED)),
-                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
-        auto.addNext(commandGroups.score());
-        auto.addNext(new MultipleCommand(followRR(intake3),
-                new DelayedCommand(0.5, commandGroups.postScore()),
-                new DelayedCommand(2, commandGroups.rollerOn())));
-        auto.addNext(wait(1.5));
-        auto.addNext(new MultipleCommand(followRR(output3),
-                new DelayedCommand(0.1, commandGroups.rollerOff()),
-                new DelayedCommand(0.5, commandGroups.transferPos()),
-                new DelayedCommand(1.0, commandGroups.setClaw(Output.ClawState.CLOSED)),
-                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
-        auto.addNext(commandGroups.score());
+//        auto.addNext(commandGroups.postScore());
+//        auto.addNext(followRR(intake2));
+//        auto.addNext(commandGroups.postScore());
+//        auto.addNext(commandGroups.rollerOn());
+//        auto.addNext(wait(3.0));
+//        auto.addNext(commandGroups.rollerOff());
+//        auto.addNext(commandGroups.transferPos());
+//        auto.addNext(new MultipleCommand(followRR(output2),
+//                new DelayedCommand(0.5, commandGroups.setClaw(Output.ClawState.CLOSED)),
+//                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
+//                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
+//        auto.addNext(commandGroups.score());
+//        auto.addNext(wait(0.5));
+//        auto.addNext(commandGroups.postScore());
+//        auto.addNext(followRR(intake3));
+//        auto.addNext(commandGroups.postScore());
+//        auto.addNext(commandGroups.rollerOn());
+//        auto.addNext(wait(3.0));
+//        auto.addNext(commandGroups.rollerOff());
+//        auto.addNext(commandGroups.transferPos());
+//        auto.addNext(new MultipleCommand(followRR(output3),
+//                new DelayedCommand(0.5, commandGroups.setClaw(Output.ClawState.CLOSED)),
+//                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
+//                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
+//        auto.addNext(commandGroups.score());
 
         return auto;
     }
