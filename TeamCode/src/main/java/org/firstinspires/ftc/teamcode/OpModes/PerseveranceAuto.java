@@ -171,7 +171,7 @@ public class PerseveranceAuto extends BaseAuto {
         auto.addNext(new MultipleCommand(followRR(yellow),
                 new DelayedCommand(0.5, new MultipleCommand(
                         commandGroups.setArm(Output.ArmState.SCORE),
-                        commandGroups.setSlides(Slides.SlideHeight.LOWMID)
+                        commandGroups.setSlides(Slides.SlideHeight.L1)
                 ))
         ));
         auto.addNext(commandGroups.score());
@@ -185,7 +185,7 @@ public class PerseveranceAuto extends BaseAuto {
         auto.addNext(new MultipleCommand(followRR(output1),
                 new DelayedCommand(1.0, commandGroups.setClaw(Output.ClawState.CLOSED)),
                 new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
+                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.L1))));
         auto.addNext(commandGroups.score());
 //        auto.addNext(commandGroups.postScore());
 //        auto.addNext(followRR(intake2));

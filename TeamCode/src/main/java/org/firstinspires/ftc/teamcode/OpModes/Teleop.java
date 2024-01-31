@@ -46,16 +46,18 @@ public class Teleop extends BaseTeleop {
         robot.gamepad2.whenRightBumperLifted(commandGroups.hangOff());
         robot.gamepad2.whenLeftBumperPressed(commandGroups.hangReverse());
         robot.gamepad2.whenLeftBumperLifted(commandGroups.hangOff());
-        //robot.gamepad2.whenLeftTriggerPressed(commandGroups.hangOff());
+        robot.gamepad2.whenLeftTriggerPressed(commandGroups.setWrist(Output.WristState.DEG0));
         //robot.gamepad2.whenLeftTriggerLifted()
-        //robot.gamepad2.whenRightTriggerPressed(commandGroups.hangOn());
-        robot.gamepad2.whenDPadUpPressed(commandGroups.setSlides(Slides.SlideHeight.LOW));
-        robot.gamepad2.whenDPadLeftPressed((commandGroups.setSlides(Slides.SlideHeight.MID)));
-        robot.gamepad2.whenDPadDownPressed((commandGroups.setSlides(Slides.SlideHeight.HIGH)));
-        robot.gamepad2.whenDPadRightPressed((commandGroups.setSlides(Slides.SlideHeight.HIGHER)));
+        robot.gamepad2.whenRightTriggerPressed(commandGroups.setWrist(Output.WristState.DEG120));
+        robot.gamepad2.whenTrianglePressed(commandGroups.setWrist(Output.WristState.DEG300));
+        robot.gamepad2.whenDPadUpPressed(commandGroups.setSlides(Slides.SlideHeight.L0));
+        robot.gamepad2.whenDPadLeftPressed((commandGroups.setSlides(Slides.SlideHeight.L2)));
+        robot.gamepad2.whenDPadDownPressed((commandGroups.setSlides(Slides.SlideHeight.L3)));
+        robot.gamepad2.whenDPadRightPressed((commandGroups.setSlides(Slides.SlideHeight.L4)));
+        robot.gamepad2.whenSquarePressed((commandGroups.setSlides(Slides.SlideHeight.L5)));
         robot.gamepad2.whenCirclePressed(commandGroups.inTransUp());
         robot.gamepad2.whenCrossPressed(commandGroups.scorePos());
-        robot.gamepad2.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.THREE));
+        //robot.gamepad2.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.THREE));
 
         return new MultipleCommand(new RobotRelative(robot, robot.gamepad1));
     }
