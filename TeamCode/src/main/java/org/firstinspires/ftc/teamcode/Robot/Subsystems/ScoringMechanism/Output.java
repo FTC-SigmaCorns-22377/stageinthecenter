@@ -32,7 +32,7 @@ public class Output extends Subsystem {
 
 
     public static double ARM_SCORE_VALUE = 0.75;
-    public static double ARM_TRANSFER_VALUE = 0.25;
+    public static double ARM_TRANSFER_VALUE = 0.245;
     public static double LEFT_OFFSET = 0.006;
 
     public void initCommon(HardwareMap hwMap) {
@@ -122,10 +122,13 @@ public class Output extends Subsystem {
         this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
-                clawPurple.setPosition(0.70);
+                clawPurple.setPosition(0.705);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.77);
+                clawPurple.setPosition(0.78);
+                break;
+            case POSTSCORE:
+                clawPurple.setPosition(0.62);
                 break;
         }
     }
@@ -135,10 +138,13 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.26);
+                clawBlack.setPosition(0.255);
                 break;
             case CLOSED:
                 clawBlack.setPosition(0.20);
+                break;
+            case POSTSCORE:
+                clawBlack.setPosition(0.305);
                 break;
         }
     }
@@ -160,7 +166,8 @@ public class Output extends Subsystem {
 
     public enum ClawState {
         OPEN,
-        CLOSED
+        CLOSED,
+        POSTSCORE
     }
 
 }

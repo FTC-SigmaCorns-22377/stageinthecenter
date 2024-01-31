@@ -50,13 +50,13 @@ public class Teleop extends BaseTeleop {
 
         //robot.gamepad2.whenLeftTriggerLifted()
         //robot.gamepad2.whenRightTriggerPressed(commandGroups.setWrist(Output.WristState.DEG120));
-        robot.gamepad2.whenTrianglePressed(commandGroups.setWrist(Output.WristState.DEG120));
+        robot.gamepad2.whenCirclePressed(commandGroups.setWrist(Output.WristState.DEG120));
         robot.gamepad2.whenDPadUpPressed(commandGroups.setSlides(Slides.SlideHeight.L5));
         robot.gamepad2.whenDPadLeftPressed((commandGroups.setSlides(Slides.SlideHeight.L2)));
         robot.gamepad2.whenDPadDownPressed((commandGroups.setSlides(Slides.SlideHeight.L3)));
         robot.gamepad2.whenDPadRightPressed((commandGroups.setSlides(Slides.SlideHeight.L4)));
         robot.gamepad2.whenSquarePressed((commandGroups.setWrist(Output.WristState.DEG60)));
-        robot.gamepad2.whenCirclePressed(commandGroups.setWrist(Output.WristState.DEG180));
+        robot.gamepad2.whenTrianglePressed(commandGroups.setWrist(Output.WristState.DEG180));
         robot.gamepad2.whenCrossPressed(commandGroups.setWrist(Output.WristState.DEG0));
         //robot.gamepad2.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.THREE));
 
