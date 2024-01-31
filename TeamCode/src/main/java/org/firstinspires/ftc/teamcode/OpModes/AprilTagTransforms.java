@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode.OpModes;
 
 import android.annotation.SuppressLint;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -75,7 +77,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Concept: AprilTag", group = "Concept")
-@Disabled
+//@Disabled
 public class AprilTagTransforms extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
@@ -90,6 +92,9 @@ public class AprilTagTransforms extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
+    TelemetryPacket packet = new TelemetryPacket();
+
+
     @Override
     public void runOpMode() {
 
@@ -101,8 +106,11 @@ public class AprilTagTransforms extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+
         if (opModeIsActive()) {
             while (opModeIsActive()) {
+
 
                 telemetryAprilTag();
 
@@ -118,6 +126,8 @@ public class AprilTagTransforms extends LinearOpMode {
 
                 // Share the CPU.
                 sleep(20);
+                dashboard.sendTelemetryPacket(packet);
+                packet = new TelemetryPacket();
             }
         }
 
@@ -134,10 +144,10 @@ public class AprilTagTransforms extends LinearOpMode {
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
 
-            // The following default settings are available to un-comment and edit as needed.
+        // The following default settings are available to un-comment and edit as needed.
             //.setDrawAxes(false)
-            //.setDrawCubeProjection(false)
-            //.setDrawTagOutline(true)
+            .setDrawCubeProjection(true)
+            .setDrawTagOutline(true)
             //.setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
             //.setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
             //.setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
@@ -145,10 +155,11 @@ public class AprilTagTransforms extends LinearOpMode {
             // == CAMERA CALIBRATION ==
             // If you do not manually specify calibration parameters, the SDK will attempt
             // to load a predefined calibration for your camera.
-            //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-            // ... these parameters are fx, fy, cx, cy.
+//                .setLensIntrinsics(1.43024281e+03, 1.42898689e+03, 9.60603975e+02, 5.60364362e+02)
 
-            .build();
+            // ... these parameters are fx, fy, cx, cy.
+                .build();
+
 
         // Adjust Image Decimation to trade-off detection-range for detection-rate.
         // eg: Some typical detection data using a Logitech C920 WebCam
@@ -207,10 +218,10 @@ public class AprilTagTransforms extends LinearOpMode {
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null) {
-                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                packet.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                packet.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                packet.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                packet.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
 
                 // create transformation matrix of camera to tag
                 VectorF translation = new VectorF((float) detection.ftcPose.x, (float) detection.ftcPose.y, (float) detection.ftcPose.z);
@@ -218,35 +229,41 @@ public class AprilTagTransforms extends LinearOpMode {
                 OpenGLMatrix transformationMatrix = createTransformationMatrix(translation, rotation);
 
                 // print transformation matrix
-                telemetry.addData("Transformation Matrix:", transformationMatrix.toString());
+                packet.put("Transformation Matrix:", transformationMatrix.toString());
 
                 // get transformation of tag to origin
 //                detection.metadata.fieldPosition = VectorF, detection.metadata.fieldOrientation = Quaternion
                 OpenGLMatrix tagToOrigin = createTransformationMatrix(detection.metadata.fieldPosition, detection.metadata.fieldOrientation.toMatrix());
-                telemetry.addData("Tag to Origin:", tagToOrigin.toString());
+                packet.put("Tag to Origin:", tagToOrigin.toString());
 
                 // get transformation of camera to origin
                 OpenGLMatrix cameraToOrigin = transformationMatrix.multiplied(tagToOrigin);
-                telemetry.addData("Camera to Origin:", cameraToOrigin.toString());
+                packet.put("Camera to Origin:", cameraToOrigin.toString());
 
                 // get transformation of origin to camera
                 OpenGLMatrix originToCamera = cameraToOrigin.inverted();
 
                 // get x & y coordinates of camera in field
                 VectorF cameraPosition = originToCamera.getTranslation();
-                telemetry.addData("Camera Position:", cameraPosition.toString());
+                packet.addLine(String.format("Camera Position: %6.1f %6.1f", cameraPosition.get(0), cameraPosition.get(1)));
+
+                packet.fieldOverlay()
+                        .setStroke("green")
+                        .strokeRect(-cameraPosition.get(0) + 2.5, -cameraPosition.get(1) + 2.5, 5, 5)
+                        .setStroke("red")
+                        .strokeRect(detection.metadata.fieldPosition.get(0) -2.5, detection.metadata.fieldPosition.get(1) - 2.5, 5, 5);
 
 
             } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+                packet.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                packet.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
         }   // end for() loop
 
         // Add "key" information to telemetry
-        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-        telemetry.addLine("RBE = Range, Bearing & Elevation");
+        packet.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        packet.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        packet.addLine("RBE = Range, Bearing & Elevation");
 
     }   // end method telemetryAprilTag()
 
