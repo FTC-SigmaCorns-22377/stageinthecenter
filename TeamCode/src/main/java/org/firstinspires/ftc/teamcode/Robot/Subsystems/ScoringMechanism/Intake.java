@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.I
 import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.TransferState.TRANSFER;
 import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.RollerState.OFF;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,12 +15,15 @@ import org.firstinspires.ftc.teamcode.Utils.ProfiledServo;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
+@Config
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 0.7;
     public static double TRANSFER_DROP_INTAKE_VALUE = 0.22;
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
+
+    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.65;
 
     public static double ARM_IN_COLLECT = 0;
     DcMotorEx roller;
@@ -97,7 +101,7 @@ public class Intake extends Subsystem {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
                     rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.615);
+                    linkage.setPosition(LINKAGE_FINAL_VALUE_TRANSFER);
 
                 } else {
                     linkage.setPosition(0.85);
