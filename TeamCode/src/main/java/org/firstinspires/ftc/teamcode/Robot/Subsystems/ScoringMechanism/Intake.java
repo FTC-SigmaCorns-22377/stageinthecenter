@@ -22,6 +22,12 @@ public class Intake extends Subsystem {
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
+    public static double TRANSFER_FIVE_DROP_VALUE = 0.12;
+    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.92;
+    public static double TRANSFER_THREE_DROP_VALUE = 0.16;
+    public static double TRANSFER_THREE_ANGLE_VALUE = 0.97;
+
+
 
     public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.65;
 
@@ -108,6 +114,29 @@ public class Intake extends Subsystem {
                     transferAngle.setPosition(TRANSFER_ANGLE_TRANSFER_VALUE);
                 }
                 break;
+            case FIVE:
+                if (transferTimer.seconds() > 0.2) {
+                    linkage.setPosition(0.95);
+                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.85);
+                } else {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE);
+                }
+                break;
+
+            case THREE:
+                if (transferTimer.seconds() > 0.2) {
+                    linkage.setPosition(0.95);
+                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.85);
+                } else {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE);
+                }
+                break;
         }
         updateProfiledServos();
     }
@@ -154,6 +183,8 @@ public class Intake extends Subsystem {
 
     public enum TransferState {
         INTAKE,
-        TRANSFER
+        TRANSFER,
+        THREE,
+        FIVE
     }
 }

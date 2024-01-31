@@ -155,6 +155,20 @@ public class ScoringCommandGroups {
                 .addNext(setClaw(Output.ClawState.OPEN));
     }
 
+    public Command postScore5(){
+        return setTransfer(Intake.TransferState.FIVE)
+                .addNext(setSlides(Slides.SlideHeight.L0))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.OPEN));
+    }
+
+    public Command postScore3(){
+        return setTransfer(Intake.TransferState.THREE)
+                .addNext(setSlides(Slides.SlideHeight.L0))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.OPEN));
+    }
+
     public Command inTransUp(){
         return setTransfer(Intake.TransferState.TRANSFER);
     }
@@ -162,6 +176,16 @@ public class ScoringCommandGroups {
     public Command scorePos(){
         return setClaw(Output.ClawState.CLOSED)
                 .addNext(setSlides(Slides.SlideHeight.L2))
+                .addNext(setArm(Output.ArmState.SCORE))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+
+    }
+
+
+
+    public Command autoscorePos(){
+        return setClaw(Output.ClawState.CLOSED)
+                .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 
