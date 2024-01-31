@@ -128,7 +128,7 @@ public class PerseveranceAuto extends BaseAuto {
 
         Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end())
                 .back(1)
-                .splineTo(backdropSlots.get(randomizationSlot), 0)
+                .splineToConstantHeading(backdropSlots.get(randomizationSlot), 0)
                 .build();
 
         Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())

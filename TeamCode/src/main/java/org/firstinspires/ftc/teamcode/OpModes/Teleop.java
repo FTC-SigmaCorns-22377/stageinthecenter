@@ -29,9 +29,9 @@ public class Teleop extends BaseTeleop {
         robot.gamepad1.whenLeftBumperLifted(commandGroups.rollerOff());
         //robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
         robot.gamepad1.whenCirclePressed(commandGroups.transferPos());
-        robot.gamepad1.whenSquarePressed(commandGroups.setArm(Output.ArmState.SCORE));
+        robot.gamepad1.whenSquarePressed(commandGroups.newSetTransfer(Intake.TransferState.FIVE));
         //robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
-        robot.gamepad1.whenTrianglePressed(commandGroups.intakePos());
+        robot.gamepad1.whenTrianglePressed(commandGroups.newSetTransfer(Intake.TransferState.THREE));
         robot.gamepad1.whenCrossPressed(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
         robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
         robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
