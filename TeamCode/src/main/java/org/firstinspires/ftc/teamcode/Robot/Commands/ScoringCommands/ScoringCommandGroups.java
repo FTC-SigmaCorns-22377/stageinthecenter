@@ -145,14 +145,18 @@ public class ScoringCommandGroups {
     }
 
     public Command score(){
-        return setClaw(Output.ClawState.OPEN);
+
+        return setClaw(Output.ClawState.POSTSCORE);
     }
 
     public Command postScore(){
         return setTransfer(Intake.TransferState.INTAKE)
                 .addNext(setSlides(Slides.SlideHeight.L0))
                 .addNext(setArm(Output.ArmState.TRANSFER))
-                .addNext(setClaw(Output.ClawState.OPEN));
+                .addNext(setClaw(Output.ClawState.OPEN))
+                .addNext(setWrist(Output.WristState.DEG0));
+
+
     }
 
     public Command postScore5(){
