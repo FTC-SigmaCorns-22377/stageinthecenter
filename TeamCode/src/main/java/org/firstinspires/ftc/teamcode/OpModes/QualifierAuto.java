@@ -67,12 +67,12 @@ public class QualifierAuto extends BaseAuto {
                 .build();
 
         Command auto = commandGroups.setArm(Output.ArmState.SCORE);
-        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.MID));
+        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.L2));
         auto.addNext(followRR(trajectory1));
         auto.addNext(commandGroups.setClaw(Output.ClawState.OPEN));
         auto.addNext(followRR(trajectory2));
         auto.addNext(commandGroups.setArm(Output.ArmState.TRANSFER));
-        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.LOW));
+        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.L0));
 
         return auto;
     }

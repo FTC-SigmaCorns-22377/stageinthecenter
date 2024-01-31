@@ -26,8 +26,8 @@ public class Output extends Subsystem {
     Servo clawBlack;
 
     public static double WRIST_ZERO = 0.95;
-    public static double ARM_SCORE_VALUE = 0.75;
-    public static double ARM_TRANSFER_VALUE = 0.18;
+    public static double ARM_SCORE_VALUE = 0.7;
+    public static double ARM_TRANSFER_VALUE = 0.205;
 
     public void initCommon(HardwareMap hwMap) {
         armLeft = hwMap.get(Servo.class, "armLeft");
@@ -68,11 +68,11 @@ public class Output extends Subsystem {
         switch (armState) {
             case TRANSFER:
                 armLeft.setPosition(ARM_TRANSFER_VALUE+0.01);
-                armRight.setPosition(ARM_SCORE_VALUE);
+                armRight.setPosition(1 - ARM_TRANSFER_VALUE);
                 break;
             case SCORE:
                 armLeft.setPosition(ARM_SCORE_VALUE+0.01);
-                armRight.setPosition(ARM_TRANSFER_VALUE);
+                armRight.setPosition(1 - ARM_SCORE_VALUE);
                 break;
         }
 
@@ -115,7 +115,7 @@ public class Output extends Subsystem {
                 clawPurple.setPosition(0.70);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.74);
+                clawPurple.setPosition(0.77);
                 break;
         }
     }
@@ -125,7 +125,7 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.28);
+                clawBlack.setPosition(0.26);
                 break;
             case CLOSED:
                 clawBlack.setPosition(0.20);

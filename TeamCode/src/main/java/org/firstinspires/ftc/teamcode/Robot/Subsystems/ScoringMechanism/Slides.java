@@ -52,7 +52,7 @@ public class Slides extends Subsystem {
 
     private double velocityInchesPerSecond = 0;
 
-    private SlideHeight slideHeight = SlideHeight.LOW;
+    private SlideHeight slideHeight = SlideHeight.L0;
 
     public void commonInit(HardwareMap hwMap) {
         vertical1 = hwMap.get(DcMotorEx.class, "slides1");
@@ -116,20 +116,23 @@ public class Slides extends Subsystem {
 
     private void updateTarget() {
         switch (slideHeight) {
-            case LOW:
+            case L0:
                 slideTargetPosition = IN_POSITION;
                 break;
-            case LOWMID:
+            case L1:
                 slideTargetPosition = 2;
                 break;
-            case MID:
+            case L2:
                 slideTargetPosition = 8;
                 break;
-            case HIGH:
+            case L3:
                 slideTargetPosition = 12;
                 break;
-            case HIGHER:
+            case L4:
                 slideTargetPosition = 16;
+                break;
+            case L5:
+                slideTargetPosition = 20;
                 break;
         }
 
@@ -235,12 +238,13 @@ public class Slides extends Subsystem {
 
 
     public enum SlideHeight {
-        LOW,
-        LOWMID,
-        MID,
+        L0,
+        L1,
+        L2,
 
-        HIGH,
-        HIGHER
+        L3,
+        L4,
+        L5
     }
 
 }
