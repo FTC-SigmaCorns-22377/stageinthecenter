@@ -25,7 +25,11 @@ public class Output extends Subsystem {
     Servo clawPurple;
     Servo clawBlack;
 
-    public static double WRIST_ZERO = 0.95;
+    public static double WRIST_ZERO = 0.728;
+    public static double WRIST_ONE = 0.56;
+    public static double WRIST_TWO = 0.85;
+    public static double WRIST_THREE = 0.17;
+
     public static double ARM_SCORE_VALUE = 0.75;
     public static double ARM_TRANSFER_VALUE = 0.25;
     public static double LEFT_OFFSET = 0.006;
@@ -91,13 +95,13 @@ public class Output extends Subsystem {
                 wrist.setPosition(WRIST_ZERO);
                 break;
             case DEG60:
-                wrist.setPosition(WRIST_ZERO - 1. / 6);
+                wrist.setPosition(WRIST_ONE);
                 break;
             case DEG120:
-                wrist.setPosition(WRIST_ZERO - 2. / 6);
+                wrist.setPosition(WRIST_TWO);
                 break;
             case DEG180:
-                wrist.setPosition(WRIST_ZERO - 3. / 6);
+                wrist.setPosition(WRIST_THREE);
                 break;
             case DEG240:
                 wrist.setPosition(WRIST_ZERO - 4. / 6);
@@ -105,6 +109,10 @@ public class Output extends Subsystem {
             case DEG300:
                 wrist.setPosition(WRIST_ZERO - 5. / 6);
                 break;
+            case DEG360:
+                wrist.setPosition(0);
+                break;
+
         }
     }
 
@@ -145,7 +153,8 @@ public class Output extends Subsystem {
         DEG120,
         DEG180,
         DEG240,
-        DEG300
+        DEG300,
+        DEG360
     }
 
     public enum ClawState {
