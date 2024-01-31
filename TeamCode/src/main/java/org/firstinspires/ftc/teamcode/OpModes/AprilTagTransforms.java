@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 import android.annotation.SuppressLint;
+import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -154,8 +155,8 @@ public class AprilTagTransforms extends LinearOpMode {
 
             // == CAMERA CALIBRATION ==
             // If you do not manually specify calibration parameters, the SDK will attempt
-            // to load a predefined calibration for your camera.
-//                .setLensIntrinsics(1.43024281e+03, 1.42898689e+03, 9.60603975e+02, 5.60364362e+02)
+            // to load a predefined calibration for your camera
+                .setLensIntrinsics(1.43024281e+03, 1.42898689e+03, 9.60603975e+02, 5.60364362e+02)
 
             // ... these parameters are fx, fy, cx, cy.
                 .build();
@@ -181,7 +182,7 @@ public class AprilTagTransforms extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(1920,1080));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
         //builder.enableLiveView(true);
@@ -252,9 +253,8 @@ public class AprilTagTransforms extends LinearOpMode {
                         .strokeRect(-cameraPosition.get(0) + 2.5, -cameraPosition.get(1) + 2.5, 5, 5)
                         .setStroke("red")
                         .strokeRect(detection.metadata.fieldPosition.get(0) -2.5, detection.metadata.fieldPosition.get(1) - 2.5, 5, 5);
-
-
-            } else {
+            }
+            else {
                 packet.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 packet.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
