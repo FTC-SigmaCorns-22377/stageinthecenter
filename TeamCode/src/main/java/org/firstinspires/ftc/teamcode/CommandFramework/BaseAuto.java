@@ -33,12 +33,12 @@ public abstract class BaseAuto extends LinearOpMode {
         waitForStart();
 
         System.out.println("randomization side");
-        while (!isStarted()) {
-            randomizationSide = robot.randomization.getRandomizationSide();
-            telemetry.addData("randomization", randomizationSide.name());
-            telemetry.update();
-        }
-        robot.randomization.closePortal();
+//        while (!isStarted()) {
+//            randomizationSide = robot.randomization.getRandomizationSide();
+//            telemetry.addData("randomization", randomizationSide.name());
+//            telemetry.update();
+//        }
+//        robot.randomization.closePortal();
 
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
