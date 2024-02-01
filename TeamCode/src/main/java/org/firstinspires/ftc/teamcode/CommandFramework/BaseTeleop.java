@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
+import org.firstinspires.ftc.teamcode.Utils.Park;
 
 public abstract class BaseTeleop extends LinearOpMode {
 
@@ -19,7 +20,7 @@ public abstract class BaseTeleop extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(hardwareMap, Robot.OpMode.Teleop, gamepad1, gamepad2, getTeam(), getSide());
+        robot = new Robot(hardwareMap, Robot.OpMode.Teleop, gamepad1, gamepad2, getTeam(), getSide(), getPark());
         setRobotPosition();
 
         waitForStart();
@@ -60,4 +61,6 @@ public abstract class BaseTeleop extends LinearOpMode {
     public Side getSide() {
         return Side.NOT_ASSIGNED;
     }
+
+    public Park getPark() { return Park.NOT_ASSIGNED; }
 }
