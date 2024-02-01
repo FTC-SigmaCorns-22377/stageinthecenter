@@ -71,6 +71,20 @@ public class Randomization extends Subsystem {
 }
 
 
+class Data {
+    Rect leftrect;
+    Rect centerrect;
+    Rect rightrect;
+
+    RandomizationSide randomization;
+
+    public Data(Rect leftrect, Rect centerrect, Rect rightrect, RandomizationSide randomization) {
+        this.leftrect = leftrect;
+        this.centerrect = centerrect;
+        this.rightrect = rightrect;
+        this.randomization = randomization;
+    }
+}
 
 
 class PropDetector implements VisionProcessor {
@@ -165,30 +179,97 @@ class PropDetector implements VisionProcessor {
             }
         }
         */
-        return leftrect;
+        Data data = new Data(leftrect, centerrect, rightrect, randomization);
+        return data;
     }
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
 
-        if (userContext instanceof Rect) {
-            Rect rect = (Rect) userContext;
+//        if (userContext instanceof Rect) {
+//            Rect rect = (Rect) userContext;
+//
+//            // Calculate the scaling factors
+//            float scaleX = (float) onscreenWidth / width;
+//            float scaleY = (float) onscreenHeight / height;
+//
+//            Paint paint = new Paint();
+//            paint.setColor(Color.GREEN); // Use Color.GREEN for the color constant
+//            paint.setStyle(Paint.Style.STROKE);
+//            paint.setStrokeWidth(3 * scaleCanvasDensity); // Adjust stroke width for screen density
+//
+//            // Scale and draw the rectangle
+//            canvas.drawRect(
+//                    rect.x * scaleX,
+//                    rect.y * scaleY,
+//                    (rect.x + rect.width) * scaleX,
+//                    (rect.y + rect.height) * scaleY,
+//                    paint
+//            );
+//
+//            // Optionally, draw position information
+//            paint.setColor(Color.RED); // Use Color.RED for the color constant
+//            paint.setTextSize(40 * scaleCanvasDensity); // Adjust text size for screen density
+//
+//            // Determine the position to draw the text
+//            float textX = rect.x * scaleX;
+//            float textY = (rect.y + rect.height + 40) * scaleY; // Adjust to draw below the rectangle
+//
+//            canvas.drawText(randomization.name(), textX, textY, paint);
+//        }
+
+        if (userContext instanceof Data) {
+            Data data = (Data) userContext;
 
             // Calculate the scaling factors
             float scaleX = (float) onscreenWidth / width;
             float scaleY = (float) onscreenHeight / height;
 
             Paint paint = new Paint();
-            paint.setColor(Color.GREEN); // Use Color.GREEN for the color constant
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(3 * scaleCanvasDensity); // Adjust stroke width for screen density
 
+            if (data.randomization == RandomizationSide.LEFT) {
+                paint.setColor(Color.GREEN);
+            } else {
+                paint.setColor(Color.RED);
+            }
+
             // Scale and draw the rectangle
             canvas.drawRect(
-                    rect.x * scaleX,
-                    rect.y * scaleY,
-                    (rect.x + rect.width) * scaleX,
-                    (rect.y + rect.height) * scaleY,
+                    data.leftrect.x * scaleX,
+                    data.leftrect.y * scaleY,
+                    (data.leftrect.x + data.leftrect.width) * scaleX,
+                    (data.leftrect.y + data.leftrect.height) * scaleY,
+                    paint
+            );
+
+            if (data.randomization == RandomizationSide.CENTER) {
+                paint.setColor(Color.GREEN);
+            } else {
+                paint.setColor(Color.RED);
+            }
+
+            canvas.drawRect(
+                    data.centerrect.x * scaleX,
+                    data.centerrect.y * scaleY,
+                    (data.centerrect.x + data.centerrect.width) * scaleX,
+                    (data.centerrect.y + data.centerrect.height) * scaleY,
+                    paint
+            );
+
+            if (data.randomization == RandomizationSide.RIGHT) {
+                paint.setColor(Color.GREEN);
+            } else {
+                paint.setColor(Color.RED);
+            }
+
+
+            canvas.drawRect(
+                    data.rightrect.x * scaleX,
+                    data.rightrect.y * scaleY,
+                    (data.rightrect.x + data.rightrect.width) * scaleX,
+                    (data.rightrect.y + data.rightrect.height) * scaleY,
                     paint
             );
 
@@ -197,10 +278,10 @@ class PropDetector implements VisionProcessor {
             paint.setTextSize(40 * scaleCanvasDensity); // Adjust text size for screen density
 
             // Determine the position to draw the text
-            float textX = rect.x * scaleX;
-            float textY = (rect.y + rect.height + 40) * scaleY; // Adjust to draw below the rectangle
+            float textX = data.leftrect.x * scaleX;
+            float textY = (data.leftrect.y + data.leftrect.height + 40) * scaleY; // Adjust to draw below the rectangle
 
-            canvas.drawText(randomization.name(), textX, textY, paint);
+            canvas.drawText(data.randomization.name(), textX, textY, paint);
         }
     }
 
