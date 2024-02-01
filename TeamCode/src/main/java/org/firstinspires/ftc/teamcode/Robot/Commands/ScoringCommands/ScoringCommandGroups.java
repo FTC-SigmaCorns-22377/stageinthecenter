@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMo
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.MoveSlides;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetArm;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClaw;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetWrist;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawBlack;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClawPurple;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetTransfer;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.MainScoringMechanism;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
+
 
 
 public class ScoringCommandGroups {
@@ -81,11 +83,11 @@ public class ScoringCommandGroups {
 //    }
 
     public Command slidesDown() {
-        return setSlides(Slides.SlideHeight.LOW);
+        return setSlides(Slides.SlideHeight.L0);
     }
 
     public Command slidesUp() {
-        return setSlides(Slides.SlideHeight.MID);
+        return setSlides(Slides.SlideHeight.L2);
     }
 
     public Command moveSlides(double inc){
@@ -97,28 +99,24 @@ public class ScoringCommandGroups {
         return new SetArm(output, armState);
     }
 
-    /*public SetHang setHang(){
-        return new SetHang()
-    }*/
-    public SetClawPurple setClawPurple(Output.ClawState clawPurpleStates) {
-        return new SetClawPurple(output, clawPurpleStates);
-    }
-    public SetClawBlack setClawBlack(Output.ClawState clawBlackStates) {
-        return new SetClawBlack(output, clawBlackStates);
-    }
-
     public SetClaw setClaw(Output.ClawState clawStates) {
         return new SetClaw(output, clawStates);
     }
-
-//    public SetDrone setDrone(Drone.DroneStates droneStates) { return new SetDrone(drone, droneStates); }
-    //public SetHang setHang(Double power) { return new SetHang(hang, power); }
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
     public SetTransfer setTransfer(Intake.TransferState transferState) {
-        return new SetTransfer(intake, transferState); }
+        return new SetTransfer(intake, transferState);
+    }
 
     public SetTransferSafe setTransferSafe(Intake.TransferState transferState){
         return new SetTransferSafe(intake, transferState, output, output.getArmState());
+    }
+
+    public Command newSetTransfer(Intake.TransferState transferState){
+        return new SetTransfer(intake, transferState)
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(slidesDown())
+                .addNext(setClaw(Output.ClawState.OPEN));
+
     }
 
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
@@ -134,25 +132,49 @@ public class ScoringCommandGroups {
     }*/
     public Command intakePos(){
         return intakeDown()
-                .addNext((setSlides(Slides.SlideHeight.LOW)))
+                .addNext((setSlides(Slides.SlideHeight.L0)))
                 .addNext(setArm(Output.ArmState.TRANSFER))
                 .addNext(setClaw(Output.ClawState.OPEN));
     }
 
     public Command transferPos(){
         return intakeUp()
-                .addNext(setSlides(Slides.SlideHeight.LOW))
+                .addNext(setSlides(Slides.SlideHeight.L0))
                 .addNext(setArm(Output.ArmState.TRANSFER));
                 //.addNext(setClaw(Output.ClawState.CLOSED));
     }
 
     public Command score(){
-        return setClaw(Output.ClawState.OPEN);
+
+        return setClaw(Output.ClawState.POSTSCORE);
     }
 
     public Command postScore(){
-        return setTransfer(Intake.TransferState.INTAKE)
-                .addNext(setSlides(Slides.SlideHeight.LOW))
+        return setTransfer(Intake.TransferState.TRAVEL)
+                .addNext(setSlides(Slides.SlideHeight.L0))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.OPEN))
+                .addNext(setWrist(Output.WristState.DEG0));
+
+
+    }
+
+    public Command Intake(){
+        return setTransfer(Intake.TransferState.INTAKE);
+
+
+    }
+
+    public Command postScore5(){
+        return setTransfer(Intake.TransferState.FIVE)
+                .addNext(setSlides(Slides.SlideHeight.L0))
+                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setClaw(Output.ClawState.OPEN));
+    }
+
+    public Command postScore3(){
+        return setTransfer(Intake.TransferState.THREE)
+                .addNext(setSlides(Slides.SlideHeight.L0))
                 .addNext(setArm(Output.ArmState.TRANSFER))
                 .addNext(setClaw(Output.ClawState.OPEN));
     }
@@ -163,10 +185,20 @@ public class ScoringCommandGroups {
 
     public Command scorePos(){
         return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.MID))
+                .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 
     }
-//    public SetWrist setWrist(Output.WristStates wristStates) { return new SetWrist(output, wristStates); }
+
+
+
+    public Command autoscorePos(){
+        return setClaw(Output.ClawState.CLOSED)
+                .addNext(setSlides(Slides.SlideHeight.L1))
+                .addNext(setArm(Output.ArmState.SCORE))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+
+    }
+    public SetWrist setWrist(Output.WristState wristStates) { return new SetWrist(output, wristStates); }
 }

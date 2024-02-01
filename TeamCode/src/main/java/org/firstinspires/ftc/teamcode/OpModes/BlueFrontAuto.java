@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
 @Autonomous
-
 public class BlueFrontAuto extends PerseveranceAuto{
     @Override
     public Team getTeam() {

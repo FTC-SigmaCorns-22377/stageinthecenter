@@ -4,23 +4,38 @@ import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.I
 import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.TransferState.TRANSFER;
 import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake.RollerState.OFF;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.Utils.ProfiledServo;
+
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
+@Config
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 0.7;
     public static double TRANSFER_DROP_INTAKE_VALUE = 0.22;
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
-    public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.2;
+    public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
+    public static double TRANSFER_FIVE_DROP_VALUE = 0.12;
+    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.92;
+    public static double TRANSFER_THREE_DROP_VALUE = 0.16;
+    public static double TRANSFER_THREE_ANGLE_VALUE = 0.97;
+
+
+
+    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.65;
+
+    public static double ARM_IN_COLLECT = 0;
     DcMotorEx roller;
     Servo rollerDropLeft;
     Servo rollerDropRight;
+//    ProfiledServo transferAngle;
     Servo transferAngle;
     Servo linkage;
 
@@ -32,7 +47,15 @@ public class Intake extends Subsystem {
         roller = hwMap.get(DcMotorEx.class, "roller");
         rollerDropLeft = hwMap.get(Servo.class, "rollerDropLeft");
         rollerDropRight = hwMap.get(Servo.class, "rollerDropRight");
+        double velocityForward = 0.8; //percent/s
+        double accelForward = 1; // percent/s^2
+
+        double velocityBackward = 0.5;
+        double accelBackward = 0.7;
+
+//        transferAngle = new ProfiledServo(hwMap, "holder",velocityForward,accelForward * 1.5,accelForward / 2,velocityBackward,accelBackward * 1.5,accelBackward / 2,ARM_IN_COLLECT);
         transferAngle = hwMap.get(Servo.class, "holder");
+
         linkage = hwMap.get(Servo.class, "linkage");
 
         roller.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -84,7 +107,42 @@ public class Intake extends Subsystem {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
                     rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.63);
+                    linkage.setPosition(LINKAGE_FINAL_VALUE_TRANSFER);
+
+                } else {
+                    linkage.setPosition(0.85);
+                    transferAngle.setPosition(TRANSFER_ANGLE_TRANSFER_VALUE);
+                }
+                break;
+            case FIVE:
+                if (transferTimer.seconds() > 0.2) {
+                    linkage.setPosition(0.95);
+                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.85);
+                } else {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE);
+                }
+                break;
+
+            case THREE:
+                if (transferTimer.seconds() > 0.2) {
+                    linkage.setPosition(0.95);
+                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.85);
+                } else {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE);
+                }
+                break;
+            case TRAVEL:
+                if (transferTimer.seconds() > 0.2) {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.95);
 
                 } else {
                     linkage.setPosition(0.85);
@@ -92,6 +150,11 @@ public class Intake extends Subsystem {
                 }
                 break;
         }
+        updateProfiledServos();
+    }
+
+    protected void updateProfiledServos() {
+//        transferAngle.periodic();
     }
 
     @Override
@@ -132,6 +195,9 @@ public class Intake extends Subsystem {
 
     public enum TransferState {
         INTAKE,
-        TRANSFER
+        TRANSFER,
+        THREE,
+        FIVE,
+        TRAVEL
     }
 }

@@ -25,9 +25,15 @@ public class Output extends Subsystem {
     Servo clawPurple;
     Servo clawBlack;
 
-    public static double WRIST_ZERO = 0.95;
-    public static double ARM_SCORE_VALUE = 0.75;
-    public static double ARM_TRANSFER_VALUE = 0.18;
+    public static double WRIST_ZERO = 0.728;
+    public static double WRIST_ONE = 0.56;
+    public static double WRIST_TWO = 0.85;
+    public static double WRIST_THREE = 0.17;
+
+
+    public static double ARM_SCORE_VALUE = 0.77;
+    public static double ARM_TRANSFER_VALUE = 0.245;
+    public static double LEFT_OFFSET = 0.006;
 
     public void initCommon(HardwareMap hwMap) {
         armLeft = hwMap.get(Servo.class, "armLeft");
@@ -67,12 +73,12 @@ public class Output extends Subsystem {
         this.armState = armState;
         switch (armState) {
             case TRANSFER:
-                armLeft.setPosition(ARM_TRANSFER_VALUE+0.01);
-                armRight.setPosition(ARM_SCORE_VALUE);
+                armLeft.setPosition(ARM_TRANSFER_VALUE+LEFT_OFFSET);
+                armRight.setPosition(1-ARM_TRANSFER_VALUE);
                 break;
             case SCORE:
-                armLeft.setPosition(ARM_SCORE_VALUE+0.01);
-                armRight.setPosition(ARM_TRANSFER_VALUE);
+                armLeft.setPosition(ARM_SCORE_VALUE+LEFT_OFFSET);
+                armRight.setPosition(1-ARM_SCORE_VALUE);
                 break;
         }
 
@@ -90,13 +96,13 @@ public class Output extends Subsystem {
                 wrist.setPosition(WRIST_ZERO);
                 break;
             case DEG60:
-                wrist.setPosition(WRIST_ZERO - 1./6);
+                wrist.setPosition(WRIST_ONE);
                 break;
             case DEG120:
-                wrist.setPosition(WRIST_ZERO - 2./6);
+                wrist.setPosition(WRIST_TWO);
                 break;
             case DEG180:
-                wrist.setPosition(WRIST_ZERO - 3./6);
+                wrist.setPosition(WRIST_THREE);
                 break;
             case DEG240:
                 wrist.setPosition(WRIST_ZERO - 4./6);
@@ -104,6 +110,10 @@ public class Output extends Subsystem {
             case DEG300:
                 wrist.setPosition(WRIST_ZERO - 5./6);
                 break;
+            case DEG360:
+                wrist.setPosition(0);
+                break;
+
         }
     }
 
@@ -112,10 +122,13 @@ public class Output extends Subsystem {
         this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
-                clawPurple.setPosition(0.70);
+                clawPurple.setPosition(0.705);
                 break;
             case CLOSED:
                 clawPurple.setPosition(0.78);
+                break;
+            case POSTSCORE:
+                clawPurple.setPosition(0.66);
                 break;
         }
     }
@@ -125,17 +138,21 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.24);
+                clawBlack.setPosition(0.255);
                 break;
             case CLOSED:
                 clawBlack.setPosition(0.20);
+                break;
+            case POSTSCORE:
+                clawBlack.setPosition(0.28);
                 break;
         }
     }
 
     public enum ArmState {
         TRANSFER,
-        SCORE
+        SCORE,
+        POST
     }
 
     public enum WristState {
@@ -144,12 +161,14 @@ public class Output extends Subsystem {
         DEG120,
         DEG180,
         DEG240,
-        DEG300
+        DEG300,
+        DEG360
     }
 
     public enum ClawState {
         OPEN,
-        CLOSED
+        CLOSED,
+        POSTSCORE
     }
 
 }

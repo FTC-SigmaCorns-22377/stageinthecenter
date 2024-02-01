@@ -90,6 +90,8 @@ class PropDetector implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
+        frame = frame.submat(frame.height()/2, frame.height(), 0, frame.width());
+
         System.out.println("processed frame");
         Mat hsvImage = new Mat();
         Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_BGR2HSV);

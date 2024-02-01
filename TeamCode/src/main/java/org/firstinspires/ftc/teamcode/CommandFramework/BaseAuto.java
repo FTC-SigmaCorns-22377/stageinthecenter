@@ -22,13 +22,15 @@ public abstract class BaseAuto extends LinearOpMode {
 
     protected Robot robot;
 
-    protected RandomizationSide randomizationSide = RandomizationSide.CENTER;
+    protected RandomizationSide randomizationSide = RandomizationSide.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide());
         setRobotPosition();
+
+        waitForStart();
 
         System.out.println("randomization side");
         while (!isStarted()) {

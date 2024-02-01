@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.Roadrunn
 
 @Autonomous
 public class DriveForward extends BaseAuto {
-    Pose2d startPose = new Pose2d(0,0,0);
+    Pose2d startPose = new Pose2d(0,0,-0.5 * Math.PI);
 
     @Override
     public void setRobotPosition() {
@@ -21,7 +21,7 @@ public class DriveForward extends BaseAuto {
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
         return new RoadrunnerTrajectoryFollower(robot, robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-            .splineTo(new Vector2d(30, 30), 0)
+            .lineToLinearHeading(new Pose2d(50, 50, -0.5 * Math.PI))
             .build()
         );
     }
