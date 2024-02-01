@@ -11,9 +11,11 @@ import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.DelayedCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.Randomization;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
+import org.firstinspires.ftc.teamcode.Utils.RandomizationSide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +24,19 @@ import java.util.List;
 public class PerseveranceAuto extends BaseAuto {
 
     // Robot Parameters
-    final Double robotLength = 17.008;
-    final Double distToRollerTip = 17.0;
-    final Double distToBackdropBase = 1.75;
+    public static double robotLength = 17.008;
+    public static double distToRollerTip = 17.0;
+    public static double distToBackdropBase = 0.75;
 
     // Calculated Field Parameters
-    final Double startY = 71.25 - 0.5 * robotLength;
-    final Double intakeX = -69.75 + distToRollerTip;
-    final Double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
+    public static double startY = 71.25 - 0.5 * robotLength;
+    public static double intakeX = -69.75 + distToRollerTip;
+    public static double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
 
     // Dynamic Points
     Pose2d startPose = new Pose2d(0, 0, 0);
-    Pose2d spikeMark = new Pose2d(0, 0, 0);
+    Vector2d spikeMark = new Vector2d(0, 0);
+    double spikeHeading = 0;
     Vector2d intakeJunction = new Vector2d(0, 0);
     Vector2d stack1 = new Vector2d(0, 0);
     Vector2d stack2 = new Vector2d(0, 0);
@@ -52,12 +55,19 @@ public class PerseveranceAuto extends BaseAuto {
                     default:
                         startPose = new Pose2d(11.875, startY, -0.5 * Math.PI);
                         break;
+                    case BACK:
+                        startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
+                        break;
                 }
                 break;
             case RED:
                 break;
         }
         robot.drivetrain.setPose(startPose);
+    }
+
+    public RandomizationSide getRandomization() {
+        return RandomizationSide.CENTER;
     }
 
     @Override
@@ -69,34 +79,37 @@ public class PerseveranceAuto extends BaseAuto {
                 }
                 switch (getSide()) {
                     case FRONT:
-                        switch (randomizationSide) {
+                        switch (getRandomization()) {
                             case LEFT:
-                                spikeMark = new Pose2d(23.75, 35.75 + 0.5 * robotLength, -0.5 * Math.PI);
+                                spikeMark = new Vector2d(25, 35.75 + 0.5 * robotLength);
+                                spikeHeading = -0.5 * Math.PI;
                                 intakeJunction = new Vector2d(-29.688, 5.3125);
                                 stack1 = new Vector2d(intakeX, 5.3125);
                                 outputJunction = new Vector2d(35.625, 5.3125);
-                                randomizationSlot = 8;
+                                randomizationSlot = 9;
                                 outputSlot1 = 5;
                                 outputSlot2 = 1;
                                 outputSlot3 = 0;
                                 break;
                             default:
-                                spikeMark = new Pose2d(11.875, 24.75 + 0.5 * robotLength, -0.5 * Math.PI);
+                                spikeMark = new Vector2d(11.875, 24.75 + 0.5 * robotLength);
+                                spikeHeading = -0.5 * Math.PI;
                                 intakeJunction = new Vector2d(-35.625, 35.625);
                                 stack1 = new Vector2d(intakeX, 35.625);
                                 stack2 = new Vector2d(intakeX, 15);
                                 outputJunction = new Vector2d(11.875, 35.625);
-                                randomizationSlot = 4;
+                                randomizationSlot = 5;
                                 outputSlot1 = 9;
                                 outputSlot2 = 1;
                                 outputSlot3 = 0;
                                 break;
                             case RIGHT:
-                                spikeMark = new Pose2d(1 + 0.5 * robotLength, 28.125, Math.PI);
+                                spikeMark = new Vector2d(1 + 0.5 * robotLength, 28.125);
+                                spikeHeading = Math.PI;
                                 intakeJunction = new Vector2d(-29.688, 11.875);
                                 stack1 = new Vector2d(intakeX, 11.875);
                                 outputJunction = new Vector2d(23.75, 11.875);
-                                randomizationSlot = 0;
+                                randomizationSlot = 1;
                                 outputSlot1 = 5;
                                 outputSlot2 = 9;
                                 outputSlot3 = 0;
@@ -104,8 +117,7 @@ public class PerseveranceAuto extends BaseAuto {
                         }
                         break;
                     case BACK:
-                        startPose = new Pose2d(-35.625, startY, -0.5 * Math.PI);
-                        switch (randomizationSide) {
+                        switch (getRandomization()) {
                             case LEFT:
                                 break;
                             case CENTER:
@@ -123,12 +135,12 @@ public class PerseveranceAuto extends BaseAuto {
         ScoringCommandGroups commandGroups = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
         Trajectory purple = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                .lineToLinearHeading(spikeMark)
+                .splineTo(spikeMark, spikeHeading)
                 .build();
 
         Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end())
                 .back(1)
-                .splineToConstantHeading(backdropSlots.get(randomizationSlot), 0)
+                .splineTo(backdropSlots.get(randomizationSlot), 0)
                 .build();
 
         Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
@@ -167,51 +179,26 @@ public class PerseveranceAuto extends BaseAuto {
                 .splineToConstantHeading(backdropSlots.get(outputSlot3), 0)
                 .build();
 
+
+        Trajectory parkCenterStart = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
+                .forward(3)
+                .build();
+
+        Trajectory parkCenterFinish = robot.drivetrain.getBuilder().trajectoryBuilder(parkCenterStart.end())
+                .lineTo(new Vector2d(outputX, 10))
+                .build();
+
+
         Command auto = followRR(purple);
         auto.addNext(new MultipleCommand(followRR(yellow),
                 new DelayedCommand(0.5, new MultipleCommand(
                         commandGroups.setArm(Output.ArmState.SCORE),
-                        commandGroups.setSlides(Slides.SlideHeight.L1)
-                ))
-        ));
+                        commandGroups.setSlides(Slides.SlideHeight.L0)
+                ))));
         auto.addNext(commandGroups.score());
+        auto.addNext(followRR(parkCenterStart));
         auto.addNext(commandGroups.postScore());
-        auto.addNext(followRR(intake1));
-        auto.addNext(commandGroups.postScore());
-        auto.addNext(commandGroups.rollerOn());
-        auto.addNext(wait(3.0));
-        auto.addNext(commandGroups.rollerOff());
-        auto.addNext(commandGroups.transferPos());
-        auto.addNext(new MultipleCommand(followRR(output1),
-                new DelayedCommand(1.0, commandGroups.setClaw(Output.ClawState.CLOSED)),
-                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.L1))));
-        auto.addNext(commandGroups.score());
-//        auto.addNext(commandGroups.postScore());
-//        auto.addNext(followRR(intake2));
-//        auto.addNext(commandGroups.postScore());
-//        auto.addNext(commandGroups.rollerOn());
-//        auto.addNext(wait(3.0));
-//        auto.addNext(commandGroups.rollerOff());
-//        auto.addNext(commandGroups.transferPos());
-//        auto.addNext(new MultipleCommand(followRR(output2),
-//                new DelayedCommand(0.5, commandGroups.setClaw(Output.ClawState.CLOSED)),
-//                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-//                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
-//        auto.addNext(commandGroups.score());
-//        auto.addNext(wait(0.5));
-//        auto.addNext(commandGroups.postScore());
-//        auto.addNext(followRR(intake3));
-//        auto.addNext(commandGroups.postScore());
-//        auto.addNext(commandGroups.rollerOn());
-//        auto.addNext(wait(3.0));
-//        auto.addNext(commandGroups.rollerOff());
-//        auto.addNext(commandGroups.transferPos());
-//        auto.addNext(new MultipleCommand(followRR(output3),
-//                new DelayedCommand(0.5, commandGroups.setClaw(Output.ClawState.CLOSED)),
-//                new DelayedCommand(1.5, commandGroups.setArm(Output.ArmState.SCORE)),
-//                new DelayedCommand(1.5, commandGroups.setSlides(Slides.SlideHeight.LOWMID))));
-//        auto.addNext(commandGroups.score());
+        auto.addNext(followRR(parkCenterFinish));
 
         return auto;
     }
