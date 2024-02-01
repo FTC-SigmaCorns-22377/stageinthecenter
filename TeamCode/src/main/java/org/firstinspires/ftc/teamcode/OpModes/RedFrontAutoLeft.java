@@ -7,10 +7,10 @@ import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
 @Autonomous
-public class BlueFrontAutoRight extends PerseveranceAuto{
+public class RedFrontAutoLeft extends FrontAuto {
     @Override
     public Team getTeam() {
-        return Team.BLUE;
+        return Team.RED;
     }
     public Side getSide() {
         return Side.FRONT;
@@ -18,6 +18,6 @@ public class BlueFrontAutoRight extends PerseveranceAuto{
 
     @Override
     public RandomizationSide getRandomization() {
-        return RandomizationSide.RIGHT;
+        return RandomizationSide.LEFT;
     }
 }

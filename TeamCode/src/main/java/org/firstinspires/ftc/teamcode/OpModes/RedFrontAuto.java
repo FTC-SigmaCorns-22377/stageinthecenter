@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Utils.Team;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 
 @Autonomous
-public class RedFrontAuto extends PerseveranceAuto{
+public class RedFrontAuto extends FrontAuto {
     @Override
     public Team getTeam() {
         return Team.RED;

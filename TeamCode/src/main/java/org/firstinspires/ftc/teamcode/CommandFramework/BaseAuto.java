@@ -22,7 +22,7 @@ public abstract class BaseAuto extends LinearOpMode {
 
     protected Robot robot;
 
-    protected RandomizationSide randomizationSide = RandomizationSide.LEFT;
+    protected RandomizationSide randomizationSide = RandomizationSide.CENTER;
 
     @Override
     public void runOpMode() throws InterruptedException {
