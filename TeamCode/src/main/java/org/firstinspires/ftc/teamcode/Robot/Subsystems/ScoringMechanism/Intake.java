@@ -137,6 +137,18 @@ public class Intake extends Subsystem {
                     rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE);
                 }
                 break;
+            case TRAVEL:
+                if (transferTimer.seconds() > 0.2) {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.95);
+
+                } else {
+                    linkage.setPosition(0.85);
+                    transferAngle.setPosition(TRANSFER_ANGLE_TRANSFER_VALUE);
+                }
+                break;
         }
         updateProfiledServos();
     }
@@ -185,6 +197,7 @@ public class Intake extends Subsystem {
         INTAKE,
         TRANSFER,
         THREE,
-        FIVE
+        FIVE,
+        TRAVEL
     }
 }

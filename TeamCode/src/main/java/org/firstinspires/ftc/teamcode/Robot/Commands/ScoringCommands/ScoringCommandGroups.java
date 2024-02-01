@@ -150,11 +150,17 @@ public class ScoringCommandGroups {
     }
 
     public Command postScore(){
-        return setTransfer(Intake.TransferState.INTAKE)
+        return setTransfer(Intake.TransferState.TRAVEL)
                 .addNext(setSlides(Slides.SlideHeight.L0))
                 .addNext(setArm(Output.ArmState.TRANSFER))
                 .addNext(setClaw(Output.ClawState.OPEN))
                 .addNext(setWrist(Output.WristState.DEG0));
+
+
+    }
+
+    public Command Intake(){
+        return setTransfer(Intake.TransferState.INTAKE);
 
 
     }
@@ -179,7 +185,7 @@ public class ScoringCommandGroups {
 
     public Command scorePos(){
         return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.L2))
+                .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 

@@ -30,7 +30,7 @@ public class Output extends Subsystem {
     public static double WRIST_TWO = 0.85;
     public static double WRIST_THREE = 0.17;
 
-    public static double ARM_SCORE_VALUE = 0.75;
+    public static double ARM_SCORE_VALUE = 0.77;
     public static double ARM_TRANSFER_VALUE = 0.245;
     public static double LEFT_OFFSET = 0.006;
 
@@ -127,7 +127,7 @@ public class Output extends Subsystem {
                 clawPurple.setPosition(0.78);
                 break;
             case POSTSCORE:
-                clawPurple.setPosition(0.62);
+                clawPurple.setPosition(0.66);
                 break;
         }
     }
@@ -143,14 +143,15 @@ public class Output extends Subsystem {
                 clawBlack.setPosition(0.20);
                 break;
             case POSTSCORE:
-                clawBlack.setPosition(0.305);
+                clawBlack.setPosition(0.28);
                 break;
         }
     }
 
     public enum ArmState {
         TRANSFER,
-        SCORE
+        SCORE,
+        POST
     }
 
     public enum WristState {

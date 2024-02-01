@@ -21,20 +21,20 @@ public class Teleop extends BaseTeleop {
 
 //        robot.gamepad1.whenDPadDownPressed(commandGroups.slidesDown());
         //robot.gamepad1.whenDPadUpPressed();
-        robot.gamepad1.whenDPadLeftPressed(commandGroups.slidesDown());
-        robot.gamepad1.whenDPadRightPressed(commandGroups.slidesUp());
+        //robot.gamepad1.whenDPadLeftPressed(commandGroups.slidesDown());
+        //robot.gamepad1.whenDPadRightPressed(commandGroups.slidesUp());
         robot.gamepad1.whenRightBumperPressed(commandGroups.rollerOn());
         robot.gamepad1.whenRightBumperLifted(commandGroups.rollerOff());
         robot.gamepad1.whenLeftBumperPressed(commandGroups.rollerReverse());
         robot.gamepad1.whenLeftBumperLifted(commandGroups.rollerOff());
         //robot.gamepad1.whenCirclePressed(commandGroups.setArm(Output.ArmState.TRANSFER));
-        robot.gamepad1.whenCirclePressed(commandGroups.transferPos());
+        //robot.gamepad1.whenCirclePressed(commandGroups.transferPos());
         robot.gamepad1.whenSquarePressed(commandGroups.newSetTransfer(Intake.TransferState.FIVE));
         //robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
-        robot.gamepad1.whenTrianglePressed(commandGroups.newSetTransfer(Intake.TransferState.THREE));
+        robot.gamepad1.whenTrianglePressed(commandGroups.Intake());
         robot.gamepad1.whenCrossPressed(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
-        robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
-        robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
+        //robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
+        //robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
         robot.gamepad1.whenRightTriggerPressed(commandGroups.score());
         robot.gamepad1.whenDPadDownPressed(commandGroups.postScore());
 //        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
