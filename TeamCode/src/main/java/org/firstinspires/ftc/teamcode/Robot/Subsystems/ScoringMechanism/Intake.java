@@ -29,7 +29,7 @@ public class Intake extends Subsystem {
 
 
 
-    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.65;
+    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.62;
 
     public static double ARM_IN_COLLECT = 0;
     DcMotorEx roller;
