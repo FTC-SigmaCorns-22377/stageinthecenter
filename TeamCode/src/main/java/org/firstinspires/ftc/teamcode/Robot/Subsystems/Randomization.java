@@ -111,33 +111,17 @@ class PropDetector implements VisionProcessor {
         Mat hsvImage = new Mat();
         Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_BGR2HSV);
 
-        /*
-        Scalar lower = null;
-        Scalar upper = null;
-        switch (team) {
-            case BLUE:
-                lower = new Scalar(93, 144, 0);
-                upper = new Scalar(139, 255, 255);
-                break;
-            default:
-                lower = new Scalar(0, 63, 70);
-                upper = new Scalar(179, 255, 210);
-                break;
-        }*/
+        /*Rect leftrect = new Rect(0, 185, 100, 100);
+        Rect centerrect = new Rect(230, 170, 160, 100);
+        Rect rightrect = new Rect(550, 185, 88, 100);*/
 
+        Rect leftrect = new Rect(20, 227, 30, 30);
+        Rect centerrect = new Rect(290, 222, 40, 30);
+        Rect rightrect = new Rect(590, 227, 30, 30);
 
-        //Mat mask = new Mat();
-
-        // Create a mask for red color
-        //Core.inRange(hsvImage, lower, upper, mask);
-
-        Rect leftrect = new Rect(0, 85, 80, 30);
-        Rect centerrect = new Rect(120, 85, 80, 30);
-        Rect rightrect = new Rect(240, 85, 80, 30);
-
-        Double leftvalue = mean(new Mat(hsvImage, leftrect)).val[2];
-        Double centervalue = mean(new Mat(hsvImage, centerrect)).val[2];
-        Double rightvalue = mean(new Mat(hsvImage, rightrect)).val[2];
+        Double leftvalue = mean(new Mat(hsvImage, leftrect)).val[1];
+        Double centervalue = mean(new Mat(hsvImage, centerrect)).val[1];
+        Double rightvalue = mean(new Mat(hsvImage, rightrect)).val[1];
 
         if (leftvalue > rightvalue && leftvalue > centervalue){
             randomization = RandomizationSide.LEFT;
@@ -149,36 +133,6 @@ class PropDetector implements VisionProcessor {
             randomization = RandomizationSide.CENTER;
         }
 
-        /*
-        // Find contours
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        // Find the largest contour
-        double maxArea = 0;
-        Rect largestRect = null;
-        for (MatOfPoint contour : contours) {
-            double area = Imgproc.contourArea(contour);
-            if (area > maxArea) {
-                maxArea = area;
-                largestRect = Imgproc.boundingRect(contour);
-            }
-        }
-
-        if (largestRect != null) {
-            int centerX = largestRect.x + largestRect.width / 2;
-            int third = frame.width() / 3;
-
-            if (centerX < third) {
-                randomization = RandomizationSide.LEFT;
-            } else if (centerX > 2 * third) {
-                randomization = RandomizationSide.RIGHT;
-            } else {
-                randomization = RandomizationSide.CENTER;
-            }
-        }
-        */
         Data data = new Data(leftrect, centerrect, rightrect, randomization);
         return data;
     }

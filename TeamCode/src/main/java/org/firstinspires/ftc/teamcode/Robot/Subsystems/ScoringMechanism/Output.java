@@ -71,8 +71,8 @@ public class Output extends Subsystem {
                 armRight.setPosition(ARM_SCORE_VALUE);
                 break;
             case SCORE:
-                armLeft.setPosition(ARM_SCORE_VALUE+0.01);
-                armRight.setPosition(ARM_TRANSFER_VALUE);
+                armLeft.setPosition(ARM_SCORE_VALUE+0.01-0.05);
+                armRight.setPosition(ARM_TRANSFER_VALUE+0.05);
                 break;
         }
 
