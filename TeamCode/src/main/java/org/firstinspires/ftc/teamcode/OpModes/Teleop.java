@@ -31,7 +31,6 @@ public class Teleop extends BaseTeleop {
         //robot.gamepad1.whenCirclePressed(commandGroups.transferPos());
         robot.gamepad1.whenSquarePressed(commandGroups.newSetTransfer(Intake.TransferState.FIVE));
         //robot.gamepad1.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.INTAKE));
-        robot.gamepad1.whenTrianglePressed(commandGroups.Intake());
         robot.gamepad1.whenCrossPressed(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
         //robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
         //robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
@@ -47,6 +46,8 @@ public class Teleop extends BaseTeleop {
         robot.gamepad2.whenLeftBumperPressed(commandGroups.hangReverse());
         robot.gamepad2.whenLeftBumperLifted(commandGroups.hangOff());
         robot.gamepad2.whenLeftTriggerPressed(commandGroups.scorePos());
+        robot.gamepad2.whenRightTriggerPressed(commandGroups.Intake());
+
 
         //robot.gamepad2.whenLeftTriggerLifted()
         //robot.gamepad2.whenRightTriggerPressed(commandGroups.setWrist(Output.WristState.DEG120));
