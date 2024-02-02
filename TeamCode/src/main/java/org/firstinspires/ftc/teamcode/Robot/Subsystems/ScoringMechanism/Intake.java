@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 @Config
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 0.7;
-    public static double TRANSFER_DROP_INTAKE_VALUE = 0.09;
+    public static double TRANSFER_DROP_INTAKE_VALUE = 0.06;
     public static double TRANSFER_DROP_TRANSFER_VALUE = -0.25;
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
