@@ -33,12 +33,12 @@ public abstract class BaseAuto extends LinearOpMode {
 
         System.out.println("randomization side");
         while (!isStarted()) {
-         //   randomizationSide = robot.randomization.getRandomizationSide();
-            randomizationSide = RandomizationSide.CENTER;
+            randomizationSide = robot.randomization.getRandomizationSide();
+          //  randomizationSide = RandomizationSide.CENTER;
             telemetry.addData("randomization", randomizationSide.name());
             telemetry.update();
         }
-        //robot.randomization.closePortal();
+        robot.randomization.closePortal();
 
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
@@ -75,7 +75,7 @@ public abstract class BaseAuto extends LinearOpMode {
     }
 
     public RandomizationSide getRandomization() {
-        return RandomizationSide.CENTER;
+        return getRandomization();
     }
 
     public Team getTeam() {

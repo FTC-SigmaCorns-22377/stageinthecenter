@@ -23,6 +23,8 @@ public class FieldRelative extends Command {
         this.game_pad1 = game_pad1;
     }
 
+
+
     @Override
     public void init() {
 
