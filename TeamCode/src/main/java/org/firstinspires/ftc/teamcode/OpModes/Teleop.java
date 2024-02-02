@@ -21,8 +21,8 @@ public class Teleop extends BaseTeleop {
 
 //        robot.gamepad1.whenDPadDownPressed(commandGroups.slidesDown());
         //robot.gamepad1.whenDPadUpPressed();
-        //robot.gamepad1.whenDPadLeftPressed(commandGroups.slidesDown());
-        //robot.gamepad1.whenDPadRightPressed(commandGroups.slidesUp());
+        robot.gamepad1.whenDPadLeftPressed(commandGroups.blackscore());
+        robot.gamepad1.whenDPadRightPressed(commandGroups.purplescore());
         robot.gamepad1.whenRightBumperPressed(commandGroups.rollerOn());
         robot.gamepad1.whenRightBumperLifted(commandGroups.rollerOff());
         robot.gamepad1.whenLeftBumperPressed(commandGroups.rollerReverse());

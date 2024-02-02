@@ -102,6 +102,7 @@ public class ScoringCommandGroups {
     public SetClaw setClaw(Output.ClawState clawStates) {
         return new SetClaw(output, clawStates);
     }
+
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
     public SetTransfer setTransfer(Intake.TransferState transferState) {
         return new SetTransfer(intake, transferState);
@@ -146,7 +147,15 @@ public class ScoringCommandGroups {
 
     public Command score(){
 
-        return setClaw(Output.ClawState.POSTSCORE);
+        return setClaw(Output.ClawState.BOTHPOSTSCORE);
+    }
+    public Command blackscore(){
+
+        return setClaw(Output.ClawState.BLACKPOSTSCORE);
+    }
+    public Command purplescore(){
+
+        return setClaw(Output.ClawState.PURPLEPOSTSCORE);
     }
 
     public Command postScore(){
