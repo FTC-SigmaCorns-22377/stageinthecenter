@@ -125,7 +125,7 @@ public class Output extends Subsystem {
                 clawPurple.setPosition(0.705);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.785);
+                clawPurple.setPosition(0.79);
                 break;
             case POSTSCORE:
                 clawPurple.setPosition(0.66);
