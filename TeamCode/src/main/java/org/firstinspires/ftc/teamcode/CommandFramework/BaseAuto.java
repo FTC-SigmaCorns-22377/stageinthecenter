@@ -36,6 +36,7 @@ public abstract class BaseAuto extends LinearOpMode {
             telemetry.addData("randomization", randomizationSide.name());
             telemetry.update();
         }
+
         robot.randomization.closePortal();
 
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));

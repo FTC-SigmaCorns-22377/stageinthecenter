@@ -67,7 +67,7 @@ public class PerseveranceAuto extends BaseAuto {
     }
 
     public RandomizationSide getRandomization() {
-        return RandomizationSide.CENTER;
+        return randomizationSide;
     }
 
     @Override
