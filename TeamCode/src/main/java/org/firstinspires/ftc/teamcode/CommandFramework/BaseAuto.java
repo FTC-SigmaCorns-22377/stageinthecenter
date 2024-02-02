@@ -75,7 +75,7 @@ public abstract class BaseAuto extends LinearOpMode {
     }
 
     public RandomizationSide getRandomization() {
-        return getRandomization();
+        return randomizationSide;
     }
 
     public Team getTeam() {
