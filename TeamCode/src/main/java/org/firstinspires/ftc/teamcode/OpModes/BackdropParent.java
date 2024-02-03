@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.DelayedCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
@@ -25,7 +26,7 @@ public class BackdropParent extends BaseAuto {
 
     // Calculated Field Parameters
     public static double startY = 71.25 - 0.5 * robotLength;
-    public static double intakeX = -69.75 + distToRollerTip;
+    public static double intakeX = -68 + distToRollerTip;
     public static double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
 
     // Dynamic Points
@@ -64,14 +65,14 @@ public class BackdropParent extends BaseAuto {
                 for (int i = -5; i <= 5; i++) {
                     backdropSlots.add(new Vector2d(outputX, 35.625 + 1.5 * i));
                 }
+                intakeJunction = new Vector2d(-29.688, 8);
+                stack1 = new Vector2d(intakeX, 8);
+                outputJunction = new Vector2d(35.625, 8);
                 switch (getRandomization()) {
                     case LEFT:
                         spikeDelta = 1;
                         spikeMark = new Vector2d(25, 35.75 + 0.5 * robotLength);
                         spikeHeading = -0.5 * Math.PI;
-                        intakeJunction = new Vector2d(-29.688, 5.3125);
-                        stack1 = new Vector2d(intakeX, 5.3125);
-                        outputJunction = new Vector2d(35.625, 5.3125);
                         randomizationSlot = 9;
                         outputSlot1 = 5;
                         outputSlot2 = 1;
@@ -81,10 +82,6 @@ public class BackdropParent extends BaseAuto {
                         spikeDelta = 1;
                         spikeMark = new Vector2d(11.875, 24.75 + 0.5 * robotLength);
                         spikeHeading = -0.5 * Math.PI;
-                        intakeJunction = new Vector2d(-35.625, 35.625);
-                        stack1 = new Vector2d(intakeX, 35.625);
-                        stack2 = new Vector2d(intakeX, 15);
-                        outputJunction = new Vector2d(11.875, 35.625);
                         randomizationSlot = 5;
                         outputSlot1 = 9;
                         outputSlot2 = 1;
@@ -94,9 +91,6 @@ public class BackdropParent extends BaseAuto {
                         spikeDelta = 5;
                         spikeMark = new Vector2d(1 + 0.5 * robotLength, 35.75);
                         spikeHeading = Math.PI;
-                        intakeJunction = new Vector2d(-29.688, 11.875);
-                        stack1 = new Vector2d(intakeX, 11.875);
-                        outputJunction = new Vector2d(23.75, 11.875);
                         randomizationSlot = 1;
                         outputSlot1 = 5;
                         outputSlot2 = 9;
@@ -121,9 +115,6 @@ public class BackdropParent extends BaseAuto {
                         spikeDelta = 1;
                         spikeMark = new Vector2d(25, -35.75 - 0.5 * robotLength);
                         spikeHeading = 0.5 * Math.PI;
-                        intakeJunction = new Vector2d(-29.688, -5.3125);
-                        stack1 = new Vector2d(intakeX, -5.3125);
-                        outputJunction = new Vector2d(35.625, -5.3125);
                         randomizationSlot = 1;
                         outputSlot1 = 5;
                         outputSlot2 = 1;
@@ -133,10 +124,6 @@ public class BackdropParent extends BaseAuto {
                         spikeDelta = 1;
                         spikeMark = new Vector2d(11.875, -24.75 - 0.5 * robotLength);
                         spikeHeading = 0.5 * Math.PI;
-                        intakeJunction = new Vector2d(-35.625, -35.625);
-                        stack1 = new Vector2d(intakeX, -35.625);
-                        stack2 = new Vector2d(intakeX, -15);
-                        outputJunction = new Vector2d(11.875, -35.625);
                         randomizationSlot = 5;
                         outputSlot1 = 9;
                         outputSlot2 = 1;
@@ -146,9 +133,6 @@ public class BackdropParent extends BaseAuto {
                         spikeDelta = 5;
                         spikeMark = new Vector2d(1 + 0.5 * robotLength, -35.75);
                         spikeHeading = Math.PI;
-                        intakeJunction = new Vector2d(-29.688, -11.875);
-                        stack1 = new Vector2d(intakeX, -11.875);
-                        outputJunction = new Vector2d(23.75, -11.875);
                         randomizationSlot = 9;
                         outputSlot1 = 5;
                         outputSlot2 = 9;
@@ -178,7 +162,11 @@ public class BackdropParent extends BaseAuto {
                 .splineTo(backdropSlots.get(randomizationSlot), 0)
                 .build();
 
-        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
+        Trajectory back0 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
+                .forward(6)
+                .build();
+
+        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(back0.end())
                 .forward(1)
                 .splineToConstantHeading(outputJunction, Math.PI)
                 .lineTo(stack1)
@@ -189,7 +177,11 @@ public class BackdropParent extends BaseAuto {
                 .splineToConstantHeading(backdropSlots.get(outputSlot1), 0)
                 .build();
 
-        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
+        Trajectory back1 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
+                .forward(6)
+                .build();
+
+        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(back1.end())
                 .forward(1)
                 .splineToConstantHeading(outputJunction, Math.PI)
                 .lineTo(stack1)
@@ -198,6 +190,10 @@ public class BackdropParent extends BaseAuto {
         Trajectory output2 = robot.drivetrain.getBuilder().trajectoryBuilder(intake2.end())
                 .lineTo(outputJunction)
                 .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
+                .build();
+
+        Trajectory back2 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
+                .forward(6)
                 .build();
 
         Trajectory intake3 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
@@ -214,23 +210,47 @@ public class BackdropParent extends BaseAuto {
                 .splineToConstantHeading(backdropSlots.get(outputSlot3), 0)
                 .build();
 
-        Trajectory back = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
-                .forward(3)
+        Trajectory driftOffset = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
+                .forward(5)
                 .build();
 
-        Trajectory park = robot.drivetrain.getBuilder().trajectoryBuilder(back.end())
+        Trajectory park = robot.drivetrain.getBuilder().trajectoryBuilder(back2.end())
                 .lineTo(parkPos)
                 .build();
 
         Command auto = followRR(purple);
-        auto.addNext(new MultipleCommand(followRR(yellow),
-                new DelayedCommand(0.5, new MultipleCommand(
-                        commandGroups.setArm(Output.ArmState.SCORE),
-                        commandGroups.setSlides(Slides.SlideHeight.L0)
-                ))));
+        auto.addNext(commandGroups.scorePos());
+        auto.addNext(followRR(yellow));
         auto.addNext(commandGroups.score());
-        auto.addNext(followRR(back));
+        auto.addNext(followRR(back0));
         auto.addNext(commandGroups.postScore());
+        auto.addNext(followRR(intake1));
+        auto.addNext(followRR(driftOffset));
+        auto.addNext(commandGroups.postScore5());
+        auto.addNext(wait(1.0));
+        auto.addNext(commandGroups.rollerOn());
+        auto.addNext(wait(2.0));
+        auto.addNext(commandGroups.rollerOff());
+        auto.addNext(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
+        auto.addNext(followRR(output1));
+        auto.addNext(commandGroups.scorePos());
+        auto.addNext(wait(1.0));
+        auto.addNext(commandGroups.score());
+        auto.addNext(followRR(back1));
+        auto.addNext(commandGroups.postScore());
+        auto.addNext(followRR(intake2));
+        auto.addNext(followRR(driftOffset));
+        auto.addNext(commandGroups.postScore3());
+        auto.addNext(wait(1.0));
+        auto.addNext(commandGroups.rollerOn());
+        auto.addNext(wait(2.0));
+        auto.addNext(commandGroups.rollerOff());
+        auto.addNext(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
+        auto.addNext(followRR(output2));
+        auto.addNext(commandGroups.scorePos());
+        auto.addNext(wait(1.0));
+        auto.addNext(commandGroups.score());
+        auto.addNext(followRR(back2));
         auto.addNext(followRR(park));
 
         return auto;

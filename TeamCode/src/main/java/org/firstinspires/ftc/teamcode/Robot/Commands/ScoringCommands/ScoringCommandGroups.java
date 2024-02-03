@@ -197,14 +197,5 @@ public class ScoringCommandGroups {
 
     }
 
-
-
-    public Command autoscorePos(){
-        return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.L1))
-                .addNext(setArm(Output.ArmState.SCORE))
-                .addNext(setClaw(Output.ClawState.CLOSED));
-
-    }
     public SetWrist setWrist(Output.WristState wristStates) { return new SetWrist(output, wristStates); }
 }

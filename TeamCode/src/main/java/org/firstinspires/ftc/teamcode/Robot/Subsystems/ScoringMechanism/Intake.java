@@ -126,26 +126,26 @@ public class Intake extends Subsystem {
                 }
                 break;
             case FIVE:
-                if (transferTimer.seconds() > 0.2) {
+                if (transferTimer.seconds() > 0.3) {
                     linkage.setPosition(0.95);
-                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
-                } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.85);
-                } else {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE_LEFT);
                     rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE_RIGHT);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.75);
+                } else {
+                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
                 }
                 break;
 
             case THREE:
-                if (transferTimer.seconds() > 0.2) {
+                if (transferTimer.seconds() > 0.3) {
                     linkage.setPosition(0.95);
-                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
-                } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.85);
-                } else {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE_LEFT);
                     rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE_RIGHT);
+                } else if (transferTimer.seconds() > 0.1) {
+                    linkage.setPosition(0.75);
+                } else {
+                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
                 }
                 break;
             case TRAVEL:
