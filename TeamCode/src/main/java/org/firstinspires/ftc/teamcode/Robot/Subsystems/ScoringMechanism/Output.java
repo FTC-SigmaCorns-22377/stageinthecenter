@@ -122,16 +122,16 @@ public class Output extends Subsystem {
         this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
-                clawPurple.setPosition(0.735);
+                clawPurple.setPosition(0.732);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.815);
+                clawPurple.setPosition(0.814);
                 break;
             case BOTHPOSTSCORE:
-                clawPurple.setPosition(0.69);
+                clawPurple.setPosition(0.68);
                 break;
             case PURPLEPOSTSCORE:
-                clawPurple.setPosition(0.69);
+                clawPurple.setPosition(0.68);
         }
     }
 
@@ -140,16 +140,16 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.255);
+                clawBlack.setPosition(0.269);
                 break;
             case CLOSED:
-                clawBlack.setPosition(0.205);
+                clawBlack.setPosition(0.217);
                 break;
             case BOTHPOSTSCORE:
-                clawBlack.setPosition(0.28);
+                clawBlack.setPosition(0.292);
                 break;
             case BLACKPOSTSCORE:
-                clawBlack.setPosition(0.28);
+                clawBlack.setPosition(0.292);
         }
     }
 
