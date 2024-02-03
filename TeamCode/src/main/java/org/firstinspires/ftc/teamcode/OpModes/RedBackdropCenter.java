@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
 @Autonomous
-public class RedBackdropCenter extends BackdropParent {
+public class RedBackdropCenter extends BackdropParentRed {
     @Override
     public Team getTeam() {
         return Team.RED;

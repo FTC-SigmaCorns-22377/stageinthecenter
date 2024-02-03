@@ -86,10 +86,6 @@ public class ScoringCommandGroups {
         return setSlides(Slides.SlideHeight.L0);
     }
 
-    public Command slidesUp() {
-        return setSlides(Slides.SlideHeight.L2);
-    }
-
     public Command moveSlides(double inc){
         return new MoveSlides(slides, inc);
     }
@@ -191,7 +187,7 @@ public class ScoringCommandGroups {
 
     public Command scorePos(){
         return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.L1))
+                .addNext(setSlides(Slides.SlideHeight.L0))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 
