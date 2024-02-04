@@ -187,7 +187,7 @@ public class ScoringCommandGroups {
 
     public Command scorePos(){
         return setClaw(Output.ClawState.CLOSED)
-                .addNext(setSlides(Slides.SlideHeight.L0))
+                .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 

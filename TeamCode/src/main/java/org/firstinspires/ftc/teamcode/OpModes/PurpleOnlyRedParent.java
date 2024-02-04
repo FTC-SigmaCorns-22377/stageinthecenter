@@ -8,13 +8,11 @@ import org.firstinspires.ftc.teamcode.CommandFramework.BaseAuto;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
-import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
-import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackdropParentRed extends BaseAuto {
+public class PurpleOnlyRedParent extends BaseAuto {
 
     // Robot Parameters
     public static double robotLength = 17.008;
@@ -105,10 +103,10 @@ public class BackdropParentRed extends BaseAuto {
                 break;
             case RED:
                 for (int i = -5; i <= 5; i++) {
-                    backdropSlots.add(new Vector2d(outputX, -32.625 + 1.5 * i));
+                    backdropSlots.add(new Vector2d(outputX, -35.625 + 1.5 * i));
                 }
-                intakeJunction = new Vector2d(-29.688, -15);
-                stack1 = new Vector2d(intakeX+4, -11);
+                intakeJunction = new Vector2d(-29.688, -12);
+                stack1 = new Vector2d(intakeX+4, -12);
                 outputJunction = new Vector2d(35.625, -6.5);
                 switch (getRandomization()) {
                     case RIGHT:
@@ -133,7 +131,7 @@ public class BackdropParentRed extends BaseAuto {
                         spikeDelta = 5;
                         spikeMark = new Vector2d( 0.5 * robotLength+2, -35.75);
                         spikeHeading = Math.PI;
-                        randomizationSlot = 7;
+                        randomizationSlot = 9;
                         outputSlot1 = 5;
                         outputSlot2 = 9;
                         outputSlot3 = 0;
@@ -157,90 +155,90 @@ public class BackdropParentRed extends BaseAuto {
                 .splineTo(spikeMark, spikeHeading)
                 .build();
 
-        Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end())
-                .back(1)
-                .splineTo(backdropSlots.get(randomizationSlot), 0)
-                .build();
-
-        Trajectory back0 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
-                .forward(4)
-                .build();
-
-        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(back0.end())
-                .forward(1)
-                .splineToConstantHeading(outputJunction.minus(new Vector2d(0,-4)), Math.PI)
-                .splineToConstantHeading(stack1.plus(new Vector2d(-1, 1)), Math.PI)
-                .build();
-
-        Trajectory output1 = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
-                .lineTo(outputJunction)
-                .splineToConstantHeading(backdropSlots.get(outputSlot1).minus(new Vector2d(16, 16)), 0)
-                .build();
-
-        Trajectory back1 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
-                .forward(6)
-                .build();
-
-//        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(back1.end())
-//                .forward(1)
-//                .splineToConstantHeading(outputJunction, Math.PI)
-//                .lineTo(stack1)
-//                .build();
-
-//        Trajectory output2 = robot.drivetrain.getBuilder().trajectoryBuilder(intake2.end())
-//                .lineTo(outputJunction)
-//                .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
+//        Trajectory yellow = robot.drivetrain.getBuilder().trajectoryBuilder(purple.end())
+//                .back(1)
+//                .splineTo(backdropSlots.get(randomizationSlot), 0)
 //                .build();
 //
-//        Trajectory back2 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
+//        Trajectory back0 = robot.drivetrain.getBuilder().trajectoryBuilder(yellow.end())
+//                .forward(4)
+//                .build();
+//
+//        Trajectory intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(back0.end())
+//                .forward(1)
+//                .splineToConstantHeading(outputJunction.minus(new Vector2d(0,-4)), Math.PI)
+//                .splineToConstantHeading(stack1.plus(new Vector2d(-1, 1)), Math.PI)
+//                .build();
+//
+//        Trajectory output1 = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
+//                .lineTo(outputJunction)
+//                .splineToConstantHeading(backdropSlots.get(outputSlot1).minus(new Vector2d(16, 16)), 0)
+//                .build();
+//
+//        Trajectory back1 = robot.drivetrain.getBuilder().trajectoryBuilder(output1.end())
 //                .forward(6)
 //                .build();
 //
-//        Trajectory intake3 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
-//                .forward(1)
-//                .splineToConstantHeading(outputJunction, Math.PI)
-//                .lineTo(intakeJunction)
-//                .splineToConstantHeading(stack2, Math.PI)
+////        Trajectory intake2 = robot.drivetrain.getBuilder().trajectoryBuilder(back1.end())
+////                .forward(1)
+////                .splineToConstantHeading(outputJunction, Math.PI)
+////                .lineTo(stack1)
+////                .build();
+//
+////        Trajectory output2 = robot.drivetrain.getBuilder().trajectoryBuilder(intake2.end())
+////                .lineTo(outputJunction)
+////                .splineToConstantHeading(backdropSlots.get(outputSlot2), 0)
+////                .build();
+////
+////        Trajectory back2 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
+////                .forward(6)
+////                .build();
+////
+////        Trajectory intake3 = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
+////                .forward(1)
+////                .splineToConstantHeading(outputJunction, Math.PI)
+////                .lineTo(intakeJunction)
+////                .splineToConstantHeading(stack2, Math.PI)
+////                .build();
+////
+////        Trajectory output3 = robot.drivetrain.getBuilder().trajectoryBuilder(intake3.end())
+////                .back(1)
+////                .splineToConstantHeading(intakeJunction, 0)
+////                .lineTo(outputJunction)
+////                .splineToConstantHeading(backdropSlots.get(outputSlot3), 0)
+////                .build();
+//
+//        Trajectory driftOffset = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
+//                .forward(5)
 //                .build();
 //
-//        Trajectory output3 = robot.drivetrain.getBuilder().trajectoryBuilder(intake3.end())
-//                .back(1)
-//                .splineToConstantHeading(intakeJunction, 0)
-//                .lineTo(outputJunction)
-//                .splineToConstantHeading(backdropSlots.get(outputSlot3), 0)
+//        Trajectory park = robot.drivetrain.getBuilder().trajectoryBuilder(back1.end())
+//                .splineTo(parkPos, Math.PI)
 //                .build();
 
-        Trajectory driftOffset = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
-                .forward(5)
-                .build();
-
-        Trajectory park = robot.drivetrain.getBuilder().trajectoryBuilder(back1.end())
-                .splineTo(parkPos, Math.PI)
-                .build();
-
         Command auto = followRR(purple);
-        auto.addNext(commandGroups.scorePos());
-        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.HALF));
-        auto.addNext(followRR(yellow));
-        auto.addNext(commandGroups.score());
-        auto.addNext(followRR(back0));
-        auto.addNext(commandGroups.postScore());
-        auto.addNext(followRR(intake1));
-        auto.addNext(followRR(driftOffset));
-        auto.addNext(commandGroups.postScore5());
-        auto.addNext(wait(1.0));
-        auto.addNext(commandGroups.rollerOn());
-        auto.addNext(wait(2.0));
-        auto.addNext(followRR(output1));
-        auto.addNext(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
-        auto.addNext(commandGroups.rollerOff());
-        auto.addNext(wait(1.75));
-        auto.addNext(commandGroups.scorePos());
-        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.L5));
-        auto.addNext(wait(1.0));
-        auto.addNext(commandGroups.score());
-        auto.addNext(followRR(back1));
-        auto.addNext(commandGroups.postScore());
+//        auto.addNext(commandGroups.scorePos());
+//        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.HALF));
+//        auto.addNext(followRR(yellow));
+//        auto.addNext(commandGroups.score());
+//        auto.addNext(followRR(back0));
+//        auto.addNext(commandGroups.postScore());
+//        auto.addNext(followRR(intake1));
+//        auto.addNext(followRR(driftOffset));
+//        auto.addNext(commandGroups.postScore5());
+//        auto.addNext(wait(1.0));
+//        auto.addNext(commandGroups.rollerOn());
+//        auto.addNext(wait(2.0));
+//        auto.addNext(followRR(output1));
+//        auto.addNext(commandGroups.newSetTransfer(Intake.TransferState.TRANSFER));
+//        auto.addNext(commandGroups.rollerOff());
+//        auto.addNext(wait(1.75));
+//        auto.addNext(commandGroups.scorePos());
+//        auto.addNext(commandGroups.setSlides(Slides.SlideHeight.L2));
+//        auto.addNext(wait(1.0));
+//        auto.addNext(commandGroups.score());
+//        auto.addNext(followRR(back1));
+//        auto.addNext(commandGroups.postScore());
       //  auto.addNext(followRR(intake2));
       //  auto.addNext(followRR(driftOffset));
       //  auto.addNext(commandGroups.postScore3());
