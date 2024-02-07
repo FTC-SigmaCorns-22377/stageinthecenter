@@ -143,7 +143,8 @@ public class ScoringCommandGroups {
 
     public Command score(){
 
-        return setClaw(Output.ClawState.BOTHPOSTSCORE);
+        return setClaw(Output.ClawState.BOTHPOSTSCORE)
+                .addNext(setArm(Output.ArmState.POST));
     }
     public Command blackscore(){
 

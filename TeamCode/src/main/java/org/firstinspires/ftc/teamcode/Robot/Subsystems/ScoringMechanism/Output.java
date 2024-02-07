@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.O
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
@@ -24,6 +25,8 @@ public class Output extends Subsystem {
     Servo wrist;
     Servo clawPurple;
     Servo clawBlack;
+    ElapsedTime scoreTime = new ElapsedTime();
+
 
     public static double WRIST_ZERO = 0.728;
     public static double WRIST_ONE = 0.56;
@@ -33,6 +36,7 @@ public class Output extends Subsystem {
 
     public static double ARM_SCORE_VALUE = 0.77;
     public static double ARM_TRANSFER_VALUE = 0.245;
+    public static double ARM_POST_VALUE = 0.82;
     public static double LEFT_OFFSET = 0.006;
 
     public void initCommon(HardwareMap hwMap) {
@@ -80,6 +84,12 @@ public class Output extends Subsystem {
                 armLeft.setPosition(ARM_SCORE_VALUE+LEFT_OFFSET);
                 armRight.setPosition(1-ARM_SCORE_VALUE);
                 break;
+            case POST:
+                if (scoreTime.seconds() > 0.4) {
+                    armLeft.setPosition(ARM_POST_VALUE+LEFT_OFFSET);
+                    armRight.setPosition(1-ARM_POST_VALUE);
+                }
+
         }
 
 
