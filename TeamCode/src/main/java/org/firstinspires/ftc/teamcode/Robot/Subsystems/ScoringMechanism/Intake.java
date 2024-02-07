@@ -18,25 +18,28 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 @Config
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 0.7;
-    public static double TRANSFER_DROP_INTAKE_VALUE_LEFT = 0.09;
-    public static double TRANSFER_DROP_INTAKE_VALUE_RIGHT = 0.12;
+    public static double TRANSFER_DROP_INTAKE_VALUE_LEFT = 0.13;
+    public static double TRANSFER_DROP_INTAKE_VALUE_RIGHT = 0.07;
 
-    public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.35;
-    public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.28;
+    public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.19;
+    public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.27;
 
 
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
-    public static double TRANSFER_FIVE_DROP_VALUE_LEFT = 0.02;
-    public static double TRANSFER_FIVE_DROP_VALUE_RIGHT = 0.05;
-    public static double TRANSFER_FOUR_DROP_VALUE_LEFT = 0.04;
-    public static double TRANSFER_FOUR_DROP_VALUE_RIGHT = 0.07;
+    public static double TRANSFER_FIVE_DROP_VALUE_LEFT = 0.07;
+    public static double TRANSFER_FIVE_DROP_VALUE_RIGHT = 0.01;
+    public static double TRANSFER_FOUR_DROP_VALUE_LEFT = 0.09;
+    public static double TRANSFER_FOUR_DROP_VALUE_RIGHT = 0.03;
 
-    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.92; //works for 4
-    public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.05;
-    public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.08;
+    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.915;
 
-    public static double TRANSFER_THREE_ANGLE_VALUE = 0.95;
+    public static double TRANSFER_FOUR_ANGLE_VALUE = 0.94;
+
+    public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.11;
+    public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.05;
+
+    public static double TRANSFER_THREE_ANGLE_VALUE = 0.98;
     public static double TRANSFER_ANGLE_TRAVEL_VALUE = 0.1;
 
 
@@ -129,7 +132,7 @@ public class Intake extends Subsystem {
                 break;
             case FIVE:
                 if (transferTimer.seconds() > 0.3) {
-                    linkage.setPosition(0.95);
+                    linkage.setPosition(1);
                     rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE_LEFT);
                     rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
@@ -144,9 +147,9 @@ public class Intake extends Subsystem {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_FOUR_DROP_VALUE_LEFT);
                     rollerDropRight.setPosition(0.5 - TRANSFER_FOUR_DROP_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.75);
+                   // linkage.setPosition(0.75);
                 } else {
-                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
+                    transferAngle.setPosition(TRANSFER_FOUR_ANGLE_VALUE);
                 }
                 break;
 
@@ -157,7 +160,7 @@ public class Intake extends Subsystem {
                     rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE_LEFT);
                     rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.75);
+                   // linkage.setPosition(0.75);
                 } else {
                     transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
                 }
