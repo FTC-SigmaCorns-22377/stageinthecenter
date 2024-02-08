@@ -5,8 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.CommandFramework.BaseTeleop;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.FieldRelative;
+import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.ResetHeading;
 import org.firstinspires.ftc.teamcode.Robot.Commands.DrivetrainCommands.RobotRelative;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SlideOverride;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Output;
@@ -61,6 +64,8 @@ public class Teleop extends BaseTeleop {
         robot.gamepad2.whenCrossPressed(commandGroups.setWrist(Output.WristState.DEG0));
         //robot.gamepad2.whenTrianglePressed(commandGroups.setTransfer(Intake.TransferState.THREE));
 
-        return new MultipleCommand(new RobotRelative(robot, robot.gamepad1));
+        robot.gamepad1.whenRightStickButtonPressed(new ResetHeading(robot));
+
+        return new MultipleCommand(new FieldRelative(robot, robot.gamepad1), new SlideOverride(robot,robot.gamepad2));
     }
 }

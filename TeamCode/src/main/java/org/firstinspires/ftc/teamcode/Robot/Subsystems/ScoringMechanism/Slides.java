@@ -34,6 +34,7 @@ public class Slides extends Subsystem {
 
     public static double DISTANCE_FOR_CONE = 8; // 9 inches or less means we still have the cone
 
+    protected double slideOverrideModifier = 0;
     protected double slideTargetPosition = 0;
     protected double Kg = 0; // 0.09499 TODO: TUNE
     DcMotorEx vertical1;
@@ -138,6 +139,11 @@ public class Slides extends Subsystem {
                 slideTargetPosition = 12;
                 break;
         }
+//        slideTargetPosition += slideOverrideModifier;
+//        if (slideTargetPosition < 0) {
+//            slideTargetPosition = 0;
+//        }
+
 
     }
 
@@ -197,11 +203,9 @@ public class Slides extends Subsystem {
     public double getSlideTargetPosition() {
         return slideTargetPosition;
     }
-    public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
 
-    public void setSlideTargetPosition(Double increment){
-        this.slideTargetPosition = slideTargetPosition + increment;
-    }
+    public void setSlideOverrideModifier(double overrideModifier) { this.slideOverrideModifier = overrideModifier; }
+    public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
 
     public double getPIDTargetInches() {
         return controller.getTargetPosition();
