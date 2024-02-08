@@ -127,16 +127,16 @@ public class Slides extends Subsystem {
                 slideTargetPosition = 2;
                 break;
             case L2:
-                slideTargetPosition = 3;
-                break;
-            case L3:
                 slideTargetPosition = 5;
                 break;
+            case L3:
+                slideTargetPosition = 9;
+                break;
             case L4:
-                slideTargetPosition = 8;
+                slideTargetPosition = 13;
                 break;
             case L5:
-                slideTargetPosition = 12;
+                slideTargetPosition = 18;
                 break;
         }
 //        slideTargetPosition += slideOverrideModifier;

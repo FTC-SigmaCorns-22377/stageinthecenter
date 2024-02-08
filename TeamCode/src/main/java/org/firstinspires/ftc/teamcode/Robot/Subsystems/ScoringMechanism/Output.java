@@ -36,7 +36,7 @@ public class Output extends Subsystem {
 
     public static double ARM_SCORE_VALUE = 0.77;
     public static double ARM_TRANSFER_VALUE = 0.245;
-    public static double ARM_POST_VALUE = 0.82;
+    public static double ARM_POST_VALUE = 0.78;
     public static double LEFT_OFFSET = 0.006;
 
     public void initCommon(HardwareMap hwMap) {
@@ -135,7 +135,7 @@ public class Output extends Subsystem {
                 clawPurple.setPosition(0.732);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.814);
+                clawPurple.setPosition(0.8);
                 break;
             case BOTHPOSTSCORE:
                 clawPurple.setPosition(0.68);
@@ -153,7 +153,7 @@ public class Output extends Subsystem {
                 clawBlack.setPosition(0.269);
                 break;
             case CLOSED:
-                clawBlack.setPosition(0.217);
+                clawBlack.setPosition(0.225);
                 break;
             case BOTHPOSTSCORE:
                 clawBlack.setPosition(0.292);

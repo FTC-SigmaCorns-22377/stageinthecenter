@@ -66,6 +66,6 @@ public class Teleop extends BaseTeleop {
 
         robot.gamepad1.whenRightStickButtonPressed(new ResetHeading(robot));
 
-        return new MultipleCommand(new FieldRelative(robot, robot.gamepad1), new SlideOverride(robot,robot.gamepad2));
+        return new MultipleCommand(new RobotRelative(robot, robot.gamepad1), new SlideOverride(robot,robot.gamepad2));
     }
 }
