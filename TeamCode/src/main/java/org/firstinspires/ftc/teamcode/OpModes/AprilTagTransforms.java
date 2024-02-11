@@ -225,32 +225,36 @@ public class AprilTagTransforms extends LinearOpMode {
                 packet.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
 
                 // create transformation matrix of camera to tag
-                VectorF translation = new VectorF((float) detection.ftcPose.x, (float) detection.ftcPose.y, (float) detection.ftcPose.z);
+                VectorF cameraToRobotcenter = new VectorF(0,0,0);
+                VectorF cameraToTag = new VectorF((float) detection.ftcPose.x, (float) detection.ftcPose.y, (float) detection.ftcPose.z);
                 MatrixF rotation = eulerToRotationMatrix(Math.toRadians(detection.ftcPose.pitch), Math.toRadians(detection.ftcPose.roll), Math.toRadians(detection.ftcPose.yaw));
-                OpenGLMatrix transformationMatrix = createTransformationMatrix(translation, rotation);
+                OpenGLMatrix transformationMatrix = createTransformationMatrix(cameraToRobotcenter, rotation);
 
                 // print transformation matrix
                 packet.put("Transformation Matrix:", transformationMatrix.toString());
 
                 // get transformation of tag to origin
 //                detection.metadata.fieldPosition = VectorF, detection.metadata.fieldOrientation = Quaternion
-                OpenGLMatrix tagToOrigin = createTransformationMatrix(detection.metadata.fieldPosition, detection.metadata.fieldOrientation.toMatrix());
-                packet.put("Tag to Origin:", tagToOrigin.toString());
+                VectorF originToTag = detection.metadata.fieldPosition;
+                packet.put("Tag to Origin:", originToTag.toString());
+
+                MatrixF tagRotation = eulerToRotationMatrix(Math.toRadians(-30),0,0);
+
+                originToTag = tagRotation.multiplied(originToTag);
+                packet.put("Tag to Origin Rotated:", originToTag.toString());
 
                 // get transformation of camera to origin
-                OpenGLMatrix cameraToOrigin = transformationMatrix.multiplied(tagToOrigin);
-                packet.put("Camera to Origin:", cameraToOrigin.toString());
+                VectorF centerToTag = transformationMatrix.multiplied(cameraToTag);
+                packet.put("Center to Tag:", centerToTag.toString());
 
                 // get transformation of origin to camera
-                OpenGLMatrix originToCamera = cameraToOrigin.inverted();
+                VectorF originToCenter = centerToTag.subtracted(originToTag);
 
-                // get x & y coordinates of camera in field
-                VectorF cameraPosition = originToCamera.getTranslation();
-                packet.addLine(String.format("Camera Position: %6.1f %6.1f", cameraPosition.get(0), cameraPosition.get(1)));
+                packet.addLine(String.format("Camera Position: %6.1f %6.1f", originToCenter.get(0), originToCenter.get(1)));
 
                 packet.fieldOverlay()
                         .setStroke("green")
-                        .strokeRect(-cameraPosition.get(0) + 2.5, -cameraPosition.get(1) + 2.5, 5, 5)
+                        .strokeRect(-originToCenter.get(0) + 2.5, -originToCenter.get(1) + 2.5, 5, 5)
                         .setStroke("red")
                         .strokeRect(detection.metadata.fieldPosition.get(0) -2.5, detection.metadata.fieldPosition.get(1) - 2.5, 5, 5);
             }
@@ -300,7 +304,6 @@ public class AprilTagTransforms extends LinearOpMode {
         // Combine the rotations (Z * Y * X)
         return zRotation.multiplied(yRotation.multiplied(xRotation));
     }
-
     // Creates a homogeneous transformation matrix from a translation vector and a rotation matrix
     public static OpenGLMatrix createTransformationMatrix(VectorF translation, MatrixF rotation) {
         OpenGLMatrix transformationMatrix = new OpenGLMatrix(rotation);
