@@ -7,11 +7,12 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import org.firstinspires.ftc.teamcode.CommandFramework.BaseAuto;
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.DelayedCommand;
+import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.ScoringCommandGroups;
+import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Intake;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Slides;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.firstinspires.ftc.teamcode.Utils.RandomizationSide;
 
 public class AutonomousParent extends BaseAuto {
 
@@ -19,100 +20,237 @@ public class AutonomousParent extends BaseAuto {
     final double robotLength = 17.008;
     final double robotWidth = 14.358;
     final double distToRollerTip = 17;
-    final double distToBackdropBase = 1;
+    final double distToBackdropBase = 1.5;
 
     // Calculated Field Parameters
-    final double startY = 71.25 - 0.5 * robotLength;
     final double intakeX = -69.75 + distToRollerTip;
     final double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
 
     // Dynamic Field Parameters
-    Pose2d startPose = new Pose2d(0, 0, 0);
-    List<Vector2d> backdropVecs = new ArrayList<>();
-    Vector2d parkVec = new Vector2d(0, 0);
+    double startX = 0;
+    double startY = 0;
+    double startHeading = 0;
+    Pose2d startPose = null;
+    double startDelay = 0;
+    Vector2d stack1 = null;
+    Vector2d stack2 = null;
+    Vector2d intakeJunction = null;
+    Vector2d outputJunction = null;
+    double scoreDelay0 = 0;
+    double scoreDelay1 = 0;
+    double scoreDelay3 = 0;
+    Vector2d scoreVec = null;
+    Vector2d scoreOffsetVec = null;
+    double parkY = 0;
+
+    // Trajectories
+    Trajectory randomization = null;
+    Trajectory cycle1 = null;
+    Trajectory cycle2 = null;
+    Trajectory cycle3 = null;
+    Trajectory cycle4 = null;
 
     @Override
     public void setRobotPosition() {
         switch (getSide()) {
-            default:
-                break;
             case STACKSIDE:
-                switch (getTeam()) {
-                    default:
-                        break;
-                    case BLUE:
-                        startPose = new Pose2d(-47.5 + 0.5 * robotLength, startY, -0.5 * Math.PI);
-                        break;
-                }
+                startX = -47.5 + 0.5 * robotWidth;
+                break;
+            default:
+                startX = 23.75 - 0.5 * robotWidth;
                 break;
         }
+        switch (getTeam()) {
+            case BLUE:
+                startY = 71.25 - 0.5 * robotLength;
+                startHeading = -0.5 * Math.PI;
+                break;
+            default:
+                startY = -71.25 + 0.5 * robotLength;
+                startHeading = 0.5 * Math.PI;
+                break;
+        }
+        startPose = new Pose2d(startX, startY, startHeading);
         robot.drivetrain.setPose(startPose);
     }
 
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
-        ScoringCommandGroups cmd = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
-        Trajectory traj = null;
-        Trajectory park = null;
-
         switch (getTeam()) {
-            default:
-                break;
             case BLUE:
-                for (int i = -2; i <= 2; i++) {
-                    backdropVecs.add(new Vector2d(outputX, 35.625 + 1.5 * i));
-                }
-                switch (getSide()) {
-                    default:
+                stack2 = new Vector2d(intakeX, 23.75);
+                switch (getPark()) {
+                    case EDGE:
+                        parkY = 59.375;
                         break;
-                    case STACKSIDE:
-                        switch (getRandomization()) {
-                            case LEFT: // 3.81s
-                                traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                    default:
+                        parkY = 10;
+                        break;
+                }
+                switch (getRandomization()) {
+                    case LEFT:
+                        stack1 = new Vector2d(intakeX, 11.875);
+                        intakeJunction = new Vector2d(-29.688, 11.875);
+                        outputJunction = new Vector2d(23.75, 11.875);
+                        scoreDelay1 = 2.6;
+                        scoreDelay3 = 3;
+                        scoreVec = new Vector2d(outputX, 35.625 - 2 * 3 - 2);
+                        scoreOffsetVec = new Vector2d(5, 0);
+                        switch (getSide()) {
+                            case STACKSIDE:
+                                scoreDelay0 = 3.9;
+                                randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                                         .splineToConstantHeading(new Vector2d(-28, 34.8), 0)
                                         .lineToSplineHeading(new Pose2d(-6, 34.8, Math.PI))
-                                        .lineTo(new Vector2d(0, 34.8))
-                                        .splineToConstantHeading(new Vector2d(22.5, 47.5), 0)
-                                        .splineToConstantHeading(backdropVecs.get(4), 0)
+                                        .lineTo(new Vector2d(2, 34.8))
+                                        .splineToConstantHeading(new Vector2d(22.5, 53), 0)
+                                        .splineToConstantHeading(new Vector2d(outputX, 35.625 + 2 * 3 + 2), -0.5 * Math.PI)
+                                        .splineToConstantHeading(new Vector2d(outputX - 5, 35.625 + 2 * 3), Math.PI)
+                                        .splineToConstantHeading(outputJunction, Math.PI)
+                                        .lineTo(stack1)
                                         .build();
                                 break;
-                            default: // 3.82s
-                                traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .splineToConstantHeading(new Vector2d(-42.5,33.254), 0)
-                                        .splineToSplineHeading(new Pose2d(-11.875, 35.625, Math.PI), 0)
-                                        .lineTo(backdropVecs.get(2))
-                                        .build();
+                            default:
                                 break;
-                            case RIGHT: // 4.10s
-                                traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineToSplineHeading(new Pose2d(-38.996, 37.5, Math.PI))
-                                        .splineToConstantHeading(new Vector2d(-15, 7.174), 0)
-                                        .splineToConstantHeading(backdropVecs.get(0), 0)
-                                        .build();
                         }
+                        cycle1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(scoreVec.minus(scoreOffsetVec), Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(stack1)
+                                .build();
+                        cycle2 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle1.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(scoreVec.minus(scoreOffsetVec), Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(intakeJunction)
+                                .splineToConstantHeading(stack2, 0.5 * Math.PI)
+                                .build();
+                        cycle3 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle2.end())
+                                .strafeLeft(1)
+                                .splineToConstantHeading(intakeJunction, 0)
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(new Vector2d(55, parkY), 0)
+                                .build();
+                        break;
+                    case RIGHT: // 4.10s
+//                        traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+//                                .lineToSplineHeading(new Pose2d(-38.996, 37.5, Math.PI))
+//                                .splineToConstantHeading(new Vector2d(-15, 7.174), 0)
+//                                .splineToConstantHeading(backdropVecs.get(0), 0)
+//                                .build();
+                        break;
+                    default: // 3.82s
+                        stack1 = new Vector2d(intakeX, 35.625);
+                        intakeJunction = new Vector2d(-35.625, 35.625);
+                        outputJunction = new Vector2d(35.625, 35.625);
+                        scoreDelay1 = 2.25;
+                        scoreDelay3 = 2.5;
+                        scoreVec = new Vector2d(outputX, 35.625 - 4);
+                        switch (getSide()) {
+                            case STACKSIDE:
+//                                traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+//                                        .splineToConstantHeading(new Vector2d(-42.5,33.254), 0)
+//                                        .splineToSplineHeading(new Pose2d(-11.875, 35.625, Math.PI), 0)
+//                                        .lineTo(backdropVecs.get(2))
+//                                        .build();
+                                break;
+                            default:
+                                scoreDelay0 = 2.5;
+                                randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                                        .lineToSplineHeading(new Pose2d(15 + 0.5 * robotLength, 29.5, Math.PI))
+                                        .splineToConstantHeading(new Vector2d(25 + 0.5 * robotLength, 24.75), 0)
+                                        .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                        .splineToConstantHeading(outputJunction, Math.PI)
+                                        .lineTo(stack1)
+                                        .build();
+                                break;
+                        }
+                        cycle1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, -0.5 * Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(stack1)
+                                .build();
+                        cycle2 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle1.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, -0.5 * Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(intakeJunction)
+                                .splineToConstantHeading(stack2, -0.5 * Math.PI)
+                                .build();
+                        cycle3 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle2.end())
+                                .strafeRight(1)
+                                .splineToConstantHeading(intakeJunction, 0)
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, -0.5 * Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(intakeJunction)
+                                .splineToConstantHeading(stack2, -0.5 * Math.PI)
+                                .build();
+                        cycle4 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle3.end())
+                                .strafeRight(1)
+                                .splineToConstantHeading(intakeJunction, 0)
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, -0.5 * Math.PI)
+                                .splineToConstantHeading(new Vector2d(55, parkY), 0)
+                                .build();
                         break;
                 }
-                switch (getPark()) {
-                    default:
-                        parkVec = new Vector2d(59.375, 10);
-                        break;
-                    case EDGE:
-                        parkVec = new Vector2d(59.375, 59.375);
-                        break;
-                }
-                park = robot.drivetrain.getBuilder().trajectoryBuilder(traj.end())
-                        .forward(5)
-                        .splineToConstantHeading(parkVec, 0)
-                        .build();
+                break;
+            default:
                 break;
         }
 
-        Command auto = followRR(traj);
-        auto.addNext(cmd.scorePos());
-        auto.addNext(cmd.setSlides(Slides.SlideHeight.HALF));
-        auto.addNext(cmd.score());
-        auto.addNext(followRR(park));
+        ScoringCommandGroups cmd = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
+
+        Command auto = wait(startDelay)
+                .addNext(new MultipleCommand(followRR(randomization),
+                        new DelayedCommand(scoreDelay0 - 1, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.HALF))),
+                        new DelayedCommand(scoreDelay0, cmd.score()),
+                        new DelayedCommand(scoreDelay0 + 1, cmd.postScore())))
+                .addNext(cmd.newSetTransfer(Intake.TransferState.FIVE))
+                .addNext(cmd.rollerOn())
+                .addNext(wait(1.5))
+                .addNext(cmd.rollerOff())
+                .addNext(new MultipleCommand(followRR(cycle1),
+                        cmd.newSetTransfer(Intake.TransferState.TRANSFER),
+                        new DelayedCommand(scoreDelay1 - 1, cmd.scorePos()),
+                        new DelayedCommand(scoreDelay1, cmd.score()),
+                        new DelayedCommand(scoreDelay1 + 1, cmd.postScore())))
+                .addNext(cmd.newSetTransfer(Intake.TransferState.THREE))
+                .addNext(cmd.rollerOn())
+                .addNext(wait(1.5))
+                .addNext(cmd.rollerOff())
+                .addNext(new MultipleCommand(followRR(cycle2),
+                        cmd.newSetTransfer(Intake.TransferState.TRANSFER),
+                        new DelayedCommand(scoreDelay1 - 1, cmd.scorePos()),
+                        new DelayedCommand(scoreDelay1, cmd.score()),
+                        new DelayedCommand(scoreDelay1 + 1, cmd.postScore())))
+                .addNext(cmd.newSetTransfer(Intake.TransferState.FIVE))
+                .addNext(cmd.rollerOn())
+                .addNext(wait(1.5))
+                .addNext(cmd.rollerOff())
+                .addNext(new MultipleCommand(followRR(cycle3),
+                        cmd.newSetTransfer(Intake.TransferState.TRANSFER),
+                        new DelayedCommand(scoreDelay3 - 1, cmd.scorePos()),
+                        new DelayedCommand(scoreDelay3, cmd.score()),
+                        new DelayedCommand(scoreDelay3 + 1, cmd.postScore())));
+        if (getRandomization() == RandomizationSide.CENTER)
+            auto.addNext(cmd.newSetTransfer(Intake.TransferState.THREE))
+                    .addNext(cmd.rollerOn())
+                    .addNext(wait(1.5))
+                    .addNext(cmd.rollerOff())
+                    .addNext(new MultipleCommand(followRR(cycle4),
+                            cmd.newSetTransfer(Intake.TransferState.TRANSFER),
+                            new DelayedCommand(scoreDelay3 - 1, cmd.scorePos()),
+                            new DelayedCommand(scoreDelay3, cmd.score()),
+                            new DelayedCommand(scoreDelay3 + 1, cmd.postScore())));
 
         return auto;
     }
+
 }
