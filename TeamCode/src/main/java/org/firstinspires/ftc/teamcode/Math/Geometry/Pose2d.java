@@ -44,6 +44,9 @@ public class Pose2d {
 		m_rotation = rotation;
 	}
 
+//	public Pose2d(float robotX, float robotY, double robotHeading) {
+//	}
+
 	/**
 	 * Transforms the pose by the given transformation and returns the new
 	 * transformed pose.
