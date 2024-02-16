@@ -21,9 +21,10 @@ public class Drivetrain extends Subsystem {
 		drive.update();
 	}
 
-	public void  robotRelative(Pose2d powers) {
+	public void applyPowers(Pose2d powers) {
 		drive.setWeightedDrivePower(powers);
 	}
+
 
 	@Override
 	public void shutdown() {

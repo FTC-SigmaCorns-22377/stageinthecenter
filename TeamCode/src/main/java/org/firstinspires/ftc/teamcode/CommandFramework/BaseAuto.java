@@ -17,28 +17,28 @@ import org.firstinspires.ftc.teamcode.Robot.Subsystems.Robot;
 import org.firstinspires.ftc.teamcode.Utils.RandomizationSide;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
+import org.firstinspires.ftc.teamcode.Utils.Park;
 
 public abstract class BaseAuto extends LinearOpMode {
 
     protected Robot robot;
 
-    protected RandomizationSide randomizationSide = RandomizationSide.LEFT;
+    protected RandomizationSide randomizationSide = RandomizationSide.CENTER;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide());
+        robot = new Robot(hardwareMap, Robot.OpMode.Auto, gamepad1, gamepad2, getTeam(), getSide(), getPark());
         setRobotPosition();
 
-        waitForStart();
-
         System.out.println("randomization side");
-//        while (!isStarted()) {
-//            randomizationSide = robot.randomization.getRandomizationSide();
-//            telemetry.addData("randomization", randomizationSide.name());
-//            telemetry.update();
-//        }
-//        robot.randomization.closePortal();
+        while (!isStarted()) {
+            randomizationSide = robot.randomization.getRandomizationSide();
+          //  randomizationSide = RandomizationSide.CENTER;
+            telemetry.addData("randomization", randomizationSide.name());
+            telemetry.update();
+        }
+        robot.randomization.closePortal();
 
         robot.getScheduler().forceCommand(setupAuto(robot.getScheduler()));
 
@@ -74,6 +74,10 @@ public abstract class BaseAuto extends LinearOpMode {
 
     }
 
+    public RandomizationSide getRandomization() {
+        return randomizationSide;
+    }
+
     public Team getTeam() {
         return Team.NOT_ASSIGNED;
     }
@@ -81,4 +85,6 @@ public abstract class BaseAuto extends LinearOpMode {
     public Side getSide() {
         return Side.NOT_ASSIGNED;
     }
+
+    public Park getPark() { return Park.NOT_ASSIGNED; }
 }

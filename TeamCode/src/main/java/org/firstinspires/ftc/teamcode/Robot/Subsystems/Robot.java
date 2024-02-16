@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.CommandFramework.CommandScheduler;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.MainScoringMechanism;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
+import org.firstinspires.ftc.teamcode.Utils.Park;
 
 import java.util.ArrayList;
 
@@ -23,10 +24,10 @@ public class Robot {
     public MainScoringMechanism scoringMechanism = new MainScoringMechanism();
     ArrayList<LynxModule> modules = new ArrayList<>();
 
-    public Robot(HardwareMap hwMap, OpMode opMode, com.qualcomm.robotcore.hardware.Gamepad gamepad1, com.qualcomm.robotcore.hardware.Gamepad gamepad2, Team team, Side side) {
-//        randomization = new Randomization(team);
-//        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism, randomization);
-        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism);
+    public Robot(HardwareMap hwMap, OpMode opMode, com.qualcomm.robotcore.hardware.Gamepad gamepad1, com.qualcomm.robotcore.hardware.Gamepad gamepad2, Team team, Side side, Park park) {
+        randomization = new Randomization(team);
+        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism, randomization);
+//        scheduler = new CommandScheduler(hwMap, drivetrain, dashboard, scoringMechanism);
         this.gamepad1 = new Gamepad(gamepad1, scheduler);
         this.gamepad2 = new Gamepad(gamepad2, scheduler);
 

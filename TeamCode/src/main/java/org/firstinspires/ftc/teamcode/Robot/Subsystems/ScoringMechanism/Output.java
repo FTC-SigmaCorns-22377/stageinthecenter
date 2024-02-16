@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.O
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
@@ -24,6 +25,8 @@ public class Output extends Subsystem {
     Servo wrist;
     Servo clawPurple;
     Servo clawBlack;
+    ElapsedTime scoreTime = new ElapsedTime();
+
 
     public static double WRIST_ZERO = 0.728;
     public static double WRIST_ONE = 0.56;
@@ -33,6 +36,7 @@ public class Output extends Subsystem {
 
     public static double ARM_SCORE_VALUE = 0.77;
     public static double ARM_TRANSFER_VALUE = 0.245;
+    public static double ARM_POST_VALUE = 0.78;
     public static double LEFT_OFFSET = 0.006;
 
     public void initCommon(HardwareMap hwMap) {
@@ -80,6 +84,12 @@ public class Output extends Subsystem {
                 armLeft.setPosition(ARM_SCORE_VALUE+LEFT_OFFSET);
                 armRight.setPosition(1-ARM_SCORE_VALUE);
                 break;
+            case POST:
+                if (scoreTime.seconds() > 0.4) {
+                    armLeft.setPosition(ARM_POST_VALUE+LEFT_OFFSET);
+                    armRight.setPosition(1-ARM_POST_VALUE);
+                }
+
         }
 
 
@@ -122,14 +132,16 @@ public class Output extends Subsystem {
         this.clawPurpleState = clawPurpleState;
         switch (clawPurpleState) {
             case OPEN:
-                clawPurple.setPosition(0.705);
+                clawPurple.setPosition(0.732);
                 break;
             case CLOSED:
-                clawPurple.setPosition(0.78);
+                clawPurple.setPosition(0.8);
                 break;
-            case POSTSCORE:
-                clawPurple.setPosition(0.66);
+            case BOTHPOSTSCORE:
+                clawPurple.setPosition(0.68);
                 break;
+            case PURPLEPOSTSCORE:
+                clawPurple.setPosition(0.68);
         }
     }
 
@@ -138,14 +150,16 @@ public class Output extends Subsystem {
         this.clawBlackState = clawBlackState;
         switch (clawBlackState) {
             case OPEN:
-                clawBlack.setPosition(0.255);
+                clawBlack.setPosition(0.269);
                 break;
             case CLOSED:
-                clawBlack.setPosition(0.20);
+                clawBlack.setPosition(0.225);
                 break;
-            case POSTSCORE:
-                clawBlack.setPosition(0.28);
+            case BOTHPOSTSCORE:
+                clawBlack.setPosition(0.292);
                 break;
+            case BLACKPOSTSCORE:
+                clawBlack.setPosition(0.292);
         }
     }
 
@@ -168,7 +182,9 @@ public class Output extends Subsystem {
     public enum ClawState {
         OPEN,
         CLOSED,
-        POSTSCORE
+        BOTHPOSTSCORE,
+        PURPLEPOSTSCORE,
+        BLACKPOSTSCORE
     }
 
 }

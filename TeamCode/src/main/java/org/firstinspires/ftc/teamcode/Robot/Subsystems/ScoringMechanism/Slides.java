@@ -34,6 +34,7 @@ public class Slides extends Subsystem {
 
     public static double DISTANCE_FOR_CONE = 8; // 9 inches or less means we still have the cone
 
+    protected double slideOverrideModifier = 0;
     protected double slideTargetPosition = 0;
     protected double Kg = 0; // 0.09499 TODO: TUNE
     DcMotorEx vertical1;
@@ -119,22 +120,30 @@ public class Slides extends Subsystem {
             case L0:
                 slideTargetPosition = IN_POSITION;
                 break;
+            case HALF:
+                 slideTargetPosition = 0.5;
+                 break;
             case L1:
                 slideTargetPosition = 2;
                 break;
             case L2:
-                slideTargetPosition = 6;
+                slideTargetPosition = 5;
                 break;
             case L3:
-                slideTargetPosition = 10;
+                slideTargetPosition = 9;
                 break;
             case L4:
-                slideTargetPosition = 16;
+                slideTargetPosition = 13;
                 break;
             case L5:
                 slideTargetPosition = 18;
                 break;
         }
+//        slideTargetPosition += slideOverrideModifier;
+//        if (slideTargetPosition < 0) {
+//            slideTargetPosition = 0;
+//        }
+
 
     }
 
@@ -194,11 +203,9 @@ public class Slides extends Subsystem {
     public double getSlideTargetPosition() {
         return slideTargetPosition;
     }
-    public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
 
-    public void setSlideTargetPosition(Double increment){
-        this.slideTargetPosition = slideTargetPosition + increment;
-    }
+    public void setSlideOverrideModifier(double overrideModifier) { this.slideOverrideModifier = overrideModifier; }
+    public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
 
     public double getPIDTargetInches() {
         return controller.getTargetPosition();
@@ -239,6 +246,7 @@ public class Slides extends Subsystem {
 
     public enum SlideHeight {
         L0,
+        HALF,
         L1,
         L2,
 

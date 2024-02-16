@@ -17,19 +17,35 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 @Config
 public class Intake extends Subsystem {
-    public static double INTAKE_POWER = 0.7;
-    public static double TRANSFER_DROP_INTAKE_VALUE = 0.22;
-    public static double TRANSFER_DROP_TRANSFER_VALUE = -0.1;
+    public static double INTAKE_POWER = 1;
+    public static double TRANSFER_DROP_INTAKE_VALUE_LEFT = 0.12;
+    public static double TRANSFER_DROP_INTAKE_VALUE_RIGHT = 0.095;
+
+    public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.28;
+    public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.305;
+
+
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
-    public static double TRANSFER_FIVE_DROP_VALUE = 0.12;
-    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.92;
-    public static double TRANSFER_THREE_DROP_VALUE = 0.16;
-    public static double TRANSFER_THREE_ANGLE_VALUE = 0.97;
+    public static double TRANSFER_FIVE_DROP_VALUE_LEFT = 0.04;
+    public static double TRANSFER_FIVE_DROP_VALUE_RIGHT = 0.015;
+    public static double TRANSFER_FOUR_DROP_VALUE_LEFT = 0.06;
+    public static double TRANSFER_FOUR_DROP_VALUE_RIGHT = 0.035;
+
+    public static double TRANSFER_FIVE_ANGLE_VALUE = 0.915;
+
+    public static double TRANSFER_FOUR_ANGLE_VALUE = 0.93;
+
+    public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.11;
+    public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.05;
+
+    public static double TRANSFER_THREE_ANGLE_VALUE = 0.98;
+    public static double TRANSFER_ANGLE_TRAVEL_VALUE = 0.1;
 
 
 
-    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.65;
+
+    public static double LINKAGE_FINAL_VALUE_TRANSFER = 0.615;
 
     public static double ARM_IN_COLLECT = 0;
     DcMotorEx roller;
@@ -92,20 +108,20 @@ public class Intake extends Subsystem {
         }
         switch (transferState) {
             case INTAKE:
-                if (transferTimer.seconds() > 0.2) {
+                if (transferTimer.seconds() > 0.25) {
                     linkage.setPosition(0.95);
-                    transferAngle.setPosition(TRANSFER_ANGLE_INTAKE_VALUE);
-                } else if (transferTimer.seconds() > 0.1) {
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_INTAKE_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_INTAKE_VALUE_RIGHT);
+                } else if (transferTimer.seconds() > 0.15) {
                     linkage.setPosition(0.85);
                 } else {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_INTAKE_VALUE);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_INTAKE_VALUE);
+                    transferAngle.setPosition(TRANSFER_ANGLE_INTAKE_VALUE);
                 }
                 break;
             case TRANSFER:
                 if (transferTimer.seconds() > 0.2) {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(LINKAGE_FINAL_VALUE_TRANSFER);
 
@@ -115,38 +131,50 @@ public class Intake extends Subsystem {
                 }
                 break;
             case FIVE:
-                if (transferTimer.seconds() > 0.2) {
-                    linkage.setPosition(0.95);
-                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
+                if (transferTimer.seconds() > 0.3) {
+                    linkage.setPosition(1);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.85);
+                    linkage.setPosition(0.75);
                 } else {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE);
+                    transferAngle.setPosition(TRANSFER_FIVE_ANGLE_VALUE);
+                }
+                break;
+            case FOUR:
+                if (transferTimer.seconds() > 0.3) {
+                    linkage.setPosition(0.95);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_FOUR_DROP_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_FOUR_DROP_VALUE_RIGHT);
+                } else if (transferTimer.seconds() > 0.1) {
+                   // linkage.setPosition(0.75);
+                } else {
+                    transferAngle.setPosition(TRANSFER_FOUR_ANGLE_VALUE);
                 }
                 break;
 
+
             case THREE:
-                if (transferTimer.seconds() > 0.2) {
+                if (transferTimer.seconds() > 0.3) {
                     linkage.setPosition(0.95);
-                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.85);
+                   // linkage.setPosition(0.75);
                 } else {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE);
+                    transferAngle.setPosition(TRANSFER_THREE_ANGLE_VALUE);
                 }
                 break;
             case TRAVEL:
                 if (transferTimer.seconds() > 0.2) {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
-                    linkage.setPosition(0.95);
+                    linkage.setPosition(0.8);
 
                 } else {
-                    linkage.setPosition(0.85);
-                    transferAngle.setPosition(TRANSFER_ANGLE_TRANSFER_VALUE);
+                    linkage.setPosition(0.8);
+                    transferAngle.setPosition(TRANSFER_ANGLE_TRAVEL_VALUE);
                 }
                 break;
         }
@@ -197,6 +225,7 @@ public class Intake extends Subsystem {
         INTAKE,
         TRANSFER,
         THREE,
+        FOUR,
         FIVE,
         TRAVEL
     }
