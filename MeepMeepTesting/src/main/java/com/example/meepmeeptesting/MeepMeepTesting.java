@@ -38,10 +38,6 @@ public class MeepMeepTesting {
         startY = 71.25 - 0.5 * robotLength;
         startHeading = -0.5 * Math.PI;
         startPose = new Pose2d(startX, startY, startHeading);
-        final Vector2d outputJunction = new Vector2d(35.625, 35.625);
-        final Vector2d stack1 = new Vector2d(intakeX, 35.625);
-        final Vector2d intakeJunction = new Vector2d(-35.625, 35.625);
-        final Vector2d stack2 = new Vector2d(intakeX, 23.75);
 
         final Pose2d finalStartPose = startPose;
         MeepMeep meepMeep = new MeepMeep(600);
@@ -51,36 +47,9 @@ public class MeepMeepTesting {
                 .setDimensions(14.348, 17.008)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(finalStartPose)
-                                .lineToSplineHeading(new Pose2d(15 + 0.5 * robotLength, 29.5, Math.PI))
-                                .splineToConstantHeading(new Vector2d(25 + 0.5 * robotLength, 24.75), 0)
-                                .splineToConstantHeading(new Vector2d(outputX, 35.625 - 4), 0.5 * Math.PI)
-                                .splineToConstantHeading(outputJunction, Math.PI)
-                                .lineTo(stack1)
-
-                                .lineTo(outputJunction)
-                                .splineToConstantHeading(new Vector2d(outputX, 35.625 - 4), -0.5 * Math.PI)
-                                .splineToConstantHeading(outputJunction, Math.PI)
-                                .lineTo(stack1)
-
-                                .lineTo(outputJunction)
-                                .splineToConstantHeading(new Vector2d(outputX, 35.625 - 4), -0.5 * Math.PI)
-                                .splineToConstantHeading(outputJunction, Math.PI)
-                                .lineTo(intakeJunction)
-                                .splineToConstantHeading(stack2, -0.5 * Math.PI)
-
-                                .setTangent(0.5 * Math.PI)
-                                .splineToConstantHeading(intakeJunction, 0)
-                                .lineTo(outputJunction)
-                                .splineToConstantHeading(new Vector2d(outputX, 35.625 - 4), -0.5 * Math.PI)
-                                .splineToConstantHeading(outputJunction, Math.PI)
-                                .lineTo(intakeJunction)
-                                .splineToConstantHeading(stack2, -0.5 * Math.PI)
-
-                                .setTangent(0.5 * Math.PI)
-                                .splineToConstantHeading(intakeJunction, 0)
-                                .lineTo(outputJunction)
-                                .splineToConstantHeading(new Vector2d(outputX, 35.625 - 4), -0.5 * Math.PI)
-                                .splineToConstantHeading(new Vector2d(55, parkY), 0)
+                                .lineToSplineHeading(new Pose2d(1 + 0.5 * robotLength, 42.5, Math.PI))
+                                .splineToConstantHeading(new Vector2d(outputX - 5, 35.625 - 4.5), 0)
+                                .splineToConstantHeading(new Vector2d(23.75, 11.875), Math.PI)
                                 .build()
                 );
 

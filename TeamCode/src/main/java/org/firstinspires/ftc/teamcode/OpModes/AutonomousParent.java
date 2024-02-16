@@ -97,7 +97,7 @@ public class AutonomousParent extends BaseAuto {
                         scoreVec = new Vector2d(outputX, 35.625 - 2 * 3 - 2);
                         scoreOffsetVec = new Vector2d(5, 0);
                         switch (getSide()) {
-                            case STACKSIDE:
+                            case STACKSIDE: // ~23s 2+6
                                 scoreDelay0 = 3.9;
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                                         .splineToConstantHeading(new Vector2d(-28, 34.8), 0)
@@ -111,6 +111,12 @@ public class AutonomousParent extends BaseAuto {
                                         .build();
                                 break;
                             default:
+                                scoreDelay0 = 2.1;
+                                randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                                        .lineToSplineHeading(new Pose2d(23.75 + 0.5 * robotLength, 35.75, Math.PI))
+                                        .splineToConstantHeading(new Vector2d(outputX, 35.625 + 2 * 3), 0.5 * Math.PI)
+                                        .splineToConstantHeading(new Vector2d(outputX - 5, 35.625 + 2 * 3 + 2), Math.PI)
+                                        .build();
                                 break;
                         }
                         cycle1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
@@ -136,14 +142,52 @@ public class AutonomousParent extends BaseAuto {
                                 .splineToConstantHeading(new Vector2d(55, parkY), 0)
                                 .build();
                         break;
-                    case RIGHT: // 4.10s
-//                        traj = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-//                                .lineToSplineHeading(new Pose2d(-38.996, 37.5, Math.PI))
-//                                .splineToConstantHeading(new Vector2d(-15, 7.174), 0)
-//                                .splineToConstantHeading(backdropVecs.get(0), 0)
-//                                .build();
+                    case RIGHT:
+                        stack1 = new Vector2d(intakeX, 11.875);
+                        intakeJunction = new Vector2d(-29.688, 11.875);
+                        outputJunction = new Vector2d(23.75, 11.875);
+                        scoreDelay1 = 2.6;
+                        scoreDelay3 = 3;
+                        scoreVec = new Vector2d(outputX, 35.625 - 2 * 3 - 2);
+                        scoreOffsetVec = new Vector2d(5, 0);
+                        switch (getSide()) {
+                            case STACKSIDE:
+                                break;
+                            default:
+                                scoreDelay0 = 2.3;
+                                randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
+                                        .lineToSplineHeading(new Pose2d(1 + 0.5 * robotLength, 42.5, Math.PI))
+                                        .splineToConstantHeading(new Vector2d(outputX - 5, 35.625 - 4.5), 0)
+                                        .splineToConstantHeading(new Vector2d(23.75, 11.875), Math.PI)
+                                        .splineToConstantHeading(outputJunction, Math.PI)
+                                        .lineTo(stack1)
+                                        .build();
+                                break;
+                        }
+                        cycle1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(scoreVec.minus(scoreOffsetVec), Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(stack1)
+                                .build();
+                        cycle2 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle1.end())
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(scoreVec.minus(scoreOffsetVec), Math.PI)
+                                .splineToConstantHeading(outputJunction, Math.PI)
+                                .lineTo(intakeJunction)
+                                .splineToConstantHeading(stack2, 0.5 * Math.PI)
+                                .build();
+                        cycle3 = robot.drivetrain.getBuilder().trajectoryBuilder(cycle2.end())
+                                .strafeLeft(1)
+                                .splineToConstantHeading(intakeJunction, 0)
+                                .lineTo(outputJunction)
+                                .splineToConstantHeading(scoreVec, 0.5 * Math.PI)
+                                .splineToConstantHeading(new Vector2d(55, parkY), 0)
+                                .build();
                         break;
-                    default: // 3.82s
+                    default:
                         stack1 = new Vector2d(intakeX, 35.625);
                         intakeJunction = new Vector2d(-35.625, 35.625);
                         outputJunction = new Vector2d(35.625, 35.625);
@@ -158,7 +202,7 @@ public class AutonomousParent extends BaseAuto {
 //                                        .lineTo(backdropVecs.get(2))
 //                                        .build();
                                 break;
-                            default:
+                            default: // ~24s 2+8
                                 scoreDelay0 = 2.5;
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
                                         .lineToSplineHeading(new Pose2d(15 + 0.5 * robotLength, 29.5, Math.PI))
