@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Roadrunner.Drive;
 
+import android.renderscript.Matrix4f;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,6 +10,7 @@ import com.acmerobotics.roadrunner.localization.Localizer;
 
 import org.firstinspires.ftc.teamcode.Math.Geometry.Twist2d;
 import org.firstinspires.ftc.teamcode.Utils.RawAprilTagLocalizer;
+import org.opencv.core.Mat;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -51,12 +54,12 @@ public class AprilTagFusionLocalizer implements Localizer {
 	public void update() {
 		odometryLocalizer.update();
 		poseHistory.push(new Pair<>(System.nanoTime(), odometryLocalizer.getPoseEstimate()));
-		List<Pair<Long, Pose2d>> detections = aprilTagLocalizer.getLocalizations();
+		List<Triple<Long, Pose2d, Matrix4f>> detections = aprilTagLocalizer.getLocalizations();
 		if (detections.size() > 0) {
 			ArrayList<Pose2d> tagPoses = new ArrayList<>();
 			tagPoses.ensureCapacity(detections.size());
 			Pose2d preUpdatePose = getPoseEstimate();
-			for (Pair<Long, Pose2d> detection : detections) {
+			for (Triple<Long, Pose2d, Matrix4f> detection : detections) {
 				Pose2d pastPose = getPoseAtTime(detection.getFirst());
 				if (pastPose == null) continue;
 				tagPoses.add(detection.getSecond().minus(pastPose).plus(preUpdatePose));
