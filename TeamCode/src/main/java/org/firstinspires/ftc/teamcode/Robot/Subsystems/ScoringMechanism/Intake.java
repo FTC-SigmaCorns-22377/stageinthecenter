@@ -19,22 +19,22 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 public class Intake extends Subsystem {
     public static double INTAKE_POWER = 1;
     public static double TRANSFER_DROP_INTAKE_VALUE_LEFT = 0.12;
-    public static double TRANSFER_DROP_INTAKE_VALUE_RIGHT = 0.04;
+    public static double TRANSFER_DROP_INTAKE_VALUE_RIGHT = 0.095;
 
-    public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.19;
-    public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.27;
+    public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.28;
+    public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.305;
 
 
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
     public static double TRANSFER_ANGLE_TRANSFER_VALUE = 0.215;
-    public static double TRANSFER_FIVE_DROP_VALUE_LEFT = 0.07;
-    public static double TRANSFER_FIVE_DROP_VALUE_RIGHT = 0.01;
-    public static double TRANSFER_FOUR_DROP_VALUE_LEFT = 0.09;
-    public static double TRANSFER_FOUR_DROP_VALUE_RIGHT = 0.03;
+    public static double TRANSFER_FIVE_DROP_VALUE_LEFT = 0.04;
+    public static double TRANSFER_FIVE_DROP_VALUE_RIGHT = 0.015;
+    public static double TRANSFER_FOUR_DROP_VALUE_LEFT = 0.06;
+    public static double TRANSFER_FOUR_DROP_VALUE_RIGHT = 0.035;
 
     public static double TRANSFER_FIVE_ANGLE_VALUE = 0.915;
 
-    public static double TRANSFER_FOUR_ANGLE_VALUE = 0.94;
+    public static double TRANSFER_FOUR_ANGLE_VALUE = 0.93;
 
     public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.11;
     public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.05;
