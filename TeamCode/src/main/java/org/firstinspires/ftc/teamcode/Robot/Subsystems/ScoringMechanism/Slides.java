@@ -134,6 +134,14 @@ public class Slides extends Subsystem {
             case L5:
                 slideTargetPosition = 18;
                 break;
+            case UP:
+                vertical1.setPower(.25);
+                vertical2.setPower(.25);
+                break;
+            case DOWN:
+                vertical1.setPower(-.25);
+                vertical2.setPower(-.25);
+                break;
         }
 
     }
@@ -241,10 +249,11 @@ public class Slides extends Subsystem {
         L0,
         L1,
         L2,
-
         L3,
         L4,
-        L5
+        L5,
+        UP,
+        DOWN
     }
 
 }

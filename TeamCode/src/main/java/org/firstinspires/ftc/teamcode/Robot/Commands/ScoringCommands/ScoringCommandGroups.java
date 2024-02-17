@@ -102,7 +102,11 @@ public class ScoringCommandGroups {
     public SetClaw setClaw(Output.ClawState clawStates) {
         return new SetClaw(output, clawStates);
     }
-    public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
+
+    public SetSlides setSlides(Slides.SlideHeight slideHeight) {
+        return new SetSlides(slides, slideHeight);
+    }
+
     public SetTransfer setTransfer(Intake.TransferState transferState) {
         return new SetTransfer(intake, transferState);
     }
@@ -116,12 +120,11 @@ public class ScoringCommandGroups {
                 .addNext(setArm(Output.ArmState.TRANSFER))
                 .addNext(slidesDown())
                 .addNext(setClaw(Output.ClawState.OPEN));
-
     }
 
-    public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
-
-
+    public SetRoller setRoller(Intake.RollerState rollerState) {
+        return new SetRoller(intake, rollerState);
+    }
 
     /*public Command hangUp(){
         return setHang(Hang.Hanging.UP);
@@ -145,7 +148,6 @@ public class ScoringCommandGroups {
     }
 
     public Command score(){
-
         return setClaw(Output.ClawState.POSTSCORE);
     }
 
@@ -155,14 +157,10 @@ public class ScoringCommandGroups {
                 .addNext(setArm(Output.ArmState.TRANSFER))
                 .addNext(setClaw(Output.ClawState.OPEN))
                 .addNext(setWrist(Output.WristState.DEG0));
-
-
     }
 
     public Command Intake(){
         return setTransfer(Intake.TransferState.INTAKE);
-
-
     }
 
     public Command postScore5(){
@@ -188,17 +186,16 @@ public class ScoringCommandGroups {
                 .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
-
     }
-
-
 
     public Command autoscorePos(){
         return setClaw(Output.ClawState.CLOSED)
                 .addNext(setSlides(Slides.SlideHeight.L1))
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
-
     }
-    public SetWrist setWrist(Output.WristState wristStates) { return new SetWrist(output, wristStates); }
+
+    public SetWrist setWrist(Output.WristState wristStates) {
+        return new SetWrist(output, wristStates);
+    }
 }
