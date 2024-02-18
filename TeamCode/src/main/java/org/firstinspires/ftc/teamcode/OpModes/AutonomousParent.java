@@ -30,25 +30,25 @@ public class AutonomousParent extends BaseAuto {
     double startX = 0;
     double startY = 0;
     double startHeading = 0;
-    Pose2d startPose = null;
+    Pose2d startPose = new Pose2d(0,0,0);
     double startDelay = 0;
-    Vector2d stack1 = null;
-    Vector2d stack2 = null;
-    Vector2d intakeJunction = null;
-    Vector2d outputJunction = null;
+    Vector2d stack1 = new Vector2d(0,0);
+    Vector2d stack2 = new Vector2d(0,0);
+    Vector2d intakeJunction = new Vector2d(0,0);
+    Vector2d outputJunction = new Vector2d(0,0);
     double scoreDelay0 = 0;
     double scoreDelay1 = 0;
     double scoreDelay3 = 0;
-    Vector2d scoreVec = null;
-    Vector2d scoreOffsetVec = null;
+    Vector2d scoreVec = new Vector2d(0,0);
+    Vector2d scoreOffsetVec = new Vector2d(0,0);
     double parkY = 0;
 
     // Trajectories
-    Trajectory randomization = null;
-    Trajectory cycle1 = null;
-    Trajectory cycle2 = null;
-    Trajectory cycle3 = null;
-    Trajectory cycle4 = null;
+    Trajectory randomization;
+    Trajectory cycle1;
+    Trajectory cycle2;
+    Trajectory cycle3;
+    Trajectory cycle4;
 
     @Override
     public void setRobotPosition() {
@@ -76,6 +76,7 @@ public class AutonomousParent extends BaseAuto {
 
     @Override
     public Command setupAuto(CommandScheduler scheduler) {
+        initializeTrajectories();
         switch (getTeam()) {
             case BLUE:
                 stack2 = new Vector2d(intakeX, 23.75);
@@ -296,5 +297,28 @@ public class AutonomousParent extends BaseAuto {
 
         return auto;
     }
+
+    private void initializeTrajectories() {
+        // Example for one trajectory. Repeat for others as necessary.
+        randomization = robot.drivetrain.getBuilder().trajectoryBuilder(new Pose2d(0,0,0))
+                .forward(1)
+                .build();
+        // Initialize other trajectories (cycle1, cycle2, etc.) in a similar manner
+
+
+        cycle1 = robot.drivetrain.getBuilder().trajectoryBuilder(new Pose2d(0,0,0))
+                .forward(1)
+                .build();
+        cycle2 = robot.drivetrain.getBuilder().trajectoryBuilder(new Pose2d(0,0,0))
+                .forward(1)
+                .build();
+         cycle3 = robot.drivetrain.getBuilder().trajectoryBuilder(new Pose2d(0,0,0))
+                 .forward(1)
+                 .build();
+         cycle4 = robot.drivetrain.getBuilder().trajectoryBuilder(new Pose2d(0,0,0))
+                .forward(1)
+                .build();
+    }
+
 
 }
