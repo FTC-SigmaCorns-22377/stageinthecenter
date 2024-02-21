@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
 public enum Side {
-    FRONT,
-    BACK,
+    BACKDROP,
+    STACKSIDE,
     NOT_ASSIGNED
 }

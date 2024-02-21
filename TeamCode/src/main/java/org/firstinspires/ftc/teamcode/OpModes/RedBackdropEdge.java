@@ -7,13 +7,13 @@ import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
 @Autonomous
-public class RedBackdropEdge extends BackdropParentRed {
+public class RedBackdropEdge extends AutonomousParent {
     @Override
     public Team getTeam() {
         return Team.RED;
     }
     public Side getSide() {
-        return Side.FRONT;
+        return Side.BACKDROP;
     }
     public Park getPark() {
         return Park.EDGE;
