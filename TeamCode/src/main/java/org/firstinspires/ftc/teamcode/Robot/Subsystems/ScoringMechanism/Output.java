@@ -28,9 +28,9 @@ public class Output extends Subsystem {
     ElapsedTime scoreTime = new ElapsedTime();
 
 
-    public static double WRIST_ZERO = 0.728;
-    public static double WRIST_ONE = 0.56;
-    public static double WRIST_TWO = 0.85;
+    public static double WRIST_ZERO = 0.73;
+    public static double WRIST_ONE = 0.52;
+    public static double WRIST_TWO = 0.9;
     public static double WRIST_THREE = 0.17;
 
 
