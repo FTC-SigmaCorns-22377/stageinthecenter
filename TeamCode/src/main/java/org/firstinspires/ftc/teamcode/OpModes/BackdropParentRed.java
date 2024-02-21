@@ -46,10 +46,12 @@ public class BackdropParentRed extends BaseAuto {
     public void setRobotPosition() {
         switch (getTeam()) {
             default:
-                startPose = new Pose2d(11.875, startY, -0.5 * Math.PI);
+                startPose = new Pose2d(/*11.875*/ TILE_WIDTH - TILE_TOOTH_OFFSET - ROBOT_WIDTH / 2,
+                        /*startY*/TILE_WIDTH * 3 - ROBOT_LENGTH / 2, -0.5 * Math.PI);
                 break;
             case RED:
-                startPose = new Pose2d(11.875, -startY, 0.5 * Math.PI);
+                startPose = new Pose2d(/*11.875*/ TILE_WIDTH - TILE_TOOTH_OFFSET - ROBOT_WIDTH / 2,
+                        /*-startY*/ROBOT_LENGTH / 2 - TILE_WIDTH * 3, 0.5 * Math.PI);
                 break;
         }
         robot.drivetrain.setPose(startPose);

@@ -23,6 +23,11 @@ public abstract class BaseAuto extends LinearOpMode {
 
     protected Robot robot;
 
+    protected final static double ROBOT_WIDTH = 14.61; // from CAD
+    protected final static double ROBOT_LENGTH = 17.32; // from CAD
+    protected final static double TILE_TOOTH_OFFSET = 0.375; // measured
+    protected final static double TILE_WIDTH = 24; // game manual
+
     protected RandomizationSide randomizationSide = RandomizationSide.CENTER;
 
     @Override
