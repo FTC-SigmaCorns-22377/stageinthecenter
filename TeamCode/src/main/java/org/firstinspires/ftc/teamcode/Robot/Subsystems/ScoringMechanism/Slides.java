@@ -19,18 +19,24 @@ import org.firstinspires.ftc.teamcode.Utils.ProfiledPID;
 
 @Config
 public class Slides extends Subsystem {
+    static final double PULLEY_CIRCUMFERENCE = 4.409;
+    private static final double MOTOR_RPM = 1150;
+    private static final double MAX_THEORETICAL_SLIDE_VELOCITY =
+            MOTOR_RPM / 60.0 * PULLEY_CIRCUMFERENCE; // 84.51
+    private static final double THEORETICAL_KV = 1 / MAX_THEORETICAL_SLIDE_VELOCITY; // 0.01183
 
     public static final double IN_POSITION = 0;
 
-
-    static final double PULLEY_CIRCUMFERENCE = 4.409;
     static final double counts_per_revolution = 145.090909;
-    public static double Kp = 0.6;
-    public static double Kd = 1.8 * Math.sqrt(Kp * 0.0015);
+
+    public static double max_accel = 1_000_000;
+    public static double max_velocity = 50;
+    public static double minPower = -0.3;
+    public static double Kp = 0.3;
+//    public static double Kd = 1.8 * Math.sqrt(Kp * 0.0015);
+    public static double Kd = 0.5; //2 * Math.sqrt(Kp / max_accel) - THEORETICAL_KV;
     public static double Ki = 0;
 //    public static double Kd = 0.01;
-    public static double max_accel = 250;
-    public static double max_velocity = 250;
 
     public static double DISTANCE_FOR_CONE = 8; // 9 inches or less means we still have the cone
 
@@ -39,13 +45,14 @@ public class Slides extends Subsystem {
     protected double Kg = 0; // 0.09499 TODO: TUNE
     DcMotorEx vertical1;
     DcMotorEx vertical2;
-    PIDCoefficients coefficients = new PIDCoefficients(Kp, Ki, Kd);
+    public static PIDCoefficients coefficients = new PIDCoefficients(Kp, Ki, Kd);
     MotionConstraint upConstraint = new MotionConstraint(max_accel, max_accel, max_velocity);
     MotionConstraint downConstraint = new MotionConstraint(max_accel, max_accel, max_velocity);
     ProfiledPID controller = new ProfiledPID(upConstraint, downConstraint, coefficients);
     private VoltageSensor batteryVoltageSensor;
     protected double current = 0;
     protected double power = 0;
+
 
     private ElapsedTime timer;
     private double lastPosition;
@@ -100,13 +107,13 @@ public class Slides extends Subsystem {
 //        }
 
         updatePID();
-        getSlidePosition();
-        this.updateVelocity();
-        Dashboard.packet.put("Vertical PID Target Inches", this.getPIDTargetInches());
-        Dashboard.packet.put("Vertical Position Inches", this.getSlidePosition());
-        Dashboard.packet.put("Vertical Position Actual", vertical1.getCurrentPosition());
+//        getSlidePosition();
+//        this.updateVelocity();
+//        Dashboard.packet.put("Vertical PID Target Inches", this.getPIDTargetInches());
+//        Dashboard.packet.put("Vertical Position Inches", lastPosition);
+//        Dashboard.packet.put("Vertical Position Actual", vertical1.getCurrentPosition());
         Dashboard.packet.put("Vertical Deviation Inches", this.getPIDTargetDeviation());
-        Dashboard.packet.put("DANGER", 0); // <- will be overridden by command
+//        Dashboard.packet.put("DANGER", 0); // <- will be overridden by command
     }
 
     @Override
@@ -147,16 +154,16 @@ public class Slides extends Subsystem {
 
     }
 
-    private void updateVelocity() {
-        double newPosition = countsToInches(getSlidePosition());
-        double newTime = timer.seconds();
-
-        this.velocityInchesPerSecond = Math.abs(newPosition - this.lastPosition) / (newTime - this.lastTime);
-
-        Dashboard.packet.put("Vertical Extension Velocity", this.velocityInchesPerSecond);
-        this.lastPosition = newPosition;
-        this.lastTime = newTime;
-    }
+//    private void updateVelocity() {
+//        double newPosition = countsToInches(getSlidePosition());
+//        double newTime = timer.seconds();
+//
+//        this.velocityInchesPerSecond = Math.abs(newPosition - this.lastPosition) / (newTime - this.lastTime);
+//
+//        Dashboard.packet.put("Vertical Extension Velocity", this.velocityInchesPerSecond);
+//        this.lastPosition = newPosition;
+//        this.lastTime = newTime;
+//    }
 
     public double getVelocityInchesPerSecond() {
         return this.velocityInchesPerSecond;
@@ -169,16 +176,24 @@ public class Slides extends Subsystem {
 
     protected void updatePID() {
         double measuredPosition = getSlidePosition();
+        lastPosition = measuredPosition;
         double power = controller.calculate(slideTargetPosition, measuredPosition);
-        if (slideTargetPosition > IN_POSITION * 2) {
-            power += Kg;
-        } else {
-            power -= Kg;
-        }
+//        if (slideTargetPosition > IN_POSITION * 2) {
+//            power += Kg;
+//        } else {
+//            power -= Kg;
+//        }
 
+        current = vertical1.getCurrent(AMPS);
         if (currentLimitExceeded()) {
             power /= 4;
         }
+
+        power = Math.max(power, minPower);
+
+//        double targetVelocity = controller.getVelocity();
+//        if (targetVelocity > 0 && power < 0) power = 0;
+//        if (targetVelocity < 0 && power > 0) power = 0;
 
         vertical1.setPower(-power);
         vertical2.setPower(-power);
@@ -186,7 +201,6 @@ public class Slides extends Subsystem {
         Dashboard.packet.put("measured slide position", measuredPosition);
         Dashboard.packet.put("target slide position", controller.getTargetPosition());
         Dashboard.packet.put("slide power", power);
-        current = vertical1.getCurrent(AMPS);
         Dashboard.packet.put("vertical current amps",current);
     }
 

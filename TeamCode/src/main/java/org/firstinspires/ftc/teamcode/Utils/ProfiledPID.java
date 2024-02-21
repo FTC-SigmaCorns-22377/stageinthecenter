@@ -74,6 +74,10 @@ public class ProfiledPID implements FeedbackController {
 		return m_profile.get(timer.seconds()).getX();
 	}
 
+	public double getTargetVelocity() {
+		return m_profile.get(timer.seconds()).getV();
+	}
+
 	public double getVelocity() {
 		return m_profile.get(timer.seconds()).getV();
 	}
