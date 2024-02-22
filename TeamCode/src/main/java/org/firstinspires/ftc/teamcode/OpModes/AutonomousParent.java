@@ -20,12 +20,12 @@ public class AutonomousParent extends BaseAuto {
     final double robotLength = 17.008;
     final double robotWidth = 14.358;
     final double distToRollerTip = 16.5;
-    final double distToBackdropBase = 2;
+    final double distToBackdropBase = 1.75;
 
     // Calculated Field Parameters
     final double intakeX = -69.75 + distToRollerTip;
     final double outputX = 60 - distToBackdropBase - 0.5 * robotLength;
-    final double parkX = 55;
+    final double parkX = 53;
 
     // Dynamic Field Parameters
     double startX = 0;
@@ -90,13 +90,13 @@ public class AutonomousParent extends BaseAuto {
         switch (getTeam()) {
             case BLUE:
                 break;
-            default:
+            case RED:
                 stack2 = new Vector2d(intakeX, -23.75);
                 switch (getPark()) {
                     case EDGE:
-                        parkY = -59.375;
+                        parkY = -61;
                         break;
-                    default:
+                    case CENTER:
                         parkY = -10;
                         break;
                 }
@@ -106,13 +106,13 @@ public class AutonomousParent extends BaseAuto {
                         switch (getRandomization()) {
                             case RIGHT:
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .splineTo(new Vector2d(-24.75 - 0.5 * robotLength, -35.75), 0)
+                                        .lineToLinearHeading(new Pose2d(-24.75 - 0.5 * robotLength, -33, 0.25 * Math.PI))
                                         .build();
                                 randomization2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
                                         .back(1)
                                         .splineTo(new Vector2d(-24.75 - 0.5 * robotLength, -58), 0)
                                         .lineTo(new Vector2d(23.75, -58))
-                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 - 2 * 3), 0)
+                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 - 2 * 3 + 3), 0)
                                         .build();
                                 break;
                             case LEFT:
@@ -123,23 +123,27 @@ public class AutonomousParent extends BaseAuto {
                                         .back(1)
                                         .splineTo(new Vector2d(-11.875, -60), 0)
                                         .lineTo(new Vector2d(23.75, -60))
-                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 + 2 * 3), 0)
+                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 + 2 * 3 + 3), 0)
                                         .build();
                                 break;
-                            default:
+                            case CENTER:
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineTo(new Vector2d(startX, -24.75 - 0.5 * robotLength))
+                                        .lineTo(new Vector2d(-35.625, -24.75 - 0.5 * robotLength))
                                         .build();
                                 randomization2 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
                                         .back(1)
                                         .splineTo(new Vector2d(-11.875, -60), 0)
                                         .lineTo(new Vector2d(23.75, -60))
-                                        .splineToConstantHeading(new Vector2d(outputX, -35.625), 0)
+                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 + 3), 0)
                                         .build();
                                 break;
                         }
+                        park = robot.drivetrain.getBuilder().trajectoryBuilder(randomization2.end())
+                                .forward(1)
+                                .splineToConstantHeading(new Vector2d(parkX, parkY), 0)
+                                .build();
                         break;
-                    default:
+                    case BACKDROP:
                         if (getRandomization() == RandomizationSide.CENTER) {
                             stack1 = new Vector2d(intakeX, -35.625);
                             intakeJunction = new Vector2d(-35.625, -35.625);
@@ -168,11 +172,9 @@ public class AutonomousParent extends BaseAuto {
                             outputJunction = new Vector2d(23.75, -11.875);
                             if (getRandomization() == RandomizationSide.RIGHT) {
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineToSplineHeading(new Pose2d(23.75 + 0.5 * robotLength, -35.75, Math.PI))
-                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 - 2 * 3), -0.5 * Math.PI)
-                                        .splineToConstantHeading(new Vector2d(outputX - 5, -35.625 - 2 * 3 - 2), Math.PI)
-                                        .splineToConstantHeading(outputJunction, Math.PI)
-                                        .lineTo(stack1)
+                                        .lineTo(new Vector2d(0.2 * startX + 0.8 * (23.75 + 0.5 * robotLength), 0.2 * startY - 0.8 * 35.625))
+                                        .lineToSplineHeading(new Pose2d(23.75 + 0.5 * robotLength, -35.625, Math.PI))
+                                        .splineToConstantHeading(new Vector2d(outputX, -35.625 - 2 * 3), 0)
                                         .build();
                             } else {
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
@@ -200,14 +202,13 @@ public class AutonomousParent extends BaseAuto {
                                     .splineToConstantHeading(new Vector2d(outputX, -35.625 + 2 * 3), 0)
                                     .build();
                         }
+                        park = robot.drivetrain.getBuilder().trajectoryBuilder(output2.end())
+                                .forward(1)
+                                .splineToConstantHeading(new Vector2d(parkX, parkY), 0)
+                                .build();
                 }
                 break;
         }
-
-        park = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
-                .forward(1)
-                .splineToConstantHeading(new Vector2d(parkX, parkY), 0)
-                .build();
 
         ScoringCommandGroups cmd = new ScoringCommandGroups(robot.scoringMechanism, robot.drivetrain);
 
@@ -217,11 +218,12 @@ public class AutonomousParent extends BaseAuto {
                 auto.addNext(followRR(randomization))
                         .addNext(followRR(randomization2))
                         .addNext(cmd.scorePos())
-                        .addNext(cmd.setSlides(Slides.SlideHeight.HALF))
+                        .addNext(cmd.setSlides(Slides.SlideHeight.L1))
+                        .addNext(wait(1.5))
                         .addNext(cmd.score())
                         .addNext(followRR(park));
                 break;
-            default:
+            case BACKDROP:
                 auto.addNext(new MultipleCommand(followRR(randomization),
                                 new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.HALF)))))
                         .addNext(cmd.score())
