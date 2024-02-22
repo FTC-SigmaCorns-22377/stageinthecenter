@@ -36,8 +36,8 @@ public class Intake extends Subsystem {
 
     public static double TRANSFER_FOUR_ANGLE_VALUE = 0.93;
 
-    public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.11;
-    public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.05;
+    public static double TRANSFER_THREE_DROP_VALUE_LEFT = 0.09;
+    public static double TRANSFER_THREE_DROP_VALUE_RIGHT = 0.065;
 
     public static double TRANSFER_THREE_ANGLE_VALUE = 0.98;
     public static double TRANSFER_ANGLE_TRAVEL_VALUE = 0.1;
