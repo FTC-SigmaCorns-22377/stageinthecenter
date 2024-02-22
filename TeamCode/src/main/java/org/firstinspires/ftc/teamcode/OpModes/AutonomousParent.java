@@ -243,9 +243,9 @@ public class AutonomousParent extends BaseAuto {
         switch (getSide()) {
             case STACKSIDE:
                 auto.addNext(followRR(randomization))
+                        .addNext(followRR(randomization2))
                         .addNext(cmd.scorePos())
                         .addNext(cmd.setSlides(Slides.SlideHeight.HALF))
-                        .addNext(followRR(randomization2))
                         .addNext(cmd.score())
                         .addNext(followRR(park));
                 break;
