@@ -17,8 +17,11 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(600);
         final Pose2d startPose = new Pose2d(-47.5 + 0.5 * 14.348, -71.25 + 0.5 * 17.008, 0.5 * Math.PI);
         final double startX = -47.5 + 0.5 * 14.348;
+        final double startY = -71.25 + 0.5 * 17.008;
         final double robotLength = 17.008;
         final double outputX = 60 - 2 - 0.5 * 17.008;
+        final double parkX = 55;
+        final double parkY = -10;
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -26,11 +29,13 @@ public class MeepMeepTesting {
                 .setDimensions(14.348, 17.008)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineTo(new Vector2d(-46.5, -35.75 - 0.5 * robotLength))
+                                .splineTo(new Vector2d(-24.75 - 0.5 * robotLength, -35.75), 0)
                                 .back(1)
-                                .splineTo(new Vector2d(-11.875, -62.5), 0)
-                                .lineTo(new Vector2d(23.75, -62.5))
-                                .splineToConstantHeading(new Vector2d(outputX, -35.625), 0)
+                                .splineTo(new Vector2d(-24.75 - 0.5 * robotLength, -58), 0)
+                                .lineTo(new Vector2d(23.75, -58))
+                                .splineToConstantHeading(new Vector2d(outputX, -35.625 - 2 * 3), 0)
+                                .forward(1)
+                                .splineToConstantHeading(new Vector2d(parkX, parkY), 0)
                                 .build()
                 );
 
