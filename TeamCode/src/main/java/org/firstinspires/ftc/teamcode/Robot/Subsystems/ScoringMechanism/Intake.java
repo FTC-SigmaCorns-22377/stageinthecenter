@@ -23,6 +23,8 @@ public class Intake extends Subsystem {
 
     public static double TRANSFER_DROP_TRANSFER_VALUE_LEFT = -0.28;
     public static double TRANSFER_DROP_TRANSFER_VALUE_RIGHT = -0.305;
+    public static double TRANSFER_DROP_TRAVEL_VALUE_LEFT = -0.2;
+    public static double TRANSFER_DROP_TRAVEL_VALUE_RIGHT = -0.225;
 
 
     public static double TRANSFER_ANGLE_INTAKE_VALUE = 1;
@@ -167,8 +169,8 @@ public class Intake extends Subsystem {
                 break;
             case TRAVEL:
                 if (transferTimer.seconds() > 0.2) {
-                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE_LEFT);
-                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE_RIGHT);
+                    rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRAVEL_VALUE_LEFT);
+                    rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRAVEL_VALUE_RIGHT);
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(0.8);
 

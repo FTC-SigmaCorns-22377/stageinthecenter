@@ -152,7 +152,7 @@ public class AutonomousParent extends BaseAuto {
                         break;
                     case BACKDROP:
                         if (getRandomization() == RandomizationSide.CENTER) {
-                            stack1 = new Vector2d(intakeX, -12.5);
+                            stack1 = new Vector2d(intakeX, -13);
                             stack1_1 = new Vector2d(intakeX-0.4, -12.5);
 
                             intakeJunction = new Vector2d(-29.688, -12.5);
@@ -193,6 +193,7 @@ public class AutonomousParent extends BaseAuto {
                                     .splineToConstantHeading(outputJunction, Math.PI)
                                     .lineTo(intakeJunction)
                                     .splineToConstantHeading(stack2, -0.5 * Math.PI)
+                                    .forward(0.3)
                                     .build();
                             output2 = robot.drivetrain.getBuilder().trajectoryBuilder(intake2.end())
                                     .strafeRight(1)
@@ -272,19 +273,21 @@ public class AutonomousParent extends BaseAuto {
                                  new MultipleCommand(cmd.postScore().addNext(new Delay(going_through_gate_delay).addNext(cmd.newSetTransfer(Intake.TransferState.FIVE))).addNext(cmd.rollerOn()))))
                         .addNext(wait(0.25))
                         .addNext(cmd.newSetTransfer(Intake.TransferState.FOUR))
-                        .addNext(wait(1.0))
+                        .addNext(wait(0.5))
                         .addNext(cmd.rollerOff())
                         .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
                         .addNext(new MultipleCommand(followRR(output1),
-                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.slide4()))))
                         .addNext(cmd.score())
                         .addNext(new MultipleCommand(followRR(intake1_1),
-                                new MultipleCommand(cmd.postScore().addNext(new Delay(going_through_gate_delay).addNext(cmd.newSetTransfer(Intake.TransferState.INTAKE))).addNext(cmd.rollerOn()))))
+                                new MultipleCommand(cmd.postScore().addNext(new Delay(going_through_gate_delay).addNext(cmd.newSetTransfer(Intake.TransferState.THREE))).addNext(cmd.rollerOn()))))
                         .addNext(wait(0.25))
+                        .addNext(cmd.newSetTransfer(Intake.TransferState.INTAKE))
+                        .addNext(wait(0.5))
                         .addNext(cmd.rollerOff())
                         .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
                         .addNext(new MultipleCommand(followRR(output1),
-                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.slide4()))))
                         .addNext(cmd.score())
                         .addNext(new MultipleCommand(followRR(intake2),
                                 new MultipleCommand(cmd.postScore().addNext(new Delay(going_through_gate_delay).addNext(cmd.newSetTransfer(Intake.TransferState.FIVE))).addNext(cmd.rollerOn()))))
@@ -294,7 +297,7 @@ public class AutonomousParent extends BaseAuto {
                         .addNext(cmd.rollerOff())
                         .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
                         .addNext(new MultipleCommand(followRR(output2),
-                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.slide4()))))
                         .addNext(cmd.score())
                         .addNext(followRR(park));
                 break;
