@@ -93,6 +93,7 @@ public class ScoringCommandGroups {
     }
 
     public SetSlides setSlides(Slides.SlideHeight slideHeight) { return new SetSlides(slides, slideHeight); }
+
     public SetTransfer setTransfer(Intake.TransferState transferState) {
         return new SetTransfer(intake, transferState);
     }
@@ -107,6 +108,9 @@ public class ScoringCommandGroups {
                 .addNext(slidesDown())
                 .addNext(setClaw(Output.ClawState.OPEN));
 
+    }
+    public Command slide4(){
+        return setSlides(Slides.SlideHeight.L4);
     }
 
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
