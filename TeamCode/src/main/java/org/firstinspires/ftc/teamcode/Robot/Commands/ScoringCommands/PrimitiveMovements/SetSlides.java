@@ -9,6 +9,8 @@ public class SetSlides extends Command {
 
     Slides.SlideHeight slideHeight;
 
+    boolean has_set = false;
+
     public SetSlides(Slides slides, Slides.SlideHeight slideHeight) {
         this.slides = slides;
         this.slideHeight = slideHeight;
@@ -17,6 +19,7 @@ public class SetSlides extends Command {
     @Override
     public void init() {
         slides.setSlideHeight(slideHeight);
+        has_set = true;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class SetSlides extends Command {
 
     @Override
     public boolean completed() {
-        return true;
+        return has_set;
     }
 
     @Override

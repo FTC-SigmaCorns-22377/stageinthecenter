@@ -36,6 +36,8 @@ public class Output extends Subsystem {
 
     public static double ARM_SCORE_VALUE = 0.77;
     public static double ARM_TRANSFER_VALUE = 0.245;
+    public static double ARM_TRAVEL_VALUE = 0.2;
+
     public static double ARM_POST_VALUE = 0.78;
     public static double LEFT_OFFSET = 0.006;
 
@@ -88,8 +90,12 @@ public class Output extends Subsystem {
                 if (scoreTime.seconds() > 0.4) {
                     armLeft.setPosition(ARM_POST_VALUE+LEFT_OFFSET);
                     armRight.setPosition(1-ARM_POST_VALUE);
+                    break;
                 }
-
+            case TRAVEL:
+                armLeft.setPosition(ARM_TRAVEL_VALUE+LEFT_OFFSET);
+                armRight.setPosition(1-ARM_TRAVEL_VALUE);
+                break;
         }
 
 
@@ -166,7 +172,8 @@ public class Output extends Subsystem {
     public enum ArmState {
         TRANSFER,
         SCORE,
-        POST
+        POST,
+        TRAVEL
     }
 
     public enum WristState {

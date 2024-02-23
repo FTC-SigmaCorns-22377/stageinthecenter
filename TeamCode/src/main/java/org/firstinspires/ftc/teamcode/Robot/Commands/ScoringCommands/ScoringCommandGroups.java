@@ -151,7 +151,7 @@ public class ScoringCommandGroups {
     public Command postScore(){
         return setTransfer(Intake.TransferState.TRAVEL)
                 .addNext(setSlides(Slides.SlideHeight.L0))
-                .addNext(setArm(Output.ArmState.TRANSFER))
+                .addNext(setArm(Output.ArmState.TRAVEL))
                 .addNext(setClaw(Output.ClawState.CLOSED))
                 .addNext(setWrist(Output.WristState.DEG0));
     }
