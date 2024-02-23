@@ -109,8 +109,12 @@ public class ScoringCommandGroups {
                 .addNext(setClaw(Output.ClawState.OPEN));
 
     }
-    public Command slide4(){
-        return setSlides(Slides.SlideHeight.L4);
+    public Command autoScorePos(){
+        return setClaw(Output.ClawState.CLOSED)
+                .addNext(setSlides(Slides.SlideHeight.L2))
+                .addNext(setArm(Output.ArmState.SCORE))
+                .addNext(setClaw(Output.ClawState.CLOSED));
+
     }
 
     public SetRoller setRoller(Intake.RollerState rollerState) { return new SetRoller(intake, rollerState); }
@@ -189,6 +193,12 @@ public class ScoringCommandGroups {
                 .addNext(setArm(Output.ArmState.SCORE))
                 .addNext(setClaw(Output.ClawState.CLOSED));
 
+    }
+
+    public Command scorePosNoLift(){
+        return setClaw(Output.ClawState.CLOSED)
+                .addNext(setArm(Output.ArmState.SCORE))
+                .addNext(setClaw(Output.ClawState.CLOSED));
     }
 
     public SetWrist setWrist(Output.WristState wristStates) { return new SetWrist(output, wristStates); }

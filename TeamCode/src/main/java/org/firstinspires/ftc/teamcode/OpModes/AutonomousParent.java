@@ -230,7 +230,7 @@ public class AutonomousParent extends BaseAuto {
                                         .build();
                                 intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
                                         .splineToConstantHeading(outputJunction, Math.PI)
-                                        .splineToConstantHeading(new Vector2d(intakeX - 0.2, -12.5), Math.PI)
+                                        .splineToConstantHeading(new Vector2d(intakeX - 0.2, -12.75), Math.PI)
                                         .build();
                                 output1 = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
                                         .lineTo(outputJunction)
@@ -281,40 +281,38 @@ public class AutonomousParent extends BaseAuto {
                 break;
             case BACKDROP:
                 auto.addNext(new MultipleCommand(followRR(randomization),
-                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.HALF)))))
+                                new DelayedCommand(0.5, new MultipleCommand(cmd.scorePosNoLift(), cmd.setSlides(Slides.SlideHeight.HALF)))))
                         .addNext(cmd.score())
-                        .addNext(new MultipleCommand(followRR(intake1),
-                                 new DelayedCommand(0.5, cmd.postScore()),
-                                 new DelayedCommand(1.75, new MultipleCommand(cmd.newSetTransfer(Intake.TransferState.FIVE), cmd.rollerOn()))))
+                        .addNext(new MultipleCommand(followRR(intake1), cmd.postScore(),
+                                 new DelayedCommand(1.6, new MultipleCommand(cmd.newSetTransfer(Intake.TransferState.FIVE), cmd.rollerOn()))))
                         .addNext(wait(0.25))
                         .addNext(cmd.newSetTransfer(Intake.TransferState.FOUR))
                         .addNext(wait(1.0))
-                        .addNext(cmd.rollerOff())
-                        .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
-                        .addNext(new MultipleCommand(followRR(output1),
-                                new DelayedCommand(1, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                        .addNext(new MultipleCommand(followRR(output1),cmd.newSetTransfer(Intake.TransferState.TRANSFER),cmd.rollerOff(),
+                                new DelayedCommand(2.5, new MultipleCommand(cmd.autoScorePos()))))
+                        .addNext(wait(0.01))
                         .addNext(cmd.score())
-                        .addNext(new MultipleCommand(followRR(intake2),
-                                new DelayedCommand(0.5, cmd.postScore()),
-                                new DelayedCommand(1.75, new MultipleCommand(cmd.newSetTransfer(Intake.TransferState.THREE), cmd.rollerOn()))))
+                        .addNext(new MultipleCommand(followRR(intake2), cmd.postScore(),
+                                new DelayedCommand(1.8,
+                                        new MultipleCommand(
+                                                cmd.newSetTransfer(Intake.TransferState.THREE),
+                                                cmd.rollerOn()
+                                        )
+                                )
+                        ))
                         .addNext(wait(0.25))
                         .addNext(cmd.newSetTransfer(Intake.TransferState.INTAKE))
                         .addNext(wait(1.0))
-                        .addNext(cmd.rollerOff())
-                        .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
-                        .addNext(new MultipleCommand(followRR(output2),
-                                new DelayedCommand(1, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                        .addNext(new MultipleCommand(followRR(output2),cmd.newSetTransfer(Intake.TransferState.TRANSFER),cmd.rollerOff(),
+                                new DelayedCommand(2.5, new MultipleCommand(cmd.scorePosNoLift(), cmd.setSlides(Slides.SlideHeight.L5)))))
                         .addNext(cmd.score())
-                        .addNext(new MultipleCommand(followRR(intake3),
-                                new DelayedCommand(0.5, cmd.postScore()),
-                                new DelayedCommand(1.75, new MultipleCommand(cmd.newSetTransfer(Intake.TransferState.FIVE), cmd.rollerOn()))))
+                        .addNext(new MultipleCommand(followRR(intake3), cmd.postScore(),
+                                new DelayedCommand(1.5, new MultipleCommand(cmd.newSetTransfer(Intake.TransferState.FIVE), cmd.rollerOn()))))
                         .addNext(wait(0.25))
                         .addNext(cmd.newSetTransfer(Intake.TransferState.FOUR))
                         .addNext(wait(0.3))
-                        .addNext(cmd.rollerOff())
-                        .addNext(cmd.newSetTransfer(Intake.TransferState.TRANSFER))
-                        .addNext(new MultipleCommand(followRR(output3),
-                                new DelayedCommand(1, new MultipleCommand(cmd.scorePos(), cmd.setSlides(Slides.SlideHeight.L5)))))
+                        .addNext(new MultipleCommand(followRR(output3),cmd.newSetTransfer(Intake.TransferState.TRANSFER),cmd.rollerOff(),
+                                new DelayedCommand(1.5, new MultipleCommand(cmd.scorePosNoLift(), cmd.setSlides(Slides.SlideHeight.L5)))))
                         .addNext(cmd.score())
                         .addNext(followRR(park));
                 break;
