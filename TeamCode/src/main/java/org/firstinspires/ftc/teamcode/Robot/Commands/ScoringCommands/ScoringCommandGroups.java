@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
+import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.MoveHang;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetArm;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClaw;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetRollerPosition;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetWrist;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetTransfer;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetRoller;
@@ -103,12 +105,18 @@ public class ScoringCommandGroups {
     }
 
     public Command newSetTransfer(Intake.TransferState transferState){
-        return new SetTransfer(intake, transferState)
-                .addNext(setArm(Output.ArmState.TRANSFER))
-                .addNext(slidesDown())
-                .addNext(setClaw(Output.ClawState.OPEN));
-
+        return new MultipleCommand(
+                new SetTransfer(intake, transferState),
+                setArm(Output.ArmState.TRANSFER),
+                slidesDown(),
+                setClaw(Output.ClawState.OPEN)
+        );
     }
+
+    public Command setRollerPosition(Intake.TransferState transferState) {
+        return new SetRollerPosition(intake, transferState);
+    }
+
     public Command autoScorePos(){
         return setClaw(Output.ClawState.CLOSED)
                 .addNext(setSlides(Slides.SlideHeight.L2))
@@ -157,11 +165,13 @@ public class ScoringCommandGroups {
     }
 
     public Command postScore(){
-        return setTransfer(Intake.TransferState.TRAVEL)
-                .addNext(setSlides(Slides.SlideHeight.L0))
-                .addNext(setArm(Output.ArmState.TRAVEL))
-                .addNext(setClaw(Output.ClawState.CLOSED))
-                .addNext(setWrist(Output.WristState.DEG0));
+        return new MultipleCommand(
+                setTransfer(Intake.TransferState.TRAVEL),
+                setSlides(Slides.SlideHeight.L0),
+                setArm(Output.ArmState.TRAVEL),
+                setClaw(Output.ClawState.OPEN),
+                setWrist(Output.WristState.DEG0)
+        );
     }
 
     public Command Intake(){

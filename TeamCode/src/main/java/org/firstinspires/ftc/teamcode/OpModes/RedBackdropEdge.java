@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Utils.Park;
 import org.firstinspires.ftc.teamcode.Utils.Side;
 import org.firstinspires.ftc.teamcode.Utils.Team;
 
-@Autonomous
+@Autonomous(preselectTeleOp="TeleOp")
 public class RedBackdropEdge extends AutonomousParent {
     @Override
     public Team getTeam() {
