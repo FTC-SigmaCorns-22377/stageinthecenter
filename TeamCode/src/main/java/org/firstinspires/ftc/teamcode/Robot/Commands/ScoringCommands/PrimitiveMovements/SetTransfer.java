@@ -20,7 +20,7 @@ public class SetTransfer extends Command {
 
     @Override
     public void periodic() {
-        intake.setTransferState(transferState);
+//        intake.setTransferState(transferState);
     }
 
     @Override

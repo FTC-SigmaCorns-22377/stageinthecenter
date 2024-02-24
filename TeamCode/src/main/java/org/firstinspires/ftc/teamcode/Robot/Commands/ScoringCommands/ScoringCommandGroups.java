@@ -175,6 +175,18 @@ public class ScoringCommandGroups {
         );
     }
 
+    public Command postScoreFive(){
+        return new MultipleCommand(
+                newSetTransfer(Intake.TransferState.FIVE),
+                setRollerPosition(Intake.TransferState.FIVE),
+                setSlides(Slides.SlideHeight.L0),
+                setArm(Output.ArmState.TRAVEL),
+                setClaw(Output.ClawState.OPEN),
+                setWrist(Output.WristState.DEG0),
+                newSetTransfer(Intake.TransferState.FIVE)
+        );
+    }
+
     public Command Intake(){
         return setTransfer(Intake.TransferState.INTAKE)
               .addNext(setClaw(Output.ClawState.OPEN));
