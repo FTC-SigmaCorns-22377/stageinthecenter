@@ -105,7 +105,7 @@ public class AutonomousParent extends BaseAuto {
                 }
                 switch (getSide()) {
                     case STACKSIDE:
-                        startDelay = 5;
+                        startDelay = 0;
                         switch (getRandomization()) {
                             case RIGHT: // LEFT (flipped from red)
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
@@ -336,7 +336,7 @@ public class AutonomousParent extends BaseAuto {
                                         .build();
                                 intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization2.end())
                                         .splineToConstantHeading(outputJunction, Math.PI)
-                                        .splineToConstantHeading(new Vector2d(intakeX, -12.4), Math.PI)
+                                        .splineToConstantHeading(new Vector2d(intakeX - 0.5, -12.4), Math.PI)
                                         .build();
                                 output1 = robot.drivetrain.getBuilder().trajectoryBuilder(intake1.end())
                                         .lineTo(outputJunction)
@@ -481,10 +481,16 @@ public class AutonomousParent extends BaseAuto {
                         .addNext(cmd.score())
 
 //                        .addNext(new MultipleCommand(followRR(intake1),
-//                                 new DelayedCommand(0.25, cmd.postScoreFive()),
-//                                 new DelayedCommand(0.4,
-//                                         cmd.rollerOn()
-//                                )
+//                                 new DelayedCommand(0.25, new MultipleCommand(
+//                                         cmd.postScore(),
+//                                         cmd.setRollerPosition(Intake.TransferState.TRAVEL)
+//                                 )),
+//                                new DelayedCommand(0.67,
+//                                        cmd.newSetTransfer(Intake.TransferState.FIVE))
+//                        ))
+//                        .addNext(new MultipleCommand(
+//                                cmd.setRollerPosition(Intake.TransferState.FIVE),
+//                                cmd.rollerOn()
 //                        ))
 //                        .addNext(wait(2.0))
 //                        .addNext(new MultipleCommand(
