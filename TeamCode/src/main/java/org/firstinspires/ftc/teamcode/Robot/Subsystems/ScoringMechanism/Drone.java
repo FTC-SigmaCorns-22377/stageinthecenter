@@ -12,13 +12,13 @@ import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Drone extends Subsystem {
     private static final double HELD = 0.225; // 950
-    private static final double RELEASED = 0.3; // 1100
+    private static final double RELEASED = 0.35; // 1200
     private static final double DOWN = 0.7; // 1900
     private static final double UP = 0.55; // 1600
-    private static final double RETRACT_DELAY = 0.67;
+//    private static final double RETRACT_DELAY = 0.67;
 
     private DroneState state;
-    private ElapsedTime retractTimer;
+//    private ElapsedTime retractTimer;
     private ServoImplEx droneAngle;
     private ServoImplEx droneRelease;
 
@@ -34,7 +34,7 @@ public class Drone extends Subsystem {
 
         state = DroneState.DOWN;
 
-        retractTimer = new ElapsedTime();
+//        retractTimer = new ElapsedTime();
     }
 
     @Override
@@ -49,9 +49,9 @@ public class Drone extends Subsystem {
 
     @Override
     public void periodic() {
-        if (state == DroneState.RELEASED && retractTimer.seconds() > RETRACT_DELAY) {
-            retract();
-        }
+//        if (state == DroneState.RELEASED && retractTimer.seconds() > RETRACT_DELAY) {
+//            retract();
+//        }
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Drone extends Subsystem {
         if (state == DroneState.UP) {
             droneRelease.setPosition(RELEASED);
             state = DroneState.RELEASED;
-            retractTimer.reset();
+//            retractTimer.reset();
         }
     }
 
