@@ -29,7 +29,11 @@ public class MeepMeepTesting {
                 .setDimensions(14.348, 17.008)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineToLinearHeading(new Pose2d(-24.75 - 0.5 * robotLength, -33, 0))
+                                .lineTo(new Vector2d(-41.625, -24.75 - 0.5 * robotLength))
+                                .back(1)
+                                .splineTo(new Vector2d(-30, -57.5), 0)
+                                .lineTo(new Vector2d(23.75, -57.5))
+                                .splineToConstantHeading(new Vector2d(outputX, -35.625 + 3), 0)
                                 .build()
                 );
 
