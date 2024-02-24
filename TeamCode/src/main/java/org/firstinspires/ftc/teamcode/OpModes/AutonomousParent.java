@@ -354,7 +354,7 @@ public class AutonomousParent extends BaseAuto {
                                 intakeJunction = new Vector2d(-29.688, -12.5);
                                 outputJunction = new Vector2d(23.75, -12.5);
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineToSplineHeading(new Pose2d(17, -28, Math.PI))
+                                        .lineToSplineHeading(new Pose2d(17, -26, Math.PI))
                                         .splineToConstantHeading(new Vector2d(outputX + 0.75, -35.625), 0)
                                         .build();
                                 intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
@@ -389,8 +389,8 @@ public class AutonomousParent extends BaseAuto {
                                 intakeJunction = new Vector2d(-29.688, -12.5);
                                 outputJunction = new Vector2d(23.75, -12.5);
                                 randomization = robot.drivetrain.getBuilder().trajectoryBuilder(startPose)
-                                        .lineTo(new Vector2d(0.2 * startX + 0.8 * (20 + 0.5 * robotLength), 0.2 * startY - 0.8 * 35.625))
-                                        .lineToSplineHeading(new Pose2d(20 + 0.5 * robotLength, -35.625, Math.PI))
+                                        .lineTo(new Vector2d(0.2 * startX + 0.8 * (26 + 0.5 * robotLength), 0.2 * startY - 0.8 * 35.625))
+                                        .lineToSplineHeading(new Pose2d(26 + 0.5 * robotLength, -35.625, Math.PI))
                                         .splineToConstantHeading(new Vector2d(outputX + 0.75, -35.625 - 2 * 3), 0)
                                         .build();
                                 intake1 = robot.drivetrain.getBuilder().trajectoryBuilder(randomization.end())
