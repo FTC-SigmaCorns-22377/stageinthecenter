@@ -29,7 +29,8 @@ public class MainScoringMechanism extends Subsystem {
 
     @Override
     public void initTeleop(HardwareMap hwMap) {
-        commonInit(hwMap);
+        for (Subsystem subsystem : subsystems)
+            subsystem.initTeleop(hwMap);
     }
 
     @Override

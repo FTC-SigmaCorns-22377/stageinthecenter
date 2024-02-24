@@ -6,11 +6,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.CommandFramework.Subsystem;
 
 public class Drone extends Subsystem {
-    Servo drone;
+    private static final double HELD = 0.225; // 950
+    private static final double RELEASED = 0.3; // 1100
+    private static final double DOWN = 0.225; // 950
+    private static final double UP = 0.3; // 1100
+
+    Servo droneAngle;
+    Servo droneRelease;
 
     public void initCommon(HardwareMap hwMap) {
-        drone = hwMap.get(Servo.class, "drone");
-        setDrone(DroneStates.IN);
+        droneAngle = hwMap.get(Servo.class, "droneAngle");
+        droneRelease = hwMap.get(Servo.class, "droneRelease");
+//        setDrone(DroneStates.IN);
     }
 
     @Override
@@ -35,16 +42,17 @@ public class Drone extends Subsystem {
 
     // TUNE
     public void setDrone(DroneStates droneStates) {
-        switch (droneStates) {
-            case IN:
-                drone.setPosition(0);
-            case OUT:
-                drone.setPosition(1);
-        }
+//        switch (droneStates) {
+//            case IN:
+//                drone.setPosition(0);
+//            case OUT:
+//                drone.setPosition(1);
+//        }
     }
 
     public enum DroneStates {
-        IN,
-        OUT
+        DOWN,
+        UP,
+        RELEASED
     }
 }

@@ -19,6 +19,8 @@ import org.firstinspires.ftc.teamcode.Utils.ProfiledPID;
 
 @Config
 public class Slides extends Subsystem {
+    private static final double FINE_SETTING_HYSTERESIS = 2.0 / 3;
+    private static final int FINE_SETTINGS = 2;
     static final double PULLEY_CIRCUMFERENCE = 4.409;
     private static final double MOTOR_RPM = 1150;
     private static final double MAX_THEORETICAL_SLIDE_VELOCITY =
@@ -88,8 +90,8 @@ public class Slides extends Subsystem {
     @Override
     public void initTeleop(HardwareMap hwMap) {
         commonInit(hwMap);
-        upConstraint = new MotionConstraint(max_accel, max_accel / 2, max_velocity);
-        downConstraint = new MotionConstraint(max_accel, max_accel / 2, max_velocity);
+//        upConstraint = new MotionConstraint(max_accel, max_accel / 2, max_velocity);
+//        downConstraint = new MotionConstraint(max_accel, max_accel / 2, max_velocity);
 
         vertical1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         vertical2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -146,12 +148,10 @@ public class Slides extends Subsystem {
                 slideTargetPosition = 18;
                 break;
         }
-//        slideTargetPosition += slideOverrideModifier;
-//        if (slideTargetPosition < 0) {
-//            slideTargetPosition = 0;
-//        }
-
-
+        slideTargetPosition += slideOverrideModifier;
+        if (slideTargetPosition < 0) {
+            slideTargetPosition = 0;
+        }
     }
 
 //    private void updateVelocity() {
@@ -218,7 +218,13 @@ public class Slides extends Subsystem {
         return slideTargetPosition;
     }
 
-    public void setSlideOverrideModifier(double overrideModifier) { this.slideOverrideModifier = overrideModifier; }
+    public void setSlideOverrideModifier(double overrideModifier) {
+        double overrideDistance = 1.0 / FINE_SETTINGS;
+        double hysteresisThreshold = overrideDistance * FINE_SETTING_HYSTERESIS;
+        if (Math.abs(slideOverrideModifier - overrideModifier) > hysteresisThreshold)
+            this.slideOverrideModifier =
+                    Math.round(overrideModifier * FINE_SETTINGS) * overrideDistance;
+    }
     public void setSlideHeight(SlideHeight slideHeight) { this.slideHeight = slideHeight; }
 
     public double getPIDTargetInches() {
