@@ -38,7 +38,9 @@ public class Teleop extends BaseTeleop {
         //robot.gamepad1.whenDPadUpPressed(commandGroups.setClaw(Output.ClawState.CLOSED));
         //robot.gamepad1.whenDPadDownPressed(commandGroups.setClaw(Output.ClawState.OPEN));
         robot.gamepad1.whenRightTriggerPressed(commandGroups.score());
+        robot.gamepad1.whenRightTriggerPressed(commandGroups.fireDroneSequence());
         robot.gamepad1.whenDPadDownPressed(commandGroups.postScore());
+        robot.gamepad1.whenDPadUpPressed(commandGroups.retractDrone());
 //        robot.gamepad1.whenRightTriggerPressed(commandGroups.clawBlackOpen());
 //        robot.gamepad1.whenLeftTriggerPressed(commandGroups.clawPurpleOpen());
 //        robot.gamepad1.whenCrossPressed(commandGroups.transfer());

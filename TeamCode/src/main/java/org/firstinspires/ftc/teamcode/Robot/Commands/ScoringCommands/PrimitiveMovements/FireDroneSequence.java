@@ -3,34 +3,31 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveM
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Subsystems.ScoringMechanism.Drone;
 
-public class SetDrone extends Command {
+public class FireDroneSequence extends Command {
     Drone drone;
-    Drone.DroneStates droneStates;
-    boolean hasFinished = false;
 
-    public SetDrone(Drone drone, Drone.DroneStates droneStates) {
+    public FireDroneSequence(Drone drone) {
         this.drone = drone;
-        this.droneStates = droneStates;
     }
 
     @Override
     public void init() {
-        drone.setDrone(droneStates);
+        if (drone.getState() == Drone.DroneState.DOWN) {
+            drone.ready();
+        }
+        else if (drone.getState() == Drone.DroneState.UP) {
+            drone.fire();
+        }
     }
 
     @Override
-    public void periodic() {
-        drone.setDrone(droneStates);
-        hasFinished = true;
-    }
+    public void periodic() {}
 
     @Override
     public boolean completed() {
-        return hasFinished;
+        return true;
     }
 
     @Override
-    public void shutdown() {
-
-    }
+    public void shutdown() {}
 }

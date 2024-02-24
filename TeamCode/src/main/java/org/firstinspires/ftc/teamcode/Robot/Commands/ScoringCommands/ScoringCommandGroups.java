@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands;
 
 import org.firstinspires.ftc.teamcode.CommandFramework.Command;
 import org.firstinspires.ftc.teamcode.Robot.Commands.MiscCommands.MultipleCommand;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.FireDroneSequence;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.MoveHang;
+import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.RetractDrone;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetArm;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetClaw;
 import org.firstinspires.ftc.teamcode.Robot.Commands.ScoringCommands.PrimitiveMovements.SetRollerPosition;
@@ -38,8 +40,7 @@ public class ScoringCommandGroups {
         this.output = mechanism.output;
         this.slides = mechanism.slides;
         this.hang = mechanism.hang;
-//        this.drone = mechanism.drone;
-//        this.hang = mechanism.hang;
+        this.drone = mechanism.drone;
         this.drivetrain = drivetrain;
     }
 
@@ -212,4 +213,12 @@ public class ScoringCommandGroups {
     }
 
     public SetWrist setWrist(Output.WristState wristStates) { return new SetWrist(output, wristStates); }
+
+    public Command retractDrone() {
+        return new RetractDrone(drone);
+    }
+
+    public Command fireDroneSequence() {
+        return new FireDroneSequence(drone);
+    }
 }
