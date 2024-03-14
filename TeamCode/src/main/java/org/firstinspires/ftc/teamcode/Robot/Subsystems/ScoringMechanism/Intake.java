@@ -62,7 +62,6 @@ public class Intake extends Subsystem {
     TransferState transferState;
     ElapsedTime transferTimer = new ElapsedTime();
 
-    boolean isAuto;
 
     public void initCommon(HardwareMap hwMap) {
         roller = hwMap.get(DcMotorEx.class, "roller");
@@ -86,14 +85,12 @@ public class Intake extends Subsystem {
 
     @Override
     public void initAuto(HardwareMap hwMap) {
-        isAuto = true;
         initCommon(hwMap);
         setTransferState(TRANSFER);
     }
 
     @Override
     public void initTeleop(HardwareMap hwMap) {
-        isAuto = false;
         initCommon(hwMap);
         setTransferState(INTAKE);
     }
@@ -115,13 +112,13 @@ public class Intake extends Subsystem {
         }
         switch (transferState) {
             case INTAKE:
-                if (transferTimer.seconds() > 0.25) {
+                if (transferTimer.seconds() > 0.2) {
                     linkage.setPosition(0.95);
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_INTAKE_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_DROP_INTAKE_VALUE_RIGHT);
-                    }
-                } else if (transferTimer.seconds() > 0.15) {
+//                    }
+                } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(0.85);
                 } else {
                     transferAngle.setPosition(TRANSFER_ANGLE_INTAKE_VALUE);
@@ -129,10 +126,10 @@ public class Intake extends Subsystem {
                 break;
             case TRANSFER:
                 if (transferTimer.seconds() > 0.2) {
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRANSFER_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRANSFER_VALUE_RIGHT);
-                    }
+//                    }
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(LINKAGE_FINAL_VALUE_TRANSFER);
 
@@ -142,12 +139,12 @@ public class Intake extends Subsystem {
                 }
                 break;
             case FIVE:
-                if (transferTimer.seconds() > 0.3) {
+                if (transferTimer.seconds() > 0.2) {
                     linkage.setPosition(1);
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_FIVE_DROP_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_FIVE_DROP_VALUE_RIGHT);
-                    }
+//                    }
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(0.75);
                 } else {
@@ -155,12 +152,12 @@ public class Intake extends Subsystem {
                 }
                 break;
             case FOUR:
-                if (transferTimer.seconds() > 0.3) {
+                if (transferTimer.seconds() > 0.2) {
                     linkage.setPosition(0.95);
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_FOUR_DROP_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_FOUR_DROP_VALUE_RIGHT);
-                    }
+//                    }
                 } else if (transferTimer.seconds() > 0.1) {
                    // linkage.setPosition(0.75);
                 } else {
@@ -170,12 +167,12 @@ public class Intake extends Subsystem {
 
 
             case THREE:
-                if (transferTimer.seconds() > 0.3) {
+                if (transferTimer.seconds() > 0.2) {
                     linkage.setPosition(0.95);
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_THREE_DROP_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_THREE_DROP_VALUE_RIGHT);
-                    }
+//                    }
                 } else if (transferTimer.seconds() > 0.1) {
                    // linkage.setPosition(0.75);
                 } else {
@@ -184,10 +181,10 @@ public class Intake extends Subsystem {
                 break;
             case TRAVEL:
                 if (transferTimer.seconds() > 0.2) {
-                    if (!isAuto) {
+//                    if (!isAuto) {
                         rollerDropLeft.setPosition(0.5 + TRANSFER_DROP_TRAVEL_VALUE_LEFT);
                         rollerDropRight.setPosition(0.5 - TRANSFER_DROP_TRAVEL_VALUE_RIGHT);
-                    }
+//                    }
                 } else if (transferTimer.seconds() > 0.1) {
                     linkage.setPosition(0.8);
 

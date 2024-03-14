@@ -166,7 +166,8 @@ public class ScoringCommandGroups {
 
     public Command postScore(){
         return new MultipleCommand(
-                setTransfer(Intake.TransferState.TRAVEL),
+                newSetTransfer(Intake.TransferState.TRAVEL),
+                setRollerPosition(Intake.TransferState.TRAVEL),
                 setSlides(Slides.SlideHeight.L0),
                 setArm(Output.ArmState.TRAVEL),
                 setClaw(Output.ClawState.OPEN),
